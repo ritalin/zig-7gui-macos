@@ -15,31 +15,24 @@ pub fn build(b: *std.Build) !void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    // ObjC Runtime
     const dep_objc = b.dependency("objc", .{
         .target = target,
         .optimize = optimize,
     });
     const mod_objc = dep_objc.module("objc");
-
+    // UUID
     const dep_uuid = b.dependency("uuid", .{
         .target = target,
         .optimize = optimize,
     });
     const mod_uuid = dep_uuid.module("uuid");
-
-    // const mod_objc = b.createModule(.{
-    //     .source_file = .{ .path = "vendor/zig-objc/src/main.zig" },
-    // });
-
-    // const mod_uuid = b.createModule(.{
-    //     .source_file = .{ .path = "vendor/zig-uuid/uuid.zig" },
-    // });
-
+    // Core modules (NSObject, etc...)
     const mod_runtime = b.createModule(.{ .source_file = .{ .path = "src/fw/Runtime.zig" }, .dependencies = &.{
         .{ .name = "objc", .module = mod_objc },
     } });
     try mod_runtime.dependencies.put("Runtime", mod_runtime);
-
+    // QuartzCore.framework (referencing from AppKit.framework)
     const mod_quartz = b.createModule(.{
         .source_file = .{ .path = "src/fw/QuartzCore.zig" },
         .dependencies = &.{
@@ -48,7 +41,7 @@ pub fn build(b: *std.Build) !void {
         },
     });
     try mod_quartz.dependencies.put("QuartzCore", mod_quartz);
-
+    // CoreGraphics.framework (referencing from AppKit.framework)
     const mod_coreGraphics = b.createModule(.{
         .source_file = .{ .path = "src/fw/CoreGraphics.zig" },
         .dependencies = &.{
@@ -58,8 +51,10 @@ pub fn build(b: *std.Build) !void {
         },
     });
     try mod_coreGraphics.dependencies.put("CoreGraphics", mod_coreGraphics);
+    // CoreGraphics and CoreGraphics has been depended each other.
     try mod_quartz.dependencies.put("CoreGraphics", mod_coreGraphics);
 
+    // Foundation.framework
     const mod_foundation = b.createModule(.{
         .source_file = .{ .path = "src/fw/Foundation.zig" },
         .dependencies = &.{
@@ -70,6 +65,7 @@ pub fn build(b: *std.Build) !void {
     });
     try mod_foundation.dependencies.put("Foundation", mod_coreGraphics);
 
+    // AppKit.framework
     const mod_appKit = b.createModule(.{
         .source_file = .{ .path = "src/fw/AppKit.zig" },
         .dependencies = &.{
@@ -82,6 +78,7 @@ pub fn build(b: *std.Build) !void {
     });
     try mod_appKit.dependencies.put("AppKit", mod_appKit);
 
+    // AppKit support package (event handling, etc..)
     const mod_appKit_support = b.createModule(.{
         .source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" },
         .dependencies = &.{
