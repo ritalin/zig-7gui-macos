@@ -1,0 +1,17 @@
+.{
+    .name = "zig-7gui-on_macos",
+    .version = "0.0.0",
+    .paths = .{
+        "src/",
+        "build.zig",
+        "build.zig.zon",        
+    },
+    .dependencies = .{
+        .objc = .{
+            .path = "vendor/zig-objc"
+        },
+        .uuid = .{
+            .path = "vendor/zig-uuid"
+        }
+    }
+}
