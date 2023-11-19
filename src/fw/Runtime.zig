@@ -9,6 +9,8 @@ pub const backend_support = @import("./RuntimeSupport/backendSupport.zig");
 const RuntimeSupport_typeSupport = @import("RuntimeSupport/typeSupport.zig");
 pub const typeConstraints = RuntimeSupport_typeSupport.typeConstraints;
 
+pub const ContextReg = @import("./RuntimeSupport/context_registry.zig").ContextReg;
+
 pub const DelegateHandler = anyopaque;
 
 const Runtime_NSObjCRuntime = @import("./Runtime/NSObjCRuntime/frontend.zig");

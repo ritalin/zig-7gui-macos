@@ -10,7 +10,7 @@ const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
 
 const NSNotification = foundation.NSNotification;
 
-const AppDelegate = NSApplicationDelegate.Protocol.Derive(.{
+const AppDelegate = NSApplicationDelegate.Protocol(ApplicationContext).Derive(.{
     .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
 },
 // runtime.identity_seed.RandomSeed
@@ -19,6 +19,30 @@ runtime.identity_seed.FixValueSeed("Default"));
 const WindowDelegate = appKit.NSWindowDelegate.Protocol.Derive(.{
     .windowWillClose = handleWindowWillClose,
 }, runtime.identity_seed.FixValueSeed("Default"));
+
+const ApplicationContext = struct {
+    const Self = @This();
+
+    arena: *std.heap.ArenaAllocator,
+
+    pub fn init(gpa: std.mem.Allocator) !*Self {
+        var arena = try gpa.create(std.heap.ArenaAllocator);
+        arena.* = std.heap.ArenaAllocator.init(gpa);
+
+        var self = try arena.allocator().create(Self);
+        self.* = .{
+            .arena = arena,
+        };
+
+        return self;
+    }
+
+    pub fn deinit(self: *Self) void {
+        var child_allocator = self.arena.child_allocator;
+        self.arena.deinit();
+        child_allocator.destroy(self.arena);
+    }
+};
 
 const CounterContext = struct {
     allocator: std.mem.Allocator,
@@ -50,17 +74,18 @@ const CounterContext = struct {
     }
 };
 
-fn handleApplicationWillFinishLaunching(_d: NSApplicationDelegate, _: NSNotification) !void {
+fn handleApplicationWillFinishLaunching(app_context: *ApplicationContext, _d: NSApplicationDelegate, _: NSNotification) !void {
     std.debug.print("[DEBUG] application delegate: (id: {*})\n", .{_d._id.value});
 
     var center: foundation.NSPoint =
-        if (appKit.NSScreen.mainScreen()) |screen|
-    center: {
-        var desktop_rect = screen.visibleFrame();
-        std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
+        if (appKit.NSScreen.mainScreen()) |screen| center: {
+            var desktop_rect = screen.visibleFrame();
+            std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
 
-        break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-    } else .{ .x = 50, .y = 50 };
+            break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+        } 
+        else .{ .x = 50, .y = 50 }
+    ;
     const window_size: foundation.NSSize = .{ .width = 300, .height = 48 };
 
     var rect = foundation.NSRect{
@@ -108,7 +133,7 @@ fn handleApplicationWillFinishLaunching(_d: NSApplicationDelegate, _: NSNotifica
 
             v.addSubview(text_field.as(appKit.NSView));
 
-            var ctx = try CounterContext.init(std.heap.page_allocator, .{ .text_field = text_field });
+            var ctx = try CounterContext.init(app_context.arena.allocator(), .{ .text_field = text_field });
             var handler = appKit_support.Handlers(CounterContext).Action(appKit.NSButton).init(ctx, CounterContext.handleIncrement);
             var button_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Count").?;
             std.debug.print("[button-caption] {s}\n", .{button_text.as(foundation.NSString.ExtensionMethods).utf8String()});
@@ -140,8 +165,8 @@ fn handleWindowWillClose(instance: appKit.NSWindowDelegate, notification: founda
 const uuid = @import("uuid");
 
 pub fn main() !void {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
+    var app_context = try ApplicationContext.init(std.heap.page_allocator);
+    defer app_context.deinit();
 
     std.debug.print("[DEBUG] UUID: {s}\n\n", .{uuid.newV4()});
 
@@ -151,7 +176,7 @@ pub fn main() !void {
 
     _ = app.setActivationPolicy(NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.init();
+    var d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

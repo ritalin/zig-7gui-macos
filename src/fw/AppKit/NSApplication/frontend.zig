@@ -108,18 +108,6 @@ pub const NSWindowListOptions = std.enums.EnumSet(enum(NSInteger) {
 
 pub const NSApplication = struct {
     pub const Self = @This();
-    pub const RestorableUserInterface = NSRestorableUserInterfaceForNSApplication;
-    pub const Deprecated = NSDeprecatedForNSApplication;
-    pub const WindowsMenu = NSWindowsMenuForNSApplication;
-    pub const ServicesHandling = NSServicesHandlingForNSApplication;
-    pub const StandardAboutPanel = NSStandardAboutPanelForNSApplication;
-    pub const LayoutDirection = NSApplicationLayoutDirectionForNSApplication;
-    pub const ServicesMenu = NSServicesMenuForNSApplication;
-    pub const Event = NSEventForNSApplication;
-    pub const Responder = NSResponderForNSApplication;
-    pub const AppearanceCustomization = NSAppearanceCustomizationForNSApplication;
-    pub const RemoteNotifications = NSRemoteNotificationsForNSApplication;
-    pub const FullKeyboardAccess = NSFullKeyboardAccessForNSApplication;
 
     var DelegateResolver: ?*ObjectResolver(NSApplication) = null;
 
@@ -183,198 +171,6 @@ pub const NSApplication = struct {
     };
 };
 
-const NSRestorableUserInterfaceForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSDeprecatedForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSWindowsMenuForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSServicesHandlingForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSStandardAboutPanelForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSApplicationLayoutDirectionForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSServicesMenuForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSEventForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSResponderForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSAppearanceCustomizationForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSRemoteNotificationsForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSFullKeyboardAccessForNSApplication = struct {
-    const Category = @This();
-    pub const Self = NSApplication;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
 pub const NSApplicationPrintReply = struct {
     pub const PrintingCancelled: NSApplicationPrintReply = .{
         ._value = 0,
@@ -431,37 +227,6 @@ pub const NSApplicationDelegateReply = struct {
     _value: NSUInteger,
 };
 
-pub const NSServicesMenuRequestor = struct {
-    pub const Self = @This();
-
-    _id: objc.Object,
-
-    fn deinit(self: *Self) void {
-        self.as(NSObject).dealloc(self);
-    }
-
-    pub const Protocol = struct {
-        pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
-            return struct {
-                const _class_name = runtime.backend_support.concreteTypeName("NSServicesMenuRequestor", SuffixIdSeed.generateIdentifier());
-                const _handler = _delegate_handler;
-                var _class: ?objc.Class = null;
-
-                pub fn init() Self {
-                    if (_class == null) {
-                        _class = backend.NSServicesMenuRequestorMessages.initClass(_class_name);
-                    }
-                    var _id = backend.NSServicesMenuRequestorMessages.init(_class.?);
-                    var _instance = runtime.wrapObject(NSServicesMenuRequestor, _id);
-                    return _instance;
-                }
-            };
-        }
-
-        pub const Handler = struct {};
-    };
-};
-
 pub const NSApplicationDelegate = struct {
     pub const Self = @This();
 
@@ -471,55 +236,63 @@ pub const NSApplicationDelegate = struct {
         self.as(NSObject).dealloc(self);
     }
 
-    pub const Protocol = struct {
-        pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
-            return struct {
-                const _class_name = runtime.backend_support.concreteTypeName("NSApplicationDelegate", SuffixIdSeed.generateIdentifier());
-                const _handler = _delegate_handler;
-                var _class: ?objc.Class = null;
+    pub fn Protocol(comptime ContextType: type) type {
+        return struct {
+            pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
+                return struct {
+                    const _class_name = runtime.backend_support.concreteTypeName("NSApplicationDelegate", SuffixIdSeed.generateIdentifier());
+                    const _handler = _delegate_handler;
+                    var _class: ?objc.Class = null;
 
-                pub fn init() Self {
-                    if (_class == null) {
-                        _class = backend.NSApplicationDelegateMessages.initClass(_class_name);
-                        if (_handler.applicationWillFinishLaunching != null) {
-                            backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(_class.?, &dispatchApplicationWillFinishLaunching);
+                    pub fn initWithContext(context: *ContextType) Self {
+                        if (_class == null) {
+                            var class = backend.NSApplicationDelegateMessages.initClass(_class_name);
+                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            if (_handler.applicationWillFinishLaunching != null) {
+                                backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(class, &dispatchApplicationWillFinishLaunching);
+                            }
+                            if (_handler.applicationDidFinishLaunching != null) {
+                                backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(class, &dispatchApplicationDidFinishLaunching);
+                            }
+                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            _class = class;
                         }
-                        if (_handler.applicationDidFinishLaunching != null) {
-                            backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(_class.?, &dispatchApplicationDidFinishLaunching);
+                        var _id = backend.NSApplicationDelegateMessages.init(_class.?);
+                        var _instance = runtime.wrapObject(NSApplicationDelegate, _id);
+                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        return _instance;
+                    }
+
+                    fn dispatchApplicationWillFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
+                        if (_delegate_handler.applicationWillFinishLaunching) |handler| {
+                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
+                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            return handler(context, self, notification) catch {
+                                unreachable;
+                            };
                         }
+                        unreachable;
                     }
-                    var _id = backend.NSApplicationDelegateMessages.init(_class.?);
-                    var _instance = runtime.wrapObject(NSApplicationDelegate, _id);
-                    return _instance;
-                }
 
-                fn dispatchApplicationWillFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
-                    if (_delegate_handler.applicationWillFinishLaunching) |handler| {
-                        var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
-                        var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
-                        return handler(self, notification) catch {
-                            unreachable;
-                        };
+                    fn dispatchApplicationDidFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
+                        if (_delegate_handler.applicationDidFinishLaunching) |handler| {
+                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
+                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            return handler(context, self, notification) catch {
+                                unreachable;
+                            };
+                        }
+                        unreachable;
                     }
-                    unreachable;
-                }
+                };
+            }
 
-                fn dispatchApplicationDidFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
-                    if (_delegate_handler.applicationDidFinishLaunching) |handler| {
-                        var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
-                        var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
-                        return handler(self, notification) catch {
-                            unreachable;
-                        };
-                    }
-                    unreachable;
-                }
+            pub const Handler = struct {
+                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
+                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
             };
-        }
-
-        pub const Handler = struct {
-            applicationWillFinishLaunching: ?(*const fn (self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
-            applicationDidFinishLaunching: ?(*const fn (self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
         };
-    };
+    }
 };

@@ -73,6 +73,10 @@ pub const ObjectRegistry = struct {
         var ret = objc.c.class_addIvar(class.value, field_name, type_size, alignmemnt, encoding);
         std.debug.assert(ret == BOOL_YES);
     }
+
+    pub fn registerClass(class: Class) void {
+        objc.c.objc_registerClassPair(class.value);
+    }
 };
 
 pub fn concreteTypeName(comptime base_type_name: []const u8, comptime suffix: []const u8) [:0]const u8 {
