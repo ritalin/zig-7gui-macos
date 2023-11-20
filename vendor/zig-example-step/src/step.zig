@@ -23,12 +23,28 @@ pub const RunExample = struct {
         return self;
     }
 
-    pub fn addExample(self: *RunExample, step: *std.build.CompileStep) void {
+    pub fn addExample(self: *RunExample, step: *std.build.CompileStep, args: anytype) void {
         const owner = self.step.owner;
 
         const run_cmd = owner.addRunArtifact(step);
         const artifact = owner.addInstallArtifact(step, .{});
         run_cmd.step.dependOn(&artifact.step);
+
+        const ArgType = @TypeOf(args);
+        switch (@typeInfo(ArgType)) {
+            .Struct => |type_info| {
+                std.debug.assert (type_info.is_tuple);
+
+                const fields = type_info.fields;
+                inline for (fields) |field| {
+                    if (field.type == []const u8) {
+                        const arg = @as([]const u8, @field(fields, field.name));
+                        run_cmd.addArg(arg);
+                    }
+                }
+            },
+            else => unreachable,
+        } 
 
         const out_filename = outputName(run_cmd) orelse {
             std.debug.print("output file is not specified.\n", .{});

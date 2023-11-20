@@ -89,7 +89,8 @@ pub fn build(b: *std.Build) !void {
     });
 
     const examples = std.ComptimeStringMap([]const u8, .{
-        .{"counter", "src/examples/01_counter/main.zig"}
+        .{"counter", "src/examples/01_counter/main.zig"},
+        .{"temp_conv", "src/examples/02_temp_conv/main.zig"},
     });
 
     // create example step
@@ -114,12 +115,12 @@ pub fn build(b: *std.Build) !void {
 
         exe.addSystemIncludePath(.{ .path = "/usr/include" });
         exe.addFrameworkPath(.{ .path = "/System/Library/Frameworks" });
-        exe.linkFramework("Foundation");
         exe.linkFramework("AppKit");
 
+        // For default step (build install)
         b.installArtifact(exe);
-
-        example_cmd.addExample(exe);
+        // For example step
+        example_cmd.addExample(exe, .{});
     }
 
     // Creates a step for unit testing. This only builds the test executable
