@@ -129,13 +129,25 @@ pub const RunExample = struct {
 
 
         err_log: {
-            tty_config.setColor(stderr, .bold) catch break :err_log;
-            stderr.writeAll(step.owner.dep_prefix) catch break :err_log;
-            stderr.writeAll(step.name) catch break :err_log;
-            stderr.writeAll(": ") catch break :err_log;
+            for (step.result_error_msgs.items) |msg| {
+                tty_config.setColor(stderr, .bold) catch break :err_log;
+                stderr.writeAll(step.owner.dep_prefix) catch break :err_log;
+                stderr.writeAll(step.name) catch break :err_log;
+                stderr.writeAll(": ") catch break :err_log;
+
+                tty_config.setColor(stderr, .red) catch break;
+                stderr.writeAll("error: ") catch break;
+
+                tty_config.setColor(stderr, .reset) catch break;
+                stderr.writeAll(msg) catch break;
+                stderr.writeAll("\n") catch break;                
+            }
+
             stderr.writeAll("\n") catch break :err_log;
 
-            step.result_error_bundle.renderToWriter(.{.ttyconf = tty_config}, stderr.writer()) catch break :err_log;
+            if (step.result_error_bundle.extra.len > 0) {
+                step.result_error_bundle.renderToWriter(.{.ttyconf = tty_config}, stderr.writer()) catch break :err_log;
+            }
         }     
     }
 };
