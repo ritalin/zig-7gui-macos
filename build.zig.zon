@@ -12,6 +12,10 @@
         },
         .uuid = .{
             .path = "vendor/zig-uuid"
-        }
+        },
+        .example_step = .{
+            .path = "vendor/zig-example-step",
+            .scope = .develop,
+        },
     }
 }
