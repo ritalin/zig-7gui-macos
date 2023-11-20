@@ -10,39 +10,19 @@ const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
 
 const NSNotification = foundation.NSNotification;
 
-const AppDelegate = NSApplicationDelegate.Protocol(ApplicationContext).Derive(.{
-    .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
-},
-// runtime.identity_seed.RandomSeed
-runtime.identity_seed.FixValueSeed("Default"));
+const AppDelegate = NSApplicationDelegate.Protocol(AppContext).Derive(
+    .{
+        .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
+    },
+    // runtime.identity_seed.RandomSeed
+    runtime.identity_seed.FixValueSeed("Default")
+);
 
 const WindowDelegate = appKit.NSWindowDelegate.Protocol.Derive(.{
     .windowWillClose = handleWindowWillClose,
 }, runtime.identity_seed.FixValueSeed("Default"));
 
-const ApplicationContext = struct {
-    const Self = @This();
-
-    arena: *std.heap.ArenaAllocator,
-
-    pub fn init(gpa: std.mem.Allocator) !*Self {
-        var arena = try gpa.create(std.heap.ArenaAllocator);
-        arena.* = std.heap.ArenaAllocator.init(gpa);
-
-        var self = try arena.allocator().create(Self);
-        self.* = .{
-            .arena = arena,
-        };
-
-        return self;
-    }
-
-    pub fn deinit(self: *Self) void {
-        var child_allocator = self.arena.child_allocator;
-        self.arena.deinit();
-        child_allocator.destroy(self.arena);
-    }
-};
+const AppContext = appKit_support.ApplicationContextWithoutState;
 
 const CounterContext = struct {
     allocator: std.mem.Allocator,
@@ -74,7 +54,7 @@ const CounterContext = struct {
     }
 };
 
-fn handleApplicationWillFinishLaunching(app_context: *ApplicationContext, _d: NSApplicationDelegate, _: NSNotification) !void {
+fn handleApplicationWillFinishLaunching(app_context: *AppContext, _d: NSApplicationDelegate, _: NSNotification) !void {
     std.debug.print("[DEBUG] application delegate: (id: {*})\n", .{_d._id.value});
 
     var center: foundation.NSPoint =
@@ -165,7 +145,7 @@ fn handleWindowWillClose(instance: appKit.NSWindowDelegate, notification: founda
 const uuid = @import("uuid");
 
 pub fn main() !void {
-    var app_context = try ApplicationContext.init(std.heap.page_allocator);
+    var app_context = try appKit_support.ApplicationContextFactory(AppContext).create(std.heap.page_allocator, null);
     defer app_context.deinit();
 
     std.debug.print("[DEBUG] UUID: {s}\n\n", .{uuid.newV4()});

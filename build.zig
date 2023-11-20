@@ -117,6 +117,8 @@ pub fn build(b: *std.Build) !void {
         exe.linkFramework("Foundation");
         exe.linkFramework("AppKit");
 
+        b.installArtifact(exe);
+
         example_cmd.addExample(exe);
     }
 
