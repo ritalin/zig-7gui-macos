@@ -74,21 +74,21 @@ pub const RunExample = struct {
         
         const target = self.targetExample() orelse {
             self.usageExample();
-            step.state = .skipped;
+            @atomicStore(std.build.Step.State, &step.state, .skipped, .SeqCst);
             return;
         };
 
         const artifact = (self.artifacts.get(target)) orelse artifact: {
             const index =  std.fmt.parseInt(u32, target, 10) catch {
                 self.usageExample();
-                step.state = .failure;
+                @atomicStore(std.build.Step.State, &step.state, .failure, .SeqCst);
                 return;
             };
 
             const keys = self.artifacts.keys();
             if (index >= keys.len) {
                 self.usageExample();
-                step.state = .failure;
+                @atomicStore(std.build.Step.State, &step.state, .failure, .SeqCst);
                 return;
             }
 
@@ -102,6 +102,40 @@ pub const RunExample = struct {
         for (step.dependencies.items) |dep| {
             try makeInternal(dep, prog_node);
         }
-        try step.make(prog_node);
+        const result = step.make(prog_node);
+        
+        if (step.result_error_msgs.items.len > 0) err_log: {
+            dumpMakeError(step, prog_node) catch break :err_log;
+        }
+
+        if (result) |_| {
+            @atomicStore(std.build.Step.State, &step.state, .success, .SeqCst);
+        }
+        else |err| switch (err) {
+            error.MakeFailed => {
+                @atomicStore(std.build.Step.State, &step.state, .failure, .SeqCst);
+                return err;
+            },
+            error.MakeSkipped => @atomicStore(std.build.Step.State, &step.state, .skipped, .SeqCst),
+        }
+    }
+
+    fn dumpMakeError(step: *std.build.Step, prog_node: *std.Progress.Node) !void {
+        prog_node.context.lock_stderr();
+        defer prog_node.context.unlock_stderr();
+        
+        const stderr = std.io.getStdErr();
+        const tty_config = std.io.tty.detectConfig(stderr);
+
+
+        err_log: {
+            tty_config.setColor(stderr, .bold) catch break :err_log;
+            stderr.writeAll(step.owner.dep_prefix) catch break :err_log;
+            stderr.writeAll(step.name) catch break :err_log;
+            stderr.writeAll(": ") catch break :err_log;
+            stderr.writeAll("\n") catch break :err_log;
+
+            step.result_error_bundle.renderToWriter(.{.ttyconf = tty_config}, stderr.writer()) catch break :err_log;
+        }     
     }
 };
