@@ -21,12 +21,7 @@ pub fn build(b: *std.Build) !void {
         .optimize = optimize,
     });
     const mod_objc = dep_objc.module("objc");
-    // UUID
-    const dep_uuid = b.dependency("uuid", .{
-        .target = target,
-        .optimize = optimize,
-    });
-    const mod_uuid = dep_uuid.module("uuid");
+
     // Core modules (NSObject, etc...)
     const mod_runtime = b.createModule(.{ .source_file = .{ .path = "src/fw/Runtime.zig" }, .dependencies = &.{
         .{ .name = "objc", .module = mod_objc },
@@ -107,7 +102,6 @@ pub fn build(b: *std.Build) !void {
         });
 
         exe.addModule("objc", mod_objc);
-        exe.addModule("uuid", mod_uuid);
         exe.addModule("Runtime", mod_runtime);
         exe.addModule("AppKit", mod_appKit);
         exe.addModule("Foundation", mod_foundation);
