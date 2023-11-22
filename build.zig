@@ -46,7 +46,7 @@ pub fn build(b: *std.Build) !void {
         },
     });
     try mod_coreGraphics.dependencies.put("CoreGraphics", mod_coreGraphics);
-    // CoreGraphics and CoreGraphics has been depended each other.
+    // QuartzCore and CoreGraphics has been depended each other.
     try mod_quartz.dependencies.put("CoreGraphics", mod_coreGraphics);
 
     // Foundation.framework
@@ -58,7 +58,8 @@ pub fn build(b: *std.Build) !void {
             .{ .name = "CoreGraphics", .module = mod_coreGraphics },
         },
     });
-    try mod_foundation.dependencies.put("Foundation", mod_coreGraphics);
+    try mod_foundation.dependencies.put("Foundation", mod_foundation);
+    try mod_coreGraphics.dependencies.put("Foundation", mod_foundation);
 
     // AppKit.framework
     const mod_appKit = b.createModule(.{
@@ -103,8 +104,9 @@ pub fn build(b: *std.Build) !void {
 
         exe.addModule("objc", mod_objc);
         exe.addModule("Runtime", mod_runtime);
-        exe.addModule("AppKit", mod_appKit);
+        exe.addModule("CoreGraphics", mod_coreGraphics);
         exe.addModule("Foundation", mod_foundation);
+        exe.addModule("AppKit", mod_appKit);
         exe.addModule("AppKit-Support", mod_appKit_support);
 
         exe.addSystemIncludePath(.{ .path = "/usr/include" });

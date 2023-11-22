@@ -10,7 +10,7 @@ pub fn ApplicationContext(comptime ApplicationState: type) type {
         pub const State = ApplicationState;
 
         arena: *std.heap.ArenaAllocator,
-        state: ?State,
+        state: ?*State,
 
         const Context = @This();
 
@@ -18,7 +18,7 @@ pub fn ApplicationContext(comptime ApplicationState: type) type {
             var allocator = self.arena.child_allocator;
 
             if (comptime std.meta.trait.hasFn("deinit")(Context.State)) {
-                if (self.state) |*x| {
+                if (self.state) |x| {
                     x.deinit();
                 }
             }
@@ -32,7 +32,7 @@ pub const ApplicationContextWithoutState = ApplicationContext(struct{});
 
 pub fn ApplicationContextFactory(comptime Context: type) type {
     return struct {
-        pub fn create(gpa: std.mem.Allocator, config: ?(*const fn (allocator: std.mem.Allocator) anyerror!Context.State)) !*Context {
+        pub fn create(gpa: std.mem.Allocator, config: ?(*const fn (allocator: std.mem.Allocator) anyerror!*Context.State)) !*Context {
             var arena = try gpa.create(std.heap.ArenaAllocator);
             arena.* = std.heap.ArenaAllocator.init(gpa);
             
