@@ -6,6 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
 const NSControl = appKit.NSControl;
+const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
 const NSView = appKit.NSView;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
@@ -102,24 +103,45 @@ pub const NSTextFieldDelegate = struct {
         self.as(NSObject).dealloc(self);
     }
 
-    pub const Protocol = struct {
-        pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
-            return struct {
-                const _class_name = runtime.backend_support.concreteTypeName("NSTextFieldDelegate", SuffixIdSeed.generateIdentifier());
-                const _handler = _delegate_handler;
-                var _class: ?objc.Class = null;
+    pub fn Protocol(comptime ContextType: type) type {
+        return struct {
+            pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
+                return struct {
+                    const _class_name = runtime.backend_support.concreteTypeName("NSTextFieldDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
 
-                pub fn init() Self {
-                    if (_class == null) {
-                        _class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
+                    pub fn initWithContext(context: *ContextType) Self {
+                        if (_class == null) {
+                            var class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
+                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
+                            NSTextFieldDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_field_delegate).initClass(class);
+                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            _class = class;
+                        }
+                        var _id = backend.NSTextFieldDelegateMessages.init(_class.?);
+                        var _instance = runtime.wrapObject(NSTextFieldDelegate, _id);
+                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        return _instance;
                     }
-                    var _id = backend.NSTextFieldDelegateMessages.init(_class.?);
-                    var _instance = runtime.wrapObject(NSTextFieldDelegate, _id);
-                    return _instance;
-                }
-            };
-        }
+                };
+            }
 
-        pub const Handler = struct {};
-    };
+            pub fn Dispatch(comptime _delegate_handler: Handler) type {
+                return struct {
+                    pub fn initClass(_class: objc.Class) void {
+                        _ = _delegate_handler;
+                        _ = _class;
+                    }
+                };
+            }
+
+            pub const HandlerSet = struct {
+                handler_control_text_editing_delegate: NSControlTextEditingDelegate.Protocol(ContextType).Handler = .{},
+                handler_text_field_delegate: NSTextFieldDelegate.Protocol(ContextType).Handler = .{},
+            };
+
+            pub const Handler = struct {};
+        };
+    }
 };

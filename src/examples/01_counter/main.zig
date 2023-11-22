@@ -10,17 +10,23 @@ const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
 
 const NSNotification = foundation.NSNotification;
 
-const AppDelegate = NSApplicationDelegate.Protocol(AppContext).Derive(
+const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(
     .{
-        .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
+        .handler_application_delegate = .{
+            .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
+        },
     },
-    // runtime.identity_seed.RandomSeed
     runtime.identity_seed.FixValueSeed("Default")
 );
 
-const WindowDelegate = appKit.NSWindowDelegate.Protocol.Derive(.{
-    .windowWillClose = handleWindowWillClose,
-}, runtime.identity_seed.FixValueSeed("Default"));
+const WindowDelegate = appKit.NSWindowDelegate.Protocol(AppContext).Derive(
+    .{
+        .handler_window_delegate = .{
+            .windowWillClose = handleWindowWillClose,
+        },
+    }, 
+    runtime.identity_seed.FixValueSeed("Default")
+);
 
 const AppContext = appKit_support.ApplicationContextWithoutState;
 
@@ -54,8 +60,8 @@ const CounterContext = struct {
     }
 };
 
-fn handleApplicationWillFinishLaunching(app_context: *AppContext, _d: NSApplicationDelegate, _: NSNotification) !void {
-    std.debug.print("[DEBUG] application delegate: (id: {*})\n", .{_d._id.value});
+fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotification) !void {
+    std.debug.print("[DEBUG] handleApplicationWillFinishLaunching invoked\n", .{});
 
     var center: foundation.NSPoint =
         if (appKit.NSScreen.mainScreen()) |screen| center: {
@@ -127,7 +133,7 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _d: NSApplicat
         root.addSubview(v);
     }
 
-    var d = WindowDelegate.init();
+    var d = WindowDelegate.initWithContext(app_context);
 
     _ = w.setDelegate(d);
 
@@ -136,19 +142,15 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _d: NSApplicat
     appKit.NSApplication.sharedApplication().activateIgnoringOtherApps(true);
 }
 
-fn handleWindowWillClose(instance: appKit.NSWindowDelegate, notification: foundation.NSNotification) !void {
+fn handleWindowWillClose(context: *AppContext, notification: foundation.NSNotification) !void {
+    _ = context;
     std.debug.print("In handleWindowWillClose ...\n", .{});
-    std.debug.print("window instance: {any}\n", .{instance});
     std.debug.print("nootification: {any}\n", .{notification});
 }
-
-const uuid = @import("uuid");
 
 pub fn main() !void {
     var app_context = try appKit_support.ApplicationContextFactory(AppContext).create(std.heap.page_allocator, null);
     defer app_context.deinit();
-
-    std.debug.print("[DEBUG] UUID: {s}\n\n", .{uuid.newV4()});
 
     var app = appKit.NSApplication.sharedApplication();
 

@@ -19,3 +19,4 @@ pub const NSUInteger = Runtime_NSObjCRuntime.NSUInteger;
 
 const Runtime_NSObject = @import("./Runtime/NSObject/frontend.zig");
 pub const NSObject = Runtime_NSObject.NSObject;
+pub const NSObjectProtocol = Runtime_NSObject.NSObjectProtocol;

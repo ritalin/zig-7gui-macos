@@ -22,6 +22,7 @@ const NSString = foundation.NSString;
 const NSTimeInterval = foundation.NSTimeInterval;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
 const ObjectResolver = runtime.ObjectResolver;
 
@@ -403,40 +404,59 @@ pub const NSWindowDelegate = struct {
         self.as(NSObject).dealloc(self);
     }
 
-    pub const Protocol = struct {
-        pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
-            return struct {
-                const _class_name = runtime.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
-                const _handler = _delegate_handler;
-                var _class: ?objc.Class = null;
+    pub fn Protocol(comptime ContextType: type) type {
+        return struct {
+            pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
+                return struct {
+                    const _class_name = runtime.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
 
-                pub fn init() Self {
-                    if (_class == null) {
-                        _class = backend.NSWindowDelegateMessages.initClass(_class_name);
-                        if (_handler.windowWillClose != null) {
-                            backend.NSWindowDelegateMessages.registerWindowWillClose(_class.?, &dispatchWindowWillClose);
+                    pub fn initWithContext(context: *ContextType) Self {
+                        if (_class == null) {
+                            var class = backend.NSWindowDelegateMessages.initClass(_class_name);
+                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
+                            NSWindowDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_window_delegate).initClass(class);
+                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            _class = class;
+                        }
+                        var _id = backend.NSWindowDelegateMessages.init(_class.?);
+                        var _instance = runtime.wrapObject(NSWindowDelegate, _id);
+                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        return _instance;
+                    }
+                };
+            }
+
+            pub fn Dispatch(comptime _delegate_handler: Handler) type {
+                return struct {
+                    fn dispatchWindowWillClose(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
+                        if (_delegate_handler.windowWillClose) |handler| {
+                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            return handler(context, notification) catch {
+                                unreachable;
+                            };
+                        }
+                        unreachable;
+                    }
+
+                    pub fn initClass(_class: objc.Class) void {
+                        if (_delegate_handler.windowWillClose != null) {
+                            backend.NSWindowDelegateMessages.registerWindowWillClose(_class, &dispatchWindowWillClose);
                         }
                     }
-                    var _id = backend.NSWindowDelegateMessages.init(_class.?);
-                    var _instance = runtime.wrapObject(NSWindowDelegate, _id);
-                    return _instance;
-                }
+                };
+            }
 
-                fn dispatchWindowWillClose(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
-                    if (_delegate_handler.windowWillClose) |handler| {
-                        var self = runtime.wrapObject(NSWindowDelegate, objc.Object.fromId(_id));
-                        var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
-                        return handler(self, notification) catch {
-                            unreachable;
-                        };
-                    }
-                    unreachable;
-                }
+            pub const HandlerSet = struct {
+                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
+                handler_window_delegate: NSWindowDelegate.Protocol(ContextType).Handler = .{},
             };
-        }
 
-        pub const Handler = struct {
-            windowWillClose: ?(*const fn (self: NSWindowDelegate, _notification: NSNotification) anyerror!void) = null,
+            pub const Handler = struct {
+                windowWillClose: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
+            };
         };
-    };
+    }
 };

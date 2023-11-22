@@ -16,6 +16,7 @@ const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
 const ObjectResolver = runtime.ObjectResolver;
 
@@ -238,22 +239,17 @@ pub const NSApplicationDelegate = struct {
 
     pub fn Protocol(comptime ContextType: type) type {
         return struct {
-            pub fn Derive(comptime _delegate_handler: Handler, comptime SuffixIdSeed: type) type {
+            pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
                     const _class_name = runtime.backend_support.concreteTypeName("NSApplicationDelegate", SuffixIdSeed.generateIdentifier());
-                    const _handler = _delegate_handler;
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSApplicationDelegateMessages.initClass(_class_name);
                             runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
-                            if (_handler.applicationWillFinishLaunching != null) {
-                                backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(class, &dispatchApplicationWillFinishLaunching);
-                            }
-                            if (_handler.applicationDidFinishLaunching != null) {
-                                backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(class, &dispatchApplicationDidFinishLaunching);
-                            }
+                            NSApplicationDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_application_delegate).initClass(class);
+                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
@@ -262,13 +258,16 @@ pub const NSApplicationDelegate = struct {
                         runtime.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+                };
+            }
 
+            pub fn Dispatch(comptime _delegate_handler: Handler) type {
+                return struct {
                     fn dispatchApplicationWillFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationWillFinishLaunching) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
                             var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
-                            return handler(context, self, notification) catch {
+                            return handler(context, notification) catch {
                                 unreachable;
                             };
                         }
@@ -278,20 +277,33 @@ pub const NSApplicationDelegate = struct {
                     fn dispatchApplicationDidFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationDidFinishLaunching) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var self = runtime.wrapObject(NSApplicationDelegate, objc.Object.fromId(_id));
                             var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
-                            return handler(context, self, notification) catch {
+                            return handler(context, notification) catch {
                                 unreachable;
                             };
                         }
                         unreachable;
                     }
+
+                    pub fn initClass(_class: objc.Class) void {
+                        if (_delegate_handler.applicationWillFinishLaunching != null) {
+                            backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(_class, &dispatchApplicationWillFinishLaunching);
+                        }
+                        if (_delegate_handler.applicationDidFinishLaunching != null) {
+                            backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(_class, &dispatchApplicationDidFinishLaunching);
+                        }
+                    }
                 };
             }
 
+            pub const HandlerSet = struct {
+                handler_application_delegate: NSApplicationDelegate.Protocol(ContextType).Handler = .{},
+                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
+            };
+
             pub const Handler = struct {
-                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
-                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, self: NSApplicationDelegate, _notification: NSNotification) anyerror!void) = null,
+                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
+                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
             };
         };
     }
