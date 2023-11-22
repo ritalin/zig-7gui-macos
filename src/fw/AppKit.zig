@@ -20,6 +20,11 @@ const AppKit_NSColor = @import("./AppKit/NSColor/frontend.zig");
 pub const NSColor = AppKit_NSColor.NSColor;
 pub const NSColorSystemEffect = AppKit_NSColor.NSColorSystemEffect;
 
+const AppKit_NSResponder = @import("./AppKit/NSResponder/frontend.zig");
+pub const NSResponder = AppKit_NSResponder.NSResponder;
+const AppKit_NSResponder_Backend = @import("./AppKit/NSResponder/backend.zig");
+pub const NSStandardKeyBindingRespondingSelectors = AppKit_NSResponder_Backend.NSStandardKeyBindingRespondingSelectors;
+
 const AppKit_NSControl = @import("./AppKit/NSControl/frontend.zig");
 pub const NSControl = AppKit_NSControl.NSControl;
 
@@ -29,8 +34,17 @@ pub const NSView = AppKit_NSView.NSView;
 const AppKit_NSTextField = @import("./AppKit/NSTextField/frontend.zig");
 pub const NSTextField = AppKit_NSTextField.NSTextField;
 
+const AppKit_NSTextStorage = @import("./AppKit/NSTextStorage/frontend.zig");
+pub const NSTextStorage = AppKit_NSTextStorage.NSTextStorage;
+
 const AppKit_NSText = @import("./AppKit/NSText/frontend.zig");
 pub const NSTextAlignment = AppKit_NSText.NSTextAlignment;
+pub const NSText = AppKit_NSText.NSText;
+pub const NSTextDelegate = AppKit_NSText.NSTextDelegate;
+
+const AppKit_NSTextView = @import("./AppKit/NSTextView/frontend.zig");
+pub const NSTextView = AppKit_NSTextView.NSTextView;
+pub const NSTextViewDelegate = AppKit_NSTextView.NSTextViewDelegate;
 
 const AppKit_NSButton = @import("./AppKit/NSButton/frontend.zig");
 pub const NSButton = AppKit_NSButton.NSButton;

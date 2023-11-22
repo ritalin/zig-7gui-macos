@@ -8,3 +8,7 @@ pub const NSRect = Foundation_NSGeometry.NSRect;
 
 const Foundation_NSString = @import("./Foundation/NSString/frontend.zig");
 pub const NSString = Foundation_NSString.NSString;
+
+const Foundation_NSAttributedString = @import("./Foundation/NSAttributedString/frontend.zig");
+pub const NSAttributedString = Foundation_NSAttributedString.NSAttributedString;
+pub const NSMutableAttributedString = Foundation_NSAttributedString.NSMutableAttributedString;

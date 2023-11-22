@@ -13,6 +13,9 @@ pub const ContextReg = @import("./RuntimeSupport/context_registry.zig").ContextR
 
 pub const DelegateHandler = anyopaque;
 
+const Runtime_objc = @import("./Runtime/objc/frontend.zig");
+pub const BOOL = Runtime_objc.BOOL;
+
 const Runtime_NSObjCRuntime = @import("./Runtime/NSObjCRuntime/frontend.zig");
 pub const NSInteger = Runtime_NSObjCRuntime.NSInteger;
 pub const NSUInteger = Runtime_NSObjCRuntime.NSUInteger;
