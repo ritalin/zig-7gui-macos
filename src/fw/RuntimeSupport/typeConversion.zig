@@ -36,6 +36,18 @@ pub const RuntimeTypeConverter = struct {
         };
     }
 
+    pub inline fn wrapClass(cls: objc.c.Class) objc.Class {
+        return .{
+            .value = cls,
+        };
+    }
+
+    pub inline fn wrapSelector(sel: objc.c.SEL) objc.Sel {
+        return .{
+            .value = sel,
+        };
+    }
+
     pub inline fn wrapOptionalObject(comptime ObjectType: type, id: ?objc.Object) ?ObjectType {
         return if (id != null) .{ ._id = id.?, } else null;
     }
