@@ -13,6 +13,7 @@ const NSAppKitVersion = appKit.NSAppKitVersion;
 const NSBackingStoreType = appKit.NSBackingStoreType;
 const NSColor = appKit.NSColor;
 const NSModalResponse = appKit.NSModalResponse;
+const NSResponder = appKit.NSResponder;
 const NSScreen = appKit.NSScreen;
 const NSView = appKit.NSView;
 const NSNotification = foundation.NSNotification;
@@ -30,8 +31,8 @@ pub const NSAppKitVersionNumberWithCustomSheetPosition: NSAppKitVersion = 686.0;
 pub const NSAppKitVersionNumberWithDeferredWindowDisplaySupport: NSAppKitVersion = 1019.0;
 pub const NSModalResponseOK: NSModalResponse = 1;
 pub const NSModalResponseCancel: NSModalResponse = 0;
-pub const NSDisplayWindowRunLoopOrdering: u16 = 600000;
-pub const NSResetCursorRectsRunLoopOrdering: u16 = 700000;
+pub const NSDisplayWindowRunLoopOrdering: u8 = 600000;
+pub const NSResetCursorRectsRunLoopOrdering: u8 = 700000;
 pub const NSNormalWindowLevel: NSWindowLevel = (0);
 pub const NSFloatingWindowLevel: NSWindowLevel = (3);
 pub const NSSubmenuWindowLevel: NSWindowLevel = (3);
@@ -130,6 +131,14 @@ pub const NSWindow = struct {
         return backend.NSWindowMessages.setDelegate(runtime.objectId(NSWindow, self), runtime.objectIdOrNull(NSWindowDelegate, _delegate));
     }
 
+    pub fn makeFirstResponder(self: Self, _responder: ?NSResponder) bool {
+        return runtime.fromBOOL(backend.NSWindowMessages.makeFirstResponder(runtime.objectId(NSWindow, self), runtime.objectIdOrNull(NSResponder, _responder)));
+    }
+
+    pub fn firstResponder(self: Self) ?NSResponder {
+        return runtime.wrapOptionalObject(NSResponder, backend.NSWindowMessages.firstResponder(runtime.objectId(NSWindow, self)));
+    }
+
     pub fn backgroundColor(self: Self) NSColor {
         return runtime.wrapObject(NSColor, backend.NSWindowMessages.backgroundColor(runtime.objectId(NSWindow, self)));
     }
@@ -142,11 +151,28 @@ pub const NSWindow = struct {
         return backend.NSWindowMessages.makeKeyAndOrderFront(runtime.objectId(NSWindow, self), _sender);
     }
 
+    pub fn setInitialFirstResponder(self: Self, _initialFirstResponder: ?NSView) void {
+        return backend.NSWindowMessages.setInitialFirstResponder(runtime.objectId(NSWindow, self), runtime.objectIdOrNull(NSView, _initialFirstResponder));
+    }
+
+    pub fn selectNextKeyView(self: Self, _sender: ?objc.Object) void {
+        return backend.NSWindowMessages.selectNextKeyView(runtime.objectId(NSWindow, self), _sender);
+    }
+
+    pub fn selectPreviousKeyView(self: Self, _sender: ?objc.Object) void {
+        return backend.NSWindowMessages.selectPreviousKeyView(runtime.objectId(NSWindow, self), _sender);
+    }
+
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithContentRectStyleMaskBacking(_contentRect: NSRect, _style: NSWindowStyleMask, _backingStoreType: NSBackingStoreType, _flag: bool, _screen: ?NSScreen) DesiredType {
                 var _class = DesiredType.Support.getClass();
                 return runtime.wrapObject(DesiredType, backend.NSWindowMessages.initWithContentRectStyleMaskBacking(_class, runtime.pass(NSRect, _contentRect), runtime.packOptions(NSWindowStyleMask, _style), runtime.unwrapEnum(NSBackingStoreType, NSUInteger, _backingStoreType), runtime.toBOOL(_flag), runtime.objectIdOrNull(NSScreen, _screen)));
+            }
+
+            pub fn initialFirstResponder() ?DesiredType {
+                var _class = DesiredType.Support.getClass();
+                return runtime.wrapOptionalObject(DesiredType, backend.NSWindowMessages.initialFirstResponder(_class));
             }
         };
     }
@@ -158,6 +184,8 @@ pub const NSWindow = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
+                NSObject,
+                NSResponder,
                 NSWindow,
             });
         }

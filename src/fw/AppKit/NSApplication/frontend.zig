@@ -11,6 +11,7 @@ pub const NSModalSession = *anyopaque;
 pub const NSAboutPanelOptionKey = NSString;
 pub const NSServiceProviderName = NSString;
 const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
+const NSResponder = appKit.NSResponder;
 const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
@@ -163,6 +164,8 @@ pub const NSApplication = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSApplication,
+                NSObject,
+                NSResponder,
             });
         }
 

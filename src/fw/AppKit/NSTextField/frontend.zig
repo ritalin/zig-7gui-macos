@@ -7,9 +7,11 @@ const runtime = @import("Runtime");
 
 const NSControl = appKit.NSControl;
 const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
+const NSResponder = appKit.NSResponder;
 const NSView = appKit.NSView;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
 const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSTextField = struct {
@@ -53,6 +55,8 @@ pub const NSTextField = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSControl,
+                NSObject,
+                NSResponder,
                 NSTextField,
                 NSView,
             });

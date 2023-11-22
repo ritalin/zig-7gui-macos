@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
+const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
@@ -10,6 +11,7 @@ pub const NSToolTipTag = NSInteger;
 pub const NSViewFullScreenModeOptionKey = NSString;
 pub const NSDefinitionOptionKey = NSString;
 pub const NSDefinitionPresentationType = NSString;
+const NSResponder = appKit.NSResponder;
 const NSNotificationName = foundation.NSNotificationName;
 const NSPoint = foundation.NSPoint;
 const NSRect = foundation.NSRect;
@@ -18,6 +20,7 @@ const NSString = foundation.NSString;
 const CALayer = quartzCore.CALayer;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
 
 pub const NSAutoresizingMaskOptions = std.enums.EnumSet(enum(NSUInteger) {
@@ -106,6 +109,8 @@ pub const NSView = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
+                NSObject,
+                NSResponder,
                 NSView,
             });
         }

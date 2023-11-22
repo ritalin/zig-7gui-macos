@@ -5,6 +5,7 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSResponder = appKit.NSResponder;
 const NSTextAlignment = appKit.NSTextAlignment;
 const NSView = appKit.NSView;
 const NSNotificationName = foundation.NSNotificationName;
@@ -12,6 +13,7 @@ const NSRect = foundation.NSRect;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
 
 pub const NSControl = struct {
     pub const Self = @This();
@@ -95,6 +97,8 @@ pub const NSControl = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSControl,
+                NSObject,
+                NSResponder,
                 NSView,
             });
         }

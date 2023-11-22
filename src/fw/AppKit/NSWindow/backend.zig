@@ -14,9 +14,15 @@ pub const NSWindowSelectors = struct {
     var _sel_setContentView: ?objc.Sel = null;
     var _sel_delegate: ?objc.Sel = null;
     var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_makeFirstResponder: ?objc.Sel = null;
+    var _sel_firstResponder: ?objc.Sel = null;
     var _sel_backgroundColor: ?objc.Sel = null;
     var _sel_setBackgroundColor: ?objc.Sel = null;
     var _sel_makeKeyAndOrderFront: ?objc.Sel = null;
+    var _sel_initialFirstResponder: ?objc.Sel = null;
+    var _sel_setInitialFirstResponder: ?objc.Sel = null;
+    var _sel_selectNextKeyView: ?objc.Sel = null;
+    var _sel_selectPreviousKeyView: ?objc.Sel = null;
 
     pub fn initWithContentRectStyleMaskBacking() objc.Sel {
         if (_sel_initWithContentRectStyleMaskBacking == null) {
@@ -67,6 +73,20 @@ pub const NSWindowSelectors = struct {
         return _sel_setDelegate.?;
     }
 
+    pub fn makeFirstResponder() objc.Sel {
+        if (_sel_makeFirstResponder == null) {
+            _sel_makeFirstResponder = objc.Sel.registerName("makeFirstResponder:");
+        }
+        return _sel_makeFirstResponder.?;
+    }
+
+    pub fn firstResponder() objc.Sel {
+        if (_sel_firstResponder == null) {
+            _sel_firstResponder = objc.Sel.registerName("firstResponder");
+        }
+        return _sel_firstResponder.?;
+    }
+
     pub fn backgroundColor() objc.Sel {
         if (_sel_backgroundColor == null) {
             _sel_backgroundColor = objc.Sel.registerName("backgroundColor");
@@ -86,6 +106,34 @@ pub const NSWindowSelectors = struct {
             _sel_makeKeyAndOrderFront = objc.Sel.registerName("makeKeyAndOrderFront:");
         }
         return _sel_makeKeyAndOrderFront.?;
+    }
+
+    pub fn initialFirstResponder() objc.Sel {
+        if (_sel_initialFirstResponder == null) {
+            _sel_initialFirstResponder = objc.Sel.registerName("initialFirstResponder");
+        }
+        return _sel_initialFirstResponder.?;
+    }
+
+    pub fn setInitialFirstResponder() objc.Sel {
+        if (_sel_setInitialFirstResponder == null) {
+            _sel_setInitialFirstResponder = objc.Sel.registerName("setInitialFirstResponder:");
+        }
+        return _sel_setInitialFirstResponder.?;
+    }
+
+    pub fn selectNextKeyView() objc.Sel {
+        if (_sel_selectNextKeyView == null) {
+            _sel_selectNextKeyView = objc.Sel.registerName("selectNextKeyView:");
+        }
+        return _sel_selectNextKeyView.?;
+    }
+
+    pub fn selectPreviousKeyView() objc.Sel {
+        if (_sel_selectPreviousKeyView == null) {
+            _sel_selectPreviousKeyView = objc.Sel.registerName("selectPreviousKeyView:");
+        }
+        return _sel_selectPreviousKeyView.?;
     }
 };
 
@@ -134,6 +182,16 @@ pub const NSWindowMessages = struct {
         });
     }
 
+    pub fn makeFirstResponder(self: objc.Object, _responder: ?objc.Object) objc.c.BOOL {
+        return self.msgSend(objc.c.BOOL, NSWindowSelectors.makeFirstResponder(), .{
+            runtime.unwrapOptionalObjectId(_responder),
+        });
+    }
+
+    pub fn firstResponder(self: objc.Object) ?objc.Object {
+        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.firstResponder(), .{}));
+    }
+
     pub fn backgroundColor(self: objc.Object) objc.Object {
         return self.msgSend(objc.Object, NSWindowSelectors.backgroundColor(), .{});
     }
@@ -146,6 +204,28 @@ pub const NSWindowMessages = struct {
 
     pub fn makeKeyAndOrderFront(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.makeKeyAndOrderFront(), .{
+            runtime.unwrapOptionalObjectId(_sender),
+        });
+    }
+
+    pub fn initialFirstResponder(_class: objc.Class) ?objc.Object {
+        return runtime.wrapOptionalObjectId(runtime.backend_support.allocInstance(_class).msgSend(objc.c.id, NSWindowSelectors.initialFirstResponder(), .{}));
+    }
+
+    pub fn setInitialFirstResponder(self: objc.Object, _initialFirstResponder: ?objc.Object) void {
+        return self.msgSend(void, NSWindowSelectors.setInitialFirstResponder(), .{
+            runtime.unwrapOptionalObjectId(_initialFirstResponder),
+        });
+    }
+
+    pub fn selectNextKeyView(self: objc.Object, _sender: ?objc.Object) void {
+        return self.msgSend(void, NSWindowSelectors.selectNextKeyView(), .{
+            runtime.unwrapOptionalObjectId(_sender),
+        });
+    }
+
+    pub fn selectPreviousKeyView(self: objc.Object, _sender: ?objc.Object) void {
+        return self.msgSend(void, NSWindowSelectors.selectPreviousKeyView(), .{
             runtime.unwrapOptionalObjectId(_sender),
         });
     }

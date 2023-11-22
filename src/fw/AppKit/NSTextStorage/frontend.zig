@@ -1,19 +1,27 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
-const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
-const NSControl = appKit.NSControl;
-const NSResponder = appKit.NSResponder;
-const NSView = appKit.NSView;
-const NSString = foundation.NSString;
+pub const NSTextStorageEditedOptions = NSUInteger;
+const NSAttributedString = foundation.NSAttributedString;
+const NSMutableAttributedString = foundation.NSMutableAttributedString;
+const NSNotificationName = foundation.NSNotificationName;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;
+const ObjectResolver = runtime.ObjectResolver;
 
-pub const NSButton = struct {
+pub const NSTextStorageEditActions = std.enums.EnumSet(enum(NSUInteger) {
+    EditedAttributes = (1 << 0),
+    EditedCharacters = (1 << 1),
+});
+
+pub const NSTextStorage = struct {
     pub const Self = @This();
+
+    var DelegateResolver: ?*ObjectResolver(NSTextStorage) = null;
 
     _id: objc.Object,
 
@@ -30,26 +38,21 @@ pub const NSButton = struct {
     }
 
     fn Constructor(comptime DesiredType: type) type {
-        return struct {
-            pub fn buttonWithTitleTargetAction(_title: NSString, _target: ?objc.Object, _action: ?objc.Sel) DesiredType {
-                var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSButtonMessages.buttonWithTitleTargetAction(_class, runtime.objectId(NSString, _title), _target, _action));
-            }
-        };
+        _ = DesiredType;
+        return struct {};
     }
 
     pub const Support = struct {
         pub inline fn getClass() objc.Class {
-            return backend.NSButtonMessages.getClass();
+            return backend.NSTextStorageMessages.getClass();
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSButton,
-                NSControl,
+                NSAttributedString,
+                NSMutableAttributedString,
                 NSObject,
-                NSResponder,
-                NSView,
+                NSTextStorage,
             });
         }
 
