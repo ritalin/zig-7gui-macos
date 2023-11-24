@@ -64,7 +64,7 @@ pub const NSTextMessages = struct {
 
     pub fn setString(self: objc.Object, _string: objc.Object) void {
         return self.msgSend(void, NSTextSelectors.setString(), .{
-            runtime.unwrapOptionalObjectId(_string),
+            runtime.unwrapOptionalObject(_string),
         });
     }
 
@@ -74,7 +74,7 @@ pub const NSTextMessages = struct {
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSTextSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObjectId(_delegate),
+            runtime.unwrapOptionalObject(_delegate),
         });
     }
 

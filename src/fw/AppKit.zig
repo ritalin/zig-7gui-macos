@@ -48,3 +48,7 @@ pub const NSTextViewDelegate = AppKit_NSTextView.NSTextViewDelegate;
 
 const AppKit_NSButton = @import("./AppKit/NSButton/frontend.zig");
 pub const NSButton = AppKit_NSButton.NSButton;
+
+const AppKit_NSComboBox = @import("./AppKit/NSComboBox/frontend.zig");
+pub const NSComboBox = AppKit_NSComboBox.NSComboBox;
+pub const NSComboBoxDataSource = AppKit_NSComboBox.NSComboBoxDataSource;

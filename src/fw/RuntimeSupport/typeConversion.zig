@@ -82,7 +82,11 @@ pub const RuntimeTypeConverter = struct {
         return if (id) |x| .{ .value = x } else null;
     }
 
-    pub inline fn unwrapOptionalObjectId(obj: ?objc.Object) objc.c.id {
+    pub inline fn unwrapObject(id: objc.Object) objc.c.id {
+        return id.value;
+    }
+
+    pub inline fn unwrapOptionalObject(obj: ?objc.Object) objc.c.id {
         return if (obj) |x| x.value else null;
     }
 

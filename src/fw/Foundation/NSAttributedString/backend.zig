@@ -49,7 +49,7 @@ pub const NSExtendedAttributedStringForNSAttributedStringMessages = struct {
 
     pub fn initWithString(_class: objc.Class, _str: objc.Object) objc.Object {
         return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSExtendedAttributedStringForNSAttributedStringSelectors.initWithString(), .{
-            runtime.unwrapOptionalObjectId(_str),
+            runtime.unwrapOptionalObject(_str),
         });
     }
 };
@@ -72,7 +72,7 @@ pub const NSExtendedMutableAttributedStringForNSMutableAttributedStringMessages 
 
     pub fn setAttributedString(self: objc.Object, _attrString: objc.Object) void {
         return self.msgSend(void, NSExtendedMutableAttributedStringForNSMutableAttributedStringSelectors.setAttributedString(), .{
-            runtime.unwrapOptionalObjectId(_attrString),
+            runtime.unwrapOptionalObject(_attrString),
         });
     }
 };

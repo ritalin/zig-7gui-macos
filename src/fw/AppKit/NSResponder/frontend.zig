@@ -84,7 +84,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertTab(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertTab) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -94,7 +95,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertBacktab(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertBacktab) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -104,7 +106,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertNewline(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertNewline) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -114,7 +117,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertParagraphSeparator(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertParagraphSeparator) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -124,7 +128,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertNewlineIgnoringFieldEditor(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertNewlineIgnoringFieldEditor) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -134,7 +139,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertTabIgnoringFieldEditor(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertTabIgnoringFieldEditor) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -144,7 +150,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertLineBreak(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertLineBreak) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -154,7 +161,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertContainerBreak(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertContainerBreak) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -164,7 +172,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertSingleQuoteIgnoringSubstitution(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertSingleQuoteIgnoringSubstitution) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }
@@ -174,7 +183,8 @@ pub const NSStandardKeyBindingResponding = struct {
                     fn dispatchInsertDoubleQuoteIgnoringSubstitution(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertDoubleQuoteIgnoringSubstitution) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            return handler(context, _sender) catch {
+                            var sender = objc.Object.fromId(_sender);
+                            return handler(context, sender) catch {
                                 unreachable;
                             };
                         }

@@ -3,7 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 
-pub const unichar = u16;
+pub const unichar = u8;
 pub const NSStringTransform = NSString;
 pub const NSStringEncodingDetectionOptionsKey = NSString;
 const NSObject = runtime.NSObject;

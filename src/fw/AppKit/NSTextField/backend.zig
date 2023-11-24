@@ -71,19 +71,19 @@ pub const NSTextFieldConvenienceForNSTextFieldMessages = struct {
 
     pub fn labelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.labelWithString(), .{
-            runtime.unwrapOptionalObjectId(_stringValue),
+            runtime.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn wrappingLabelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.wrappingLabelWithString(), .{
-            runtime.unwrapOptionalObjectId(_stringValue),
+            runtime.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn textFieldWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.textFieldWithString(), .{
-            runtime.unwrapOptionalObjectId(_stringValue),
+            runtime.unwrapOptionalObject(_stringValue),
         });
     }
 };

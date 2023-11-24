@@ -20,8 +20,8 @@ pub const NSButtonMessages = struct {
 
     pub fn buttonWithTitleTargetAction(_class: objc.Class, _title: objc.Object, _target: ?objc.Object, _action: ?objc.Sel) objc.Object {
         return _class.msgSend(objc.Object, NSButtonSelectors.buttonWithTitleTargetAction(), .{
-            runtime.unwrapOptionalObjectId(_title),
-            runtime.unwrapOptionalObjectId(_target),
+            runtime.unwrapOptionalObject(_title),
+            runtime.unwrapOptionalObject(_target),
             runtime.unwrapOptionalSelValue(_action),
         });
     }

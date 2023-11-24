@@ -3,4 +3,4 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 
 pub const NSInteger = c_long;
-pub const NSUInteger = u16;
+pub const NSUInteger = c_ulong;

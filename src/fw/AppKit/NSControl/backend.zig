@@ -130,7 +130,7 @@ pub const NSControlMessages = struct {
 
     pub fn setStringValue(self: objc.Object, _stringValue: objc.Object) void {
         return self.msgSend(void, NSControlSelectors.setStringValue(), .{
-            runtime.unwrapOptionalObjectId(_stringValue),
+            runtime.unwrapOptionalObject(_stringValue),
         });
     }
 
@@ -182,5 +182,34 @@ pub const NSControlMessages = struct {
         return self.msgSend(void, NSControlSelectors.setAlignment(), .{
             _alignment,
         });
+    }
+};
+
+pub const NSControlTextEditingDelegateSelectors = struct {
+    var _sel_controlTextDidChange: ?objc.Sel = null;
+
+    pub fn controlTextDidChange() objc.Sel {
+        if (_sel_controlTextDidChange == null) {
+            _sel_controlTextDidChange = objc.Sel.registerName("controlTextDidChange:");
+        }
+        return _sel_controlTextDidChange.?;
+    }
+};
+
+pub const NSControlTextEditingDelegateMessages = struct {
+    pub const init = runtime.backend_support.newInstance;
+    pub const dealloc = runtime.backend_support.destroyInstance;
+    pub const registerMessage = runtime.backend_support.ObjectRegistry.registerMessage;
+
+    pub fn initClass(_class_name: [:0]const u8) objc.Class {
+        var class = objc.getClass(_class_name);
+        if (class == null) {
+            class = runtime.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+        }
+        return class.?;
+    }
+
+    pub fn registerControlTextDidChange(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+        runtime.backend_support.ObjectRegistry.registerMessage(_class, "controlTextDidChange:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

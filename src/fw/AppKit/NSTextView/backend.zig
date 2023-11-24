@@ -69,7 +69,7 @@ pub const NSSharingForNSTextViewMessages = struct {
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSSharingForNSTextViewSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObjectId(_delegate),
+            runtime.unwrapOptionalObject(_delegate),
         });
     }
 

@@ -127,7 +127,7 @@ pub const NSViewMessages = struct {
 
     pub fn addSubview(self: objc.Object, _view: objc.Object) void {
         return self.msgSend(void, NSViewSelectors.addSubview(), .{
-            runtime.unwrapOptionalObjectId(_view),
+            runtime.unwrapOptionalObject(_view),
         });
     }
 
@@ -169,7 +169,7 @@ pub const NSViewMessages = struct {
 
     pub fn setLayer(self: objc.Object, _layer: objc.Object) void {
         return self.msgSend(void, NSViewSelectors.setLayer(), .{
-            runtime.unwrapOptionalObjectId(_layer),
+            runtime.unwrapOptionalObject(_layer),
         });
     }
 };

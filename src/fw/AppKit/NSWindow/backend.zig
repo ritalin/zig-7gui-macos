@@ -148,7 +148,7 @@ pub const NSWindowMessages = struct {
             _style,
             _backingStoreType,
             _flag,
-            runtime.unwrapOptionalObjectId(_screen),
+            runtime.unwrapOptionalObject(_screen),
         });
     }
 
@@ -158,7 +158,7 @@ pub const NSWindowMessages = struct {
 
     pub fn setTitle(self: objc.Object, _title: objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setTitle(), .{
-            runtime.unwrapOptionalObjectId(_title),
+            runtime.unwrapOptionalObject(_title),
         });
     }
 
@@ -168,7 +168,7 @@ pub const NSWindowMessages = struct {
 
     pub fn setContentView(self: objc.Object, _contentView: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setContentView(), .{
-            runtime.unwrapOptionalObjectId(_contentView),
+            runtime.unwrapOptionalObject(_contentView),
         });
     }
 
@@ -178,13 +178,13 @@ pub const NSWindowMessages = struct {
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObjectId(_delegate),
+            runtime.unwrapOptionalObject(_delegate),
         });
     }
 
     pub fn makeFirstResponder(self: objc.Object, _responder: ?objc.Object) objc.c.BOOL {
         return self.msgSend(objc.c.BOOL, NSWindowSelectors.makeFirstResponder(), .{
-            runtime.unwrapOptionalObjectId(_responder),
+            runtime.unwrapOptionalObject(_responder),
         });
     }
 
@@ -198,13 +198,13 @@ pub const NSWindowMessages = struct {
 
     pub fn setBackgroundColor(self: objc.Object, _backgroundColor: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setBackgroundColor(), .{
-            runtime.unwrapOptionalObjectId(_backgroundColor),
+            runtime.unwrapOptionalObject(_backgroundColor),
         });
     }
 
     pub fn makeKeyAndOrderFront(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.makeKeyAndOrderFront(), .{
-            runtime.unwrapOptionalObjectId(_sender),
+            runtime.unwrapOptionalObject(_sender),
         });
     }
 
@@ -214,19 +214,19 @@ pub const NSWindowMessages = struct {
 
     pub fn setInitialFirstResponder(self: objc.Object, _initialFirstResponder: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setInitialFirstResponder(), .{
-            runtime.unwrapOptionalObjectId(_initialFirstResponder),
+            runtime.unwrapOptionalObject(_initialFirstResponder),
         });
     }
 
     pub fn selectNextKeyView(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.selectNextKeyView(), .{
-            runtime.unwrapOptionalObjectId(_sender),
+            runtime.unwrapOptionalObject(_sender),
         });
     }
 
     pub fn selectPreviousKeyView(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.selectPreviousKeyView(), .{
-            runtime.unwrapOptionalObjectId(_sender),
+            runtime.unwrapOptionalObject(_sender),
         });
     }
 };
