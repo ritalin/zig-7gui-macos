@@ -8,6 +8,12 @@ const NSInteger = runtime.NSInteger;
 
 pub const NSControlSelectors = struct {
     var _sel_initWithFrame: ?objc.Sel = null;
+    var _sel_target: ?objc.Sel = null;
+    var _sel_setTarget: ?objc.Sel = null;
+    var _sel_action: ?objc.Sel = null;
+    var _sel_setAction: ?objc.Sel = null;
+    var _sel_isEnabled: ?objc.Sel = null;
+    var _sel_setEnabled: ?objc.Sel = null;
     var _sel_stringValue: ?objc.Sel = null;
     var _sel_setStringValue: ?objc.Sel = null;
     var _sel_intValue: ?objc.Sel = null;
@@ -26,6 +32,48 @@ pub const NSControlSelectors = struct {
             _sel_initWithFrame = objc.Sel.registerName("initWithFrame:");
         }
         return _sel_initWithFrame.?;
+    }
+
+    pub fn target() objc.Sel {
+        if (_sel_target == null) {
+            _sel_target = objc.Sel.registerName("target");
+        }
+        return _sel_target.?;
+    }
+
+    pub fn setTarget() objc.Sel {
+        if (_sel_setTarget == null) {
+            _sel_setTarget = objc.Sel.registerName("setTarget:");
+        }
+        return _sel_setTarget.?;
+    }
+
+    pub fn action() objc.Sel {
+        if (_sel_action == null) {
+            _sel_action = objc.Sel.registerName("action");
+        }
+        return _sel_action.?;
+    }
+
+    pub fn setAction() objc.Sel {
+        if (_sel_setAction == null) {
+            _sel_setAction = objc.Sel.registerName("setAction:");
+        }
+        return _sel_setAction.?;
+    }
+
+    pub fn isEnabled() objc.Sel {
+        if (_sel_isEnabled == null) {
+            _sel_isEnabled = objc.Sel.registerName("isEnabled");
+        }
+        return _sel_isEnabled.?;
+    }
+
+    pub fn setEnabled() objc.Sel {
+        if (_sel_setEnabled == null) {
+            _sel_setEnabled = objc.Sel.registerName("setEnabled:");
+        }
+        return _sel_setEnabled.?;
     }
 
     pub fn stringValue() objc.Sel {
@@ -121,6 +169,36 @@ pub const NSControlMessages = struct {
     pub fn initWithFrame(_class: objc.Class, _frameRect: NSRect) objc.Object {
         return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSControlSelectors.initWithFrame(), .{
             _frameRect,
+        });
+    }
+
+    pub fn target(self: objc.Object) ?objc.Object {
+        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSControlSelectors.target(), .{}));
+    }
+
+    pub fn setTarget(self: objc.Object, _target: ?objc.Object) void {
+        return self.msgSend(void, NSControlSelectors.setTarget(), .{
+            runtime.unwrapOptionalObject(_target),
+        });
+    }
+
+    pub fn action(self: objc.Object) ?objc.Sel {
+        return self.msgSend(?objc.Sel, NSControlSelectors.action(), .{});
+    }
+
+    pub fn setAction(self: objc.Object, _action: ?objc.Sel) void {
+        return self.msgSend(void, NSControlSelectors.setAction(), .{
+            runtime.unwrapOptionalSelValue(_action),
+        });
+    }
+
+    pub fn isEnabled(self: objc.Object) objc.c.BOOL {
+        return self.msgSend(objc.c.BOOL, NSControlSelectors.isEnabled(), .{});
+    }
+
+    pub fn setEnabled(self: objc.Object, _enabled: objc.c.BOOL) void {
+        return self.msgSend(void, NSControlSelectors.setEnabled(), .{
+            _enabled,
         });
     }
 

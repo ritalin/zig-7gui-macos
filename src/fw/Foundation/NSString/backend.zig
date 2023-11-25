@@ -2,7 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
 
-const unichar = u8;
+const unichar = c_ushort;
 const NSUInteger = runtime.NSUInteger;
 
 pub const NSSimpleCStringSelectors = struct {};

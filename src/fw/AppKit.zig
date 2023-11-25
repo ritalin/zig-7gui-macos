@@ -1,6 +1,7 @@
 const AppKit_NSApplication = @import("./AppKit/NSApplication/frontend.zig");
 pub const NSApplication = AppKit_NSApplication.NSApplication;
 pub const NSApplicationDelegate = AppKit_NSApplication.NSApplicationDelegate;
+pub const NSModalResponse = AppKit_NSApplication.NSModalResponse;
 
 const AppKit_NSRunningApplication = @import("./AppKit/NSRunningApplication/frontend.zig");
 pub const NSApplicationActivationPolicy = AppKit_NSRunningApplication.NSApplicationActivationPolicy;
@@ -27,12 +28,14 @@ pub const NSStandardKeyBindingRespondingSelectors = AppKit_NSResponder_Backend.N
 
 const AppKit_NSControl = @import("./AppKit/NSControl/frontend.zig");
 pub const NSControl = AppKit_NSControl.NSControl;
+pub const NSControlTextEditingDelegate = AppKit_NSControl.NSControlTextEditingDelegate;
 
 const AppKit_NSView = @import("./AppKit/NSView/frontend.zig");
 pub const NSView = AppKit_NSView.NSView;
 
 const AppKit_NSTextField = @import("./AppKit/NSTextField/frontend.zig");
 pub const NSTextField = AppKit_NSTextField.NSTextField;
+pub const NSTextFieldDelegate = AppKit_NSTextField.NSTextFieldDelegate;
 
 const AppKit_NSTextStorage = @import("./AppKit/NSTextStorage/frontend.zig");
 pub const NSTextStorage = AppKit_NSTextStorage.NSTextStorage;
@@ -51,4 +54,8 @@ pub const NSButton = AppKit_NSButton.NSButton;
 
 const AppKit_NSComboBox = @import("./AppKit/NSComboBox/frontend.zig");
 pub const NSComboBox = AppKit_NSComboBox.NSComboBox;
+pub const NSComboBoxDelegate = AppKit_NSComboBox.NSComboBoxDelegate;
 pub const NSComboBoxDataSource = AppKit_NSComboBox.NSComboBoxDataSource;
+
+const AppKit_NSAlert = @import("./AppKit/NSAlert/frontend.zig");
+pub const NSAlert = AppKit_NSAlert.NSAlert;

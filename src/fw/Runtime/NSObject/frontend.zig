@@ -20,9 +20,17 @@ pub const NSObject = struct {
         return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn dealloc(self: Self) void {
+        return backend.NSObjectMessages.dealloc(runtime.objectId(NSObject, self));
+    }
+
     fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
+        return struct {
+            pub fn init() DesiredType {
+                var _class = DesiredType.Support.getClass();
+                return runtime.wrapObject(DesiredType, backend.NSObjectMessages.init(_class));
+            }
+        };
     }
 
     pub const Support = struct {

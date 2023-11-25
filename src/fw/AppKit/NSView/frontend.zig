@@ -18,6 +18,7 @@ const NSRect = foundation.NSRect;
 const NSSize = foundation.NSSize;
 const NSString = foundation.NSString;
 const CALayer = quartzCore.CALayer;
+const BOOL = runtime.BOOL;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

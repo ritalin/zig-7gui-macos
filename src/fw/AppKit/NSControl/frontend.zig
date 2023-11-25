@@ -12,6 +12,7 @@ const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
 const NSString = foundation.NSString;
+const BOOL = runtime.BOOL;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -31,6 +32,30 @@ pub const NSControl = struct {
 
     pub inline fn of(comptime DesiredType: type) type {
         return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+    }
+
+    pub fn target(self: Self) ?objc.Object {
+        return backend.NSControlMessages.target(runtime.objectId(NSControl, self));
+    }
+
+    pub fn setTarget(self: Self, _target: ?objc.Object) void {
+        return backend.NSControlMessages.setTarget(runtime.objectId(NSControl, self), _target);
+    }
+
+    pub fn action(self: Self) ?objc.Sel {
+        return backend.NSControlMessages.action(runtime.objectId(NSControl, self));
+    }
+
+    pub fn setAction(self: Self, _action: ?objc.Sel) void {
+        return backend.NSControlMessages.setAction(runtime.objectId(NSControl, self), _action);
+    }
+
+    pub fn isEnabled(self: Self) bool {
+        return runtime.fromBOOL(backend.NSControlMessages.isEnabled(runtime.objectId(NSControl, self)));
+    }
+
+    pub fn setEnabled(self: Self, _enabled: bool) void {
+        return backend.NSControlMessages.setEnabled(runtime.objectId(NSControl, self), runtime.toBOOL(_enabled));
     }
 
     pub fn stringValue(self: Self) NSString {

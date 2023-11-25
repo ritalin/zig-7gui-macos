@@ -2,11 +2,36 @@ const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
 
-pub const NSObjectSelectors = struct {};
+pub const NSObjectSelectors = struct {
+    var _sel_init: ?objc.Sel = null;
+    var _sel_dealloc: ?objc.Sel = null;
+
+    pub fn init() objc.Sel {
+        if (_sel_init == null) {
+            _sel_init = objc.Sel.registerName("init");
+        }
+        return _sel_init.?;
+    }
+
+    pub fn dealloc() objc.Sel {
+        if (_sel_dealloc == null) {
+            _sel_dealloc = objc.Sel.registerName("dealloc");
+        }
+        return _sel_dealloc.?;
+    }
+};
 
 pub const NSObjectMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSObject").?;
+    }
+
+    pub fn init(_class: objc.Class) objc.Object {
+        return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSObjectSelectors.init(), .{});
+    }
+
+    pub fn dealloc(self: objc.Object) void {
+        return self.msgSend(void, NSObjectSelectors.dealloc(), .{});
     }
 };
 

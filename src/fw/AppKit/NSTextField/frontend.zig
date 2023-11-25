@@ -5,11 +5,13 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSColor = appKit.NSColor;
 const NSControl = appKit.NSControl;
 const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
 const NSResponder = appKit.NSResponder;
 const NSView = appKit.NSView;
 const NSString = foundation.NSString;
+const BOOL = runtime.BOOL;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const ObjectResolver = runtime.ObjectResolver;
@@ -34,12 +36,28 @@ pub const NSTextField = struct {
         return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn backgroundColor(self: Self) ?NSColor {
+        return runtime.wrapOptionalObject(NSColor, backend.NSTextFieldMessages.backgroundColor(runtime.objectId(NSTextField, self)));
+    }
+
+    pub fn setBackgroundColor(self: Self, _backgroundColor: ?NSColor) void {
+        return backend.NSTextFieldMessages.setBackgroundColor(runtime.objectId(NSTextField, self), runtime.objectIdOrNull(NSColor, _backgroundColor));
+    }
+
     pub fn isEditable(self: Self) bool {
         return runtime.fromBOOL(backend.NSTextFieldMessages.isEditable(runtime.objectId(NSTextField, self)));
     }
 
     pub fn setEditable(self: Self, _editable: bool) void {
         return backend.NSTextFieldMessages.setEditable(runtime.objectId(NSTextField, self), runtime.toBOOL(_editable));
+    }
+
+    pub fn delegate(self: Self) ?NSTextFieldDelegate {
+        return runtime.wrapOptionalObject(NSTextFieldDelegate, backend.NSTextFieldMessages.delegate(runtime.objectId(NSTextField, self)));
+    }
+
+    pub fn setDelegate(self: Self, _delegate: ?NSTextFieldDelegate) void {
+        return backend.NSTextFieldMessages.setDelegate(runtime.objectId(NSTextField, self), runtime.objectIdOrNull(NSTextFieldDelegate, _delegate));
     }
 
     fn Constructor(comptime DesiredType: type) type {

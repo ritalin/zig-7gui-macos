@@ -1,11 +1,13 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
+const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
-pub const unichar = u8;
+pub const unichar = c_ushort;
 pub const NSStringTransform = NSString;
 pub const NSStringEncodingDetectionOptionsKey = NSString;
+const NSExceptionName = foundation.NSExceptionName;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
