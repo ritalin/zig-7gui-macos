@@ -1,0 +1,14 @@
+.{
+    .name = "zig-time-parser",
+    .version = "0.0.0",
+    .paths = .{
+        "src/",
+        "build.zig",
+        "build.zig.zon",        
+    },
+    .dependencies = .{
+        .time = .{
+            .path = "../zig-time"
+        },
+    }
+}

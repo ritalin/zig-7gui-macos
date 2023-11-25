@@ -10,6 +10,12 @@
         .objc = .{
             .path = "vendor/zig-objc"
         },
+        .time = .{
+            .path = "vendor/zig-time"
+        },
+        .time_parser = .{
+            .path = "vendor/zig-time-parser"
+        },
         .example_step = .{
             .path = "vendor/zig-example-step",
             .scope = .develop,

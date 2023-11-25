@@ -84,9 +84,22 @@ pub fn build(b: *std.Build) !void {
         }
     });
 
+    const dep_time = b.dependency("time", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const mod_time = dep_time.module("time");
+
+    const dep_time_parser = b.dependency("time_parser", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    const mod_time_parser = dep_time_parser.module("time-parser");
+
     const examples = std.ComptimeStringMap([]const u8, .{
         .{"counter", "src/examples/01_counter/main.zig"},
         .{"temp_conv", "src/examples/02_temp_conv/main.zig"},
+        .{"book_flight", "src/examples/03_book_flight/main.zig"},
     });
 
     // create example step
@@ -108,6 +121,9 @@ pub fn build(b: *std.Build) !void {
         exe.addModule("Foundation", mod_foundation);
         exe.addModule("AppKit", mod_appKit);
         exe.addModule("AppKit-Support", mod_appKit_support);
+
+        exe.addModule("time", mod_time);
+        exe.addModule("time-parser", mod_time_parser);
 
         exe.addSystemIncludePath(.{ .path = "/usr/include" });
         exe.addFrameworkPath(.{ .path = "/System/Library/Frameworks" });
