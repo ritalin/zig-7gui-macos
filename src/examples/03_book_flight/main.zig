@@ -130,7 +130,6 @@ const FlightBookContext = struct {
     }
 
     const Values = struct {
-        main_window: appKit.NSWindow,
         booking_route: appKit.NSComboBox,
         departure_date: appKit.NSTextField,
         arrival_date: appKit.NSTextField,
