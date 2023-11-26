@@ -11,7 +11,6 @@ const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
 const NSResponder = appKit.NSResponder;
 const NSView = appKit.NSView;
 const NSString = foundation.NSString;
-const BOOL = runtime.BOOL;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const ObjectResolver = runtime.ObjectResolver;

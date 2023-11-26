@@ -14,7 +14,6 @@ const NSTextStorage = appKit.NSTextStorage;
 const NSView = appKit.NSView;
 const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
-const BOOL = runtime.BOOL;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
@@ -213,7 +212,7 @@ pub const NSTextViewDelegate = struct {
 
             pub fn Dispatch(comptime _delegate_handler: Handler) type {
                 return struct {
-                    fn dispatchTextViewDoCommandBySelector(_id: objc.c.id, _: objc.c.SEL, _textView: objc.c.id, _commandSelector: objc.c.SEL) BOOL {
+                    fn dispatchTextViewDoCommandBySelector(_id: objc.c.id, _: objc.c.SEL, _textView: objc.c.id, _commandSelector: objc.c.SEL) objc.c.BOOL {
                         if (_delegate_handler.textViewDoCommandBySelector) |handler| {
                             var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var textView = runtime.wrapObject(NSTextView, objc.Object.fromId(_textView));

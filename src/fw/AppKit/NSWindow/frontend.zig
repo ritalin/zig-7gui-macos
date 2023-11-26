@@ -21,7 +21,6 @@ const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
 const NSString = foundation.NSString;
 const NSTimeInterval = foundation.NSTimeInterval;
-const BOOL = runtime.BOOL;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

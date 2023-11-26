@@ -16,7 +16,6 @@ const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSRunLoopMode = foundation.NSRunLoopMode;
 const NSString = foundation.NSString;
-const BOOL = runtime.BOOL;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
