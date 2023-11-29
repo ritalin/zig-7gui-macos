@@ -6,8 +6,12 @@ const runtime = @import("Runtime");
 
 pub const NSTextStorageEditedOptions = NSUInteger;
 const NSAttributedString = foundation.NSAttributedString;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
 const NSMutableAttributedString = foundation.NSMutableAttributedString;
+const NSMutableCopying = foundation.NSMutableCopying;
 const NSNotificationName = foundation.NSNotificationName;
+const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
@@ -49,15 +53,18 @@ pub const NSTextStorage = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSAttributedString,
-                NSMutableAttributedString,
-                NSObject,
                 NSTextStorage,
+                NSMutableAttributedString,
+                NSAttributedString,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSSecureCoding,
+                NSCoding,
+            });
         }
     };
 };

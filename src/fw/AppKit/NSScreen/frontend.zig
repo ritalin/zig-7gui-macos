@@ -29,7 +29,7 @@ pub const NSScreen = struct {
     }
 
     pub fn mainScreen() ?NSScreen {
-        return runtime.wrapOptionalObject(NSScreen, backend.NSScreenMessages.mainScreen());
+        return runtime.wrapObject(?NSScreen, backend.NSScreenMessages.mainScreen());
     }
 
     pub fn frame(self: Self) NSRect {
@@ -52,8 +52,8 @@ pub const NSScreen = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
                 NSScreen,
+                NSObject,
             });
         }
 

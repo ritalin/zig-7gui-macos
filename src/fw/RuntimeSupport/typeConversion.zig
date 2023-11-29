@@ -18,22 +18,32 @@ pub const RuntimeTypeConverter = struct {
         return value;
     }
 
-    pub inline fn objectId(comptime ObjectType: type, value: ObjectType) objc.Object {
-        return value._id;
+    pub inline fn objectId(comptime ObjectType: type, value: ObjectType) if (@typeInfo(ObjectType) == .Optional) ?objc.Object else objc.Object 
+    {
+        if (@typeInfo(ObjectType) == .Optional) {
+            return if (value) |v| v._id else null;
+        }
+        else {
+            return value._id;
+        }
+        // return value._id;
     }
 
     pub inline fn objectIdOrNull(comptime ObjectType: type, value: ?ObjectType) ?objc.Object {
         return if (value) |v| v._id else null;
     }
-
-    pub inline fn noConversion(comptime NativeType: type, value: NativeType) NativeType {
-        return value;
-    }
-
-    pub inline fn wrapObject(comptime ObjectType: type, id: objc.Object) ObjectType {
-        return .{
-            ._id = id,
-        };
+    
+    pub inline fn wrapObject(
+            comptime ObjectType: type, 
+            id: if (@typeInfo(ObjectType) == .Optional) ?objc.Object else objc.Object) ObjectType 
+    {
+        if (@typeInfo(ObjectType) == .Optional) {
+            return if (id) |x| .{ ._id = x } else null;
+        }
+        else {
+            return .{ ._id = id };
+        }
+        
     }
 
     pub inline fn wrapClass(cls: objc.c.Class) objc.Class {
@@ -47,20 +57,6 @@ pub const RuntimeTypeConverter = struct {
             .value = sel,
         };
     }
-
-    pub inline fn wrapOptionalObject(comptime ObjectType: type, id: ?objc.Object) ?ObjectType {
-        return if (id != null) .{ ._id = id.?, } else null;
-    }
-
-    // pub inline fn wrapDelegate(comptime DelegateType: type, allocator: std.mem.Allocator, id: objc.Object, handler: DelegateType.Handler) !*DelegateType {
-    //     var obj = try allocator.create(DelegateType);
-    //     obj.* = .{
-    //         ._allocator = allocator,
-    //         ._id = id,
-    //         ._handler = handler,
-    //     };
-    //     return obj;
-    // }
 
     pub inline fn releaseObject(comptime ObjectType: type, target: *ObjectType) void {
         target._allocator.destroy(target);
@@ -78,12 +74,16 @@ pub const RuntimeTypeConverter = struct {
         return v.bits.mask;
     }
 
+    pub inline fn unwrapObject(id: objc.Object) objc.c.id {
+        return id.value;
+    }
+
     pub inline fn wrapOptionalObjectId(id: ?objc.c.id) ?objc.Object {
         return if (id) |x| .{ .value = x } else null;
     }
 
-    pub inline fn unwrapObject(id: objc.Object) objc.c.id {
-        return id.value;
+    pub inline fn wrapOptionalObject(comptime ObjectType: type, id: ?objc.Object) ?ObjectType {
+        return if (id != null) .{ ._id = id.?, } else null;
     }
 
     pub inline fn unwrapOptionalObject(obj: ?objc.Object) objc.c.id {

@@ -5,7 +5,10 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
 pub const NSTimeInterval = f64;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
 const NSNotificationName = foundation.NSNotificationName;
+const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 
@@ -46,7 +49,11 @@ pub const NSDate = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCopying,
+                NSSecureCoding,
+                NSCoding,
+            });
         }
     };
 };

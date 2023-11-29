@@ -11,7 +11,14 @@ pub const NSToolTipTag = NSInteger;
 pub const NSViewFullScreenModeOptionKey = NSString;
 pub const NSDefinitionOptionKey = NSString;
 pub const NSDefinitionPresentationType = NSString;
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSResponder = appKit.NSResponder;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSCoding = foundation.NSCoding;
 const NSNotificationName = foundation.NSNotificationName;
 const NSPoint = foundation.NSPoint;
 const NSRect = foundation.NSRect;
@@ -50,11 +57,7 @@ pub const NSView = struct {
     }
 
     pub fn superview(self: Self) ?NSView {
-        return runtime.wrapOptionalObject(NSView, backend.NSViewMessages.superview(runtime.objectId(NSView, self)));
-    }
-
-    pub fn subviews(self: Self) NSView {
-        return runtime.wrapObject(NSView, backend.NSViewMessages.subviews(runtime.objectId(NSView, self)));
+        return runtime.wrapObject(?NSView, backend.NSViewMessages.superview(runtime.objectId(NSView, self)));
     }
 
     pub fn addSubview(self: Self, _view: NSView) void {
@@ -109,14 +112,22 @@ pub const NSView = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
-                NSResponder,
                 NSView,
+                NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSAccessibility,
+                NSAccessibilityElement,
+                NSAnimatablePropertyContainer,
+                NSAppearanceCustomization,
+                NSDraggingDestination,
+                NSUserInterfaceItemIdentification,
+                NSObjectProtocol,
+            });
         }
     };
 

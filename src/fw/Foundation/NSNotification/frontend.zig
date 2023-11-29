@@ -5,6 +5,8 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
 pub const NSNotificationName = NSString;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -45,7 +47,10 @@ pub const NSNotification = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCoding,
+                NSCopying,
+            });
         }
     };
 };

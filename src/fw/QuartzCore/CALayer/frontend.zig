@@ -2,9 +2,14 @@ const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
+const foundation = @import("Foundation");
+const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
 
 const CGColorRef = coreGraphics.CGColorRef;
+const NSCoding = foundation.NSCoding;
+const NSSecureCoding = foundation.NSSecureCoding;
+const CAMediaTiming = quartzCore.CAMediaTiming;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
@@ -78,7 +83,11 @@ pub const CALayer = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                CAMediaTiming,
+                NSSecureCoding,
+                NSCoding,
+            });
         }
     };
 };

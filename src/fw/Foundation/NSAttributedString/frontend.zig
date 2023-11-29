@@ -5,6 +5,10 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
 pub const NSAttributedStringKey = NSString;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSSecureCoding = foundation.NSSecureCoding;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -55,7 +59,12 @@ pub const NSAttributedString = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCopying,
+                NSMutableCopying,
+                NSSecureCoding,
+                NSCoding,
+            });
         }
     };
 };
@@ -90,8 +99,8 @@ pub const NSMutableAttributedString = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSAttributedString,
                 NSMutableAttributedString,
+                NSAttributedString,
                 NSObject,
             });
         }

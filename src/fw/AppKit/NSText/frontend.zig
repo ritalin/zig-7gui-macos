@@ -5,8 +5,17 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSChangeSpelling = appKit.NSChangeSpelling;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
 const NSResponder = appKit.NSResponder;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
 const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
@@ -66,11 +75,11 @@ pub const NSText = struct {
     }
 
     pub fn delegate(self: Self) ?NSTextDelegate {
-        return runtime.wrapOptionalObject(NSTextDelegate, backend.NSTextMessages.delegate(runtime.objectId(NSText, self)));
+        return runtime.wrapObject(?NSTextDelegate, backend.NSTextMessages.delegate(runtime.objectId(NSText, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSTextDelegate) void {
-        return backend.NSTextMessages.setDelegate(runtime.objectId(NSText, self), runtime.objectIdOrNull(NSTextDelegate, _delegate));
+        return backend.NSTextMessages.setDelegate(runtime.objectId(NSText, self), runtime.objectId(?NSTextDelegate, _delegate));
     }
 
     pub fn isEditable(self: Self) bool {
@@ -93,15 +102,18 @@ pub const NSText = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
-                NSResponder,
                 NSText,
                 NSView,
+                NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSChangeSpelling,
+                NSIgnoreMisspelledWords,
+            });
         }
     };
 };
@@ -192,8 +204,8 @@ pub const NSTextDelegate = struct {
                         if (_class == null) {
                             var class = backend.NSTextDelegateMessages.initClass(_class_name);
                             runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
-                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             NSTextDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_delegate).initClass(class);
+                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
@@ -220,19 +232,19 @@ pub const NSTextDelegate = struct {
 
                     pub fn initClass(_class: objc.Class) void {
                         if (_delegate_handler.textDidChange != null) {
-                            backend.NSTextDelegateMessages.registerTextDidChange(_class, &dispatchTextDidChange);
+                            backend.NSTextDelegateMessages.registerTextDidChange(_class, @constCast(&dispatchTextDidChange));
                         }
                     }
                 };
             }
 
             pub const HandlerSet = struct {
-                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
                 handler_text_delegate: NSTextDelegate.Protocol(ContextType).Handler = .{},
+                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
             };
 
             pub const Handler = struct {
-                textDidChange: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
+                textDidChange: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
             };
         };
     }

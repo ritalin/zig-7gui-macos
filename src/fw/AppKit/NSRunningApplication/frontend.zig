@@ -42,8 +42,8 @@ pub const NSRunningApplication = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
                 NSRunningApplication,
+                NSObject,
             });
         }
 

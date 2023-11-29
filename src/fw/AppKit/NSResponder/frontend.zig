@@ -1,8 +1,10 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
+const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSCoding = foundation.NSCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 
@@ -35,13 +37,15 @@ pub const NSResponder = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
                 NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCoding,
+            });
         }
     };
 };
@@ -66,8 +70,8 @@ pub const NSStandardKeyBindingResponding = struct {
                         if (_class == null) {
                             var class = backend.NSStandardKeyBindingRespondingMessages.initClass(_class_name);
                             runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
-                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             NSStandardKeyBindingResponding.Protocol(ContextType).Dispatch(_delegate_handlers.handler_standard_key_binding_responding).initClass(class);
+                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
@@ -193,55 +197,55 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     pub fn initClass(_class: objc.Class) void {
                         if (_delegate_handler.insertTab != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertTab(_class, &dispatchInsertTab);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertTab(_class, @constCast(&dispatchInsertTab));
                         }
                         if (_delegate_handler.insertBacktab != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertBacktab(_class, &dispatchInsertBacktab);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertBacktab(_class, @constCast(&dispatchInsertBacktab));
                         }
                         if (_delegate_handler.insertNewline != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertNewline(_class, &dispatchInsertNewline);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertNewline(_class, @constCast(&dispatchInsertNewline));
                         }
                         if (_delegate_handler.insertParagraphSeparator != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertParagraphSeparator(_class, &dispatchInsertParagraphSeparator);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertParagraphSeparator(_class, @constCast(&dispatchInsertParagraphSeparator));
                         }
                         if (_delegate_handler.insertNewlineIgnoringFieldEditor != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertNewlineIgnoringFieldEditor(_class, &dispatchInsertNewlineIgnoringFieldEditor);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertNewlineIgnoringFieldEditor(_class, @constCast(&dispatchInsertNewlineIgnoringFieldEditor));
                         }
                         if (_delegate_handler.insertTabIgnoringFieldEditor != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertTabIgnoringFieldEditor(_class, &dispatchInsertTabIgnoringFieldEditor);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertTabIgnoringFieldEditor(_class, @constCast(&dispatchInsertTabIgnoringFieldEditor));
                         }
                         if (_delegate_handler.insertLineBreak != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertLineBreak(_class, &dispatchInsertLineBreak);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertLineBreak(_class, @constCast(&dispatchInsertLineBreak));
                         }
                         if (_delegate_handler.insertContainerBreak != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertContainerBreak(_class, &dispatchInsertContainerBreak);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertContainerBreak(_class, @constCast(&dispatchInsertContainerBreak));
                         }
                         if (_delegate_handler.insertSingleQuoteIgnoringSubstitution != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertSingleQuoteIgnoringSubstitution(_class, &dispatchInsertSingleQuoteIgnoringSubstitution);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertSingleQuoteIgnoringSubstitution(_class, @constCast(&dispatchInsertSingleQuoteIgnoringSubstitution));
                         }
                         if (_delegate_handler.insertDoubleQuoteIgnoringSubstitution != null) {
-                            backend.NSStandardKeyBindingRespondingMessages.registerInsertDoubleQuoteIgnoringSubstitution(_class, &dispatchInsertDoubleQuoteIgnoringSubstitution);
+                            backend.NSStandardKeyBindingRespondingMessages.registerInsertDoubleQuoteIgnoringSubstitution(_class, @constCast(&dispatchInsertDoubleQuoteIgnoringSubstitution));
                         }
                     }
                 };
             }
 
             pub const HandlerSet = struct {
-                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
                 handler_standard_key_binding_responding: NSStandardKeyBindingResponding.Protocol(ContextType).Handler = .{},
+                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
             };
 
             pub const Handler = struct {
-                insertTab: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertBacktab: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertNewline: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertParagraphSeparator: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertNewlineIgnoringFieldEditor: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertTabIgnoringFieldEditor: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertLineBreak: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertContainerBreak: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertSingleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
-                insertDoubleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _sender: objc.Object) anyerror!void) = null,
+                insertTab: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertBacktab: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertNewline: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertParagraphSeparator: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertNewlineIgnoringFieldEditor: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertTabIgnoringFieldEditor: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertLineBreak: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertContainerBreak: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertSingleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertDoubleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
             };
         };
     }

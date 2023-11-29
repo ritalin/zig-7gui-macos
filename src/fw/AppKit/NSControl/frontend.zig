@@ -5,9 +5,16 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSResponder = appKit.NSResponder;
 const NSTextAlignment = appKit.NSTextAlignment;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
 const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
@@ -38,7 +45,7 @@ pub const NSControl = struct {
     }
 
     pub fn setTarget(self: Self, _target: ?objc.Object) void {
-        return backend.NSControlMessages.setTarget(runtime.objectId(NSControl, self), _target);
+        return backend.NSControlMessages.setTarget(runtime.objectId(NSControl, self), runtime.pass(?objc.Object, _target));
     }
 
     pub fn action(self: Self) ?objc.Sel {
@@ -46,7 +53,7 @@ pub const NSControl = struct {
     }
 
     pub fn setAction(self: Self, _action: ?objc.Sel) void {
-        return backend.NSControlMessages.setAction(runtime.objectId(NSControl, self), _action);
+        return backend.NSControlMessages.setAction(runtime.objectId(NSControl, self), runtime.pass(?objc.Sel, _action));
     }
 
     pub fn isEnabled(self: Self) bool {
@@ -122,9 +129,9 @@ pub const NSControl = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSControl,
-                NSObject,
-                NSResponder,
                 NSView,
+                NSResponder,
+                NSObject,
             });
         }
 
@@ -182,7 +189,7 @@ pub const NSControlTextEditingDelegate = struct {
 
                     pub fn initClass(_class: objc.Class) void {
                         if (_delegate_handler.controlTextDidChange != null) {
-                            backend.NSControlTextEditingDelegateMessages.registerControlTextDidChange(_class, &dispatchControlTextDidChange);
+                            backend.NSControlTextEditingDelegateMessages.registerControlTextDidChange(_class, @constCast(&dispatchControlTextDidChange));
                         }
                     }
                 };
@@ -194,7 +201,7 @@ pub const NSControlTextEditingDelegate = struct {
             };
 
             pub const Handler = struct {
-                controlTextDidChange: ?(*const fn (context: *ContextType, _obj: NSNotification) anyerror!void) = null,
+                controlTextDidChange: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
             };
         };
     }

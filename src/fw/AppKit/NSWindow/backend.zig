@@ -295,7 +295,7 @@ pub const NSWindowDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerWindowWillClose(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerWindowWillClose(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "windowWillClose:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

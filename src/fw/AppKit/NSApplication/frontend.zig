@@ -10,8 +10,13 @@ pub const NSModalResponse = NSInteger;
 pub const NSModalSession = *anyopaque;
 pub const NSAboutPanelOptionKey = NSString;
 pub const NSServiceProviderName = NSString;
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
+const NSMenuItemValidation = appKit.NSMenuItemValidation;
 const NSResponder = appKit.NSResponder;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
 const NSNotificationName = foundation.NSNotificationName;
 const NSRunLoopMode = foundation.NSRunLoopMode;
@@ -129,11 +134,11 @@ pub const NSApplication = struct {
     }
 
     pub fn delegate(self: Self) ?NSApplicationDelegate {
-        return runtime.wrapOptionalObject(NSApplicationDelegate, backend.NSApplicationMessages.delegate(runtime.objectId(NSApplication, self)));
+        return runtime.wrapObject(?NSApplicationDelegate, backend.NSApplicationMessages.delegate(runtime.objectId(NSApplication, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSApplicationDelegate) void {
-        return backend.NSApplicationMessages.setDelegate(runtime.objectId(NSApplication, self), runtime.objectIdOrNull(NSApplicationDelegate, _delegate));
+        return backend.NSApplicationMessages.setDelegate(runtime.objectId(NSApplication, self), runtime.objectId(?NSApplicationDelegate, _delegate));
     }
 
     pub fn activateIgnoringOtherApps(self: Self, _flag: bool) void {
@@ -165,13 +170,19 @@ pub const NSApplication = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSApplication,
-                NSObject,
                 NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSAccessibility,
+                NSAccessibilityElement,
+                NSMenuItemValidation,
+                NSUserInterfaceValidations,
+                NSObjectProtocol,
+            });
         }
     };
 };
@@ -291,10 +302,10 @@ pub const NSApplicationDelegate = struct {
 
                     pub fn initClass(_class: objc.Class) void {
                         if (_delegate_handler.applicationWillFinishLaunching != null) {
-                            backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(_class, &dispatchApplicationWillFinishLaunching);
+                            backend.NSApplicationDelegateMessages.registerApplicationWillFinishLaunching(_class, @constCast(&dispatchApplicationWillFinishLaunching));
                         }
                         if (_delegate_handler.applicationDidFinishLaunching != null) {
-                            backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(_class, &dispatchApplicationDidFinishLaunching);
+                            backend.NSApplicationDelegateMessages.registerApplicationDidFinishLaunching(_class, @constCast(&dispatchApplicationDidFinishLaunching));
                         }
                     }
                 };
@@ -306,8 +317,8 @@ pub const NSApplicationDelegate = struct {
             };
 
             pub const Handler = struct {
-                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
-                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, _notification: NSNotification) anyerror!void) = null,
+                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
             };
         };
     }

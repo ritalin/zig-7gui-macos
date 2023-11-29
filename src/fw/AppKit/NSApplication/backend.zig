@@ -135,11 +135,11 @@ pub const NSApplicationDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerApplicationWillFinishLaunching(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerApplicationWillFinishLaunching(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "applicationWillFinishLaunching:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerApplicationDidFinishLaunching(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerApplicationDidFinishLaunching(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "applicationDidFinishLaunching:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

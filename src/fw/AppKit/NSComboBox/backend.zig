@@ -179,19 +179,19 @@ pub const NSComboBoxDataSourceMessages = struct {
         return class.?;
     }
 
-    pub fn registerNumberOfItemsInComboBox(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerNumberOfItemsInComboBox(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "numberOfItemsInComboBox:", runtime.wrapDelegateHandler(_handler), "q24@0:8@16");
     }
 
-    pub fn registerComboBoxObjectValueForItemAtIndex(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerComboBoxObjectValueForItemAtIndex(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:objectValueForItemAtIndex:", runtime.wrapDelegateHandler(_handler), "@32@0:8@16q24");
     }
 
-    pub fn registerComboBoxIndexOfItemWithStringValue(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerComboBoxIndexOfItemWithStringValue(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:indexOfItemWithStringValue:", runtime.wrapDelegateHandler(_handler), "Q32@0:8@16@24");
     }
 
-    pub fn registerComboBoxCompletedString(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerComboBoxCompletedString(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:completedString:", runtime.wrapDelegateHandler(_handler), "@32@0:8@16@24");
     }
 };
@@ -220,7 +220,7 @@ pub const NSComboBoxDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerComboBoxSelectionDidChange(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerComboBoxSelectionDidChange(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "comboBoxSelectionDidChange:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

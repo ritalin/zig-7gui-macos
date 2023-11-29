@@ -10,7 +10,6 @@ const NSSize = foundation.NSSize;
 pub const NSViewSelectors = struct {
     var _sel_initWithFrame: ?objc.Sel = null;
     var _sel_superview: ?objc.Sel = null;
-    var _sel_subviews: ?objc.Sel = null;
     var _sel_addSubview: ?objc.Sel = null;
     var _sel_setFrameOrigin: ?objc.Sel = null;
     var _sel_setFrameSize: ?objc.Sel = null;
@@ -33,13 +32,6 @@ pub const NSViewSelectors = struct {
             _sel_superview = objc.Sel.registerName("superview");
         }
         return _sel_superview.?;
-    }
-
-    pub fn subviews() objc.Sel {
-        if (_sel_subviews == null) {
-            _sel_subviews = objc.Sel.registerName("subviews");
-        }
-        return _sel_subviews.?;
     }
 
     pub fn addSubview() objc.Sel {
@@ -119,10 +111,6 @@ pub const NSViewMessages = struct {
 
     pub fn superview(self: objc.Object) ?objc.Object {
         return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSViewSelectors.superview(), .{}));
-    }
-
-    pub fn subviews(self: objc.Object) objc.Object {
-        return self.msgSend(objc.Object, NSViewSelectors.subviews(), .{});
     }
 
     pub fn addSubview(self: objc.Object, _view: objc.Object) void {

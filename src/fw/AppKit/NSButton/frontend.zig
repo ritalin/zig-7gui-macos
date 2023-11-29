@@ -5,9 +5,19 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityButton = appKit.NSAccessibilityButton;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
 const NSControl = appKit.NSControl;
+const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSResponder = appKit.NSResponder;
+const NSUserInterfaceCompression = appKit.NSUserInterfaceCompression;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
 const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -33,7 +43,7 @@ pub const NSButton = struct {
         return struct {
             pub fn buttonWithTitleTargetAction(_title: NSString, _target: ?objc.Object, _action: ?objc.Sel) DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSButtonMessages.buttonWithTitleTargetAction(_class, runtime.objectId(NSString, _title), _target, _action));
+                return runtime.wrapObject(DesiredType, backend.NSButtonMessages.buttonWithTitleTargetAction(_class, runtime.objectId(NSString, _title), runtime.pass(?objc.Object, _target), runtime.pass(?objc.Sel, _action)));
             }
         };
     }
@@ -47,14 +57,20 @@ pub const NSButton = struct {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSButton,
                 NSControl,
-                NSObject,
-                NSResponder,
                 NSView,
+                NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSAccessibilityButton,
+                NSUserInterfaceCompression,
+                NSUserInterfaceValidations,
+                NSAccessibilityElement,
+                NSObjectProtocol,
+            });
         }
     };
 };

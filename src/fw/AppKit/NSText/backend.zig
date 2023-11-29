@@ -113,7 +113,7 @@ pub const NSTextDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerTextDidChange(_class: objc.Class, _handler: *const runtime.DelegateHandler) void {
+    pub fn registerTextDidChange(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
         runtime.backend_support.ObjectRegistry.registerMessage(_class, "textDidChange:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

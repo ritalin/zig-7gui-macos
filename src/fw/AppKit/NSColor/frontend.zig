@@ -7,8 +7,13 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
 const NSAppKitVersion = appKit.NSAppKitVersion;
+const NSPasteboardReading = appKit.NSPasteboardReading;
+const NSPasteboardWriting = appKit.NSPasteboardWriting;
 const CGColorRef = coreGraphics.CGColorRef;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
 const NSNotificationName = foundation.NSNotificationName;
+const NSSecureCoding = foundation.NSSecureCoding;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -164,10 +169,6 @@ pub const NSColor = struct {
         return runtime.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedContentBackgroundColor());
     }
 
-    pub fn alternatingContentBackgroundColors() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.alternatingContentBackgroundColors());
-    }
-
     pub fn findHighlightColor() NSColor {
         return runtime.wrapObject(NSColor, backend.NSColorMessages.findHighlightColor());
     }
@@ -281,7 +282,7 @@ pub const NSColor = struct {
     }
 
     pub fn colorWithCGColor(_cgColor: CGColorRef) ?NSColor {
-        return runtime.wrapOptionalObject(NSColor, backend.NSColorMessages.colorWithCGColor(runtime.pass(CGColorRef, _cgColor)));
+        return runtime.wrapObject(?NSColor, backend.NSColorMessages.colorWithCGColor(runtime.pass(CGColorRef, _cgColor)));
     }
 
     pub fn cgColor(self: Self) CGColorRef {
@@ -306,7 +307,14 @@ pub const NSColor = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCopying,
+                NSPasteboardReading,
+                NSPasteboardWriting,
+                NSSecureCoding,
+                NSCoding,
+                NSObjectProtocol,
+            });
         }
     };
 };

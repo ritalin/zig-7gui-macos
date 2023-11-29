@@ -122,52 +122,52 @@ pub const NSCompositingOperation = struct {
         ._value = 0xB,
     };
     pub const PlusLighter: NSCompositingOperation = .{
-        ._value = 0xD,
+        ._value = 0xC,
     };
     pub const Multiply: NSCompositingOperation = .{
-        ._value = 0xE,
+        ._value = 0xD,
     };
     pub const Screen: NSCompositingOperation = .{
-        ._value = 0xF,
+        ._value = 0xE,
     };
     pub const Overlay: NSCompositingOperation = .{
-        ._value = 0x10,
+        ._value = 0xF,
     };
     pub const Darken: NSCompositingOperation = .{
-        ._value = 0x11,
+        ._value = 0x10,
     };
     pub const Lighten: NSCompositingOperation = .{
-        ._value = 0x12,
+        ._value = 0x11,
     };
     pub const ColorDodge: NSCompositingOperation = .{
-        ._value = 0x13,
+        ._value = 0x12,
     };
     pub const ColorBurn: NSCompositingOperation = .{
-        ._value = 0x14,
+        ._value = 0x13,
     };
     pub const SoftLight: NSCompositingOperation = .{
-        ._value = 0x15,
+        ._value = 0x14,
     };
     pub const HardLight: NSCompositingOperation = .{
-        ._value = 0x16,
+        ._value = 0x15,
     };
     pub const Difference: NSCompositingOperation = .{
-        ._value = 0x17,
+        ._value = 0x16,
     };
     pub const Exclusion: NSCompositingOperation = .{
-        ._value = 0x18,
+        ._value = 0x17,
     };
     pub const Hue: NSCompositingOperation = .{
-        ._value = 0x19,
+        ._value = 0x18,
     };
     pub const Saturation: NSCompositingOperation = .{
-        ._value = 0x1A,
+        ._value = 0x19,
     };
     pub const Color: NSCompositingOperation = .{
-        ._value = 0x1B,
+        ._value = 0x1A,
     };
     pub const Luminosity: NSCompositingOperation = .{
-        ._value = 0x1C,
+        ._value = 0x1B,
     };
 
     _value: NSUInteger,

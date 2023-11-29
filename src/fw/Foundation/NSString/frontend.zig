@@ -7,7 +7,11 @@ const runtime = @import("Runtime");
 pub const unichar = c_ushort;
 pub const NSStringTransform = NSString;
 pub const NSStringEncodingDetectionOptionsKey = NSString;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
 const NSExceptionName = foundation.NSExceptionName;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
@@ -70,9 +74,9 @@ pub const NSSimpleCString = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
                 NSSimpleCString,
                 NSString,
+                NSObject,
             });
         }
 
@@ -124,13 +128,18 @@ pub const NSString = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSObject,
                 NSString,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSCopying,
+                NSMutableCopying,
+                NSSecureCoding,
+                NSCoding,
+            });
         }
     };
 };
@@ -165,9 +174,9 @@ pub const NSConstantString = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSConstantString,
-                NSObject,
                 NSSimpleCString,
                 NSString,
+                NSObject,
             });
         }
 
@@ -208,8 +217,8 @@ pub const NSMutableString = struct {
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
                 NSMutableString,
-                NSObject,
                 NSString,
+                NSObject,
             });
         }
 
@@ -285,7 +294,7 @@ const NSStringExtensionMethodsForNSString = struct {
         return struct {
             pub fn initWithUTF8String(_nullTerminatedCString: [*c]const u8) ?DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapOptionalObject(DesiredType, backend.NSStringExtensionMethodsForNSStringMessages.initWithUTF8String(_class, _nullTerminatedCString));
+                return runtime.wrapObject(?DesiredType, backend.NSStringExtensionMethodsForNSStringMessages.initWithUTF8String(_class, _nullTerminatedCString));
             }
         };
     }

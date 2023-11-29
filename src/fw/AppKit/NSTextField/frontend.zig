@@ -5,11 +5,22 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
+const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
 const NSColor = appKit.NSColor;
 const NSControl = appKit.NSControl;
 const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
+const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSResponder = appKit.NSResponder;
+const NSTextContent = appKit.NSTextContent;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
 const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
@@ -36,11 +47,11 @@ pub const NSTextField = struct {
     }
 
     pub fn backgroundColor(self: Self) ?NSColor {
-        return runtime.wrapOptionalObject(NSColor, backend.NSTextFieldMessages.backgroundColor(runtime.objectId(NSTextField, self)));
+        return runtime.wrapObject(?NSColor, backend.NSTextFieldMessages.backgroundColor(runtime.objectId(NSTextField, self)));
     }
 
     pub fn setBackgroundColor(self: Self, _backgroundColor: ?NSColor) void {
-        return backend.NSTextFieldMessages.setBackgroundColor(runtime.objectId(NSTextField, self), runtime.objectIdOrNull(NSColor, _backgroundColor));
+        return backend.NSTextFieldMessages.setBackgroundColor(runtime.objectId(NSTextField, self), runtime.objectId(?NSColor, _backgroundColor));
     }
 
     pub fn isEditable(self: Self) bool {
@@ -52,11 +63,11 @@ pub const NSTextField = struct {
     }
 
     pub fn delegate(self: Self) ?NSTextFieldDelegate {
-        return runtime.wrapOptionalObject(NSTextFieldDelegate, backend.NSTextFieldMessages.delegate(runtime.objectId(NSTextField, self)));
+        return runtime.wrapObject(?NSTextFieldDelegate, backend.NSTextFieldMessages.delegate(runtime.objectId(NSTextField, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSTextFieldDelegate) void {
-        return backend.NSTextFieldMessages.setDelegate(runtime.objectId(NSTextField, self), runtime.objectIdOrNull(NSTextFieldDelegate, _delegate));
+        return backend.NSTextFieldMessages.setDelegate(runtime.objectId(NSTextField, self), runtime.objectId(?NSTextFieldDelegate, _delegate));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -71,16 +82,23 @@ pub const NSTextField = struct {
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
             return runtime.typeConstraints(DesiredType.Self, .{
-                NSControl,
-                NSObject,
-                NSResponder,
                 NSTextField,
+                NSControl,
                 NSView,
+                NSResponder,
+                NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime.typeConstraints(DesiredType.Self, .{
+                NSAccessibilityNavigableStaticText,
+                NSTextContent,
+                NSUserInterfaceValidations,
+                NSAccessibilityStaticText,
+                NSAccessibilityElement,
+                NSObjectProtocol,
+            });
         }
     };
 };
@@ -135,8 +153,9 @@ pub const NSTextFieldDelegate = struct {
                         if (_class == null) {
                             var class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
                             runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
-                            NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
                             NSTextFieldDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_field_delegate).initClass(class);
+                            NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
+                            NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
@@ -158,8 +177,9 @@ pub const NSTextFieldDelegate = struct {
             }
 
             pub const HandlerSet = struct {
-                handler_control_text_editing_delegate: NSControlTextEditingDelegate.Protocol(ContextType).Handler = .{},
                 handler_text_field_delegate: NSTextFieldDelegate.Protocol(ContextType).Handler = .{},
+                handler_control_text_editing_delegate: NSControlTextEditingDelegate.Protocol(ContextType).Handler = .{},
+                handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
             };
 
             pub const Handler = struct {};

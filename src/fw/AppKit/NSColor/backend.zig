@@ -40,7 +40,6 @@ pub const NSColorSelectors = struct {
     var _sel_controlBackgroundColor: ?objc.Sel = null;
     var _sel_selectedContentBackgroundColor: ?objc.Sel = null;
     var _sel_unemphasizedSelectedContentBackgroundColor: ?objc.Sel = null;
-    var _sel_alternatingContentBackgroundColors: ?objc.Sel = null;
     var _sel_findHighlightColor: ?objc.Sel = null;
     var _sel_textColor: ?objc.Sel = null;
     var _sel_textBackgroundColor: ?objc.Sel = null;
@@ -301,13 +300,6 @@ pub const NSColorSelectors = struct {
             _sel_unemphasizedSelectedContentBackgroundColor = objc.Sel.registerName("unemphasizedSelectedContentBackgroundColor");
         }
         return _sel_unemphasizedSelectedContentBackgroundColor.?;
-    }
-
-    pub fn alternatingContentBackgroundColors() objc.Sel {
-        if (_sel_alternatingContentBackgroundColors == null) {
-            _sel_alternatingContentBackgroundColors = objc.Sel.registerName("alternatingContentBackgroundColors");
-        }
-        return _sel_alternatingContentBackgroundColors.?;
     }
 
     pub fn findHighlightColor() objc.Sel {
@@ -656,10 +648,6 @@ pub const NSColorMessages = struct {
 
     pub fn unemphasizedSelectedContentBackgroundColor() objc.Object {
         return getClass().msgSend(objc.Object, NSColorSelectors.unemphasizedSelectedContentBackgroundColor(), .{});
-    }
-
-    pub fn alternatingContentBackgroundColors() objc.Object {
-        return getClass().msgSend(objc.Object, NSColorSelectors.alternatingContentBackgroundColors(), .{});
     }
 
     pub fn findHighlightColor() objc.Object {

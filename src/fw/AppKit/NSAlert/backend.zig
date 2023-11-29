@@ -1,8 +1,9 @@
 const std = @import("std");
 const objc = @import("objc");
+const appKit = @import("AppKit");
 const runtime = @import("Runtime");
 
-const NSInteger = runtime.NSInteger;
+const NSModalResponse = appKit.NSModalResponse;
 
 pub const NSAlertSelectors = struct {
     var _sel_messageText: ?objc.Sel = null;
@@ -46,7 +47,7 @@ pub const NSAlertMessages = struct {
         });
     }
 
-    pub fn runModal(self: objc.Object) NSInteger {
-        return self.msgSend(NSInteger, NSAlertSelectors.runModal(), .{});
+    pub fn runModal(self: objc.Object) NSModalResponse {
+        return self.msgSend(NSModalResponse, NSAlertSelectors.runModal(), .{});
     }
 };
