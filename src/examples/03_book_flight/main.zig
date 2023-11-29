@@ -166,7 +166,7 @@ const FlightRouteContext = struct {
         return @as(NSInteger, routes.kvs.len);
     }
 
-    fn handleObjectValueForItemAtIndex(context: *FlightRouteContext, _: appKit.NSComboBox, _index: NSInteger) !objc.Object {
+    fn handleObjectValueForItemAtIndex(context: *FlightRouteContext, _: appKit.NSComboBox, _index: NSInteger) !?objc.Object {
         var value = try context.allocator.dupeZ(u8, context.findKeyAtIndex(_index));
         defer context.allocator.free(value);
 
