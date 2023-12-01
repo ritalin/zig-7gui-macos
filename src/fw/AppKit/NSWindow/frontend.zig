@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSWindowLevel = NSInteger;
 pub const NSWindowFrameAutosaveName = NSString;
@@ -33,7 +34,6 @@ const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSAppKitVersionNumberWithCustomSheetPosition: NSAppKitVersion = 686.0;
 pub const NSAppKitVersionNumberWithDeferredWindowDisplaySupport: NSAppKitVersion = 1019.0;
@@ -98,8 +98,6 @@ pub const NSWindow = struct {
     pub const Event = NSEventForNSWindow;
     pub const Drag = NSDragForNSWindow;
 
-    var DelegateResolver: ?*ObjectResolver(NSWindow) = null;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -107,79 +105,79 @@ pub const NSWindow = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn title(self: Self) NSString {
-        return runtime.wrapObject(NSString, backend.NSWindowMessages.title(runtime.objectId(NSWindow, self)));
+        return runtime_support.wrapObject(NSString, backend.NSWindowMessages.title(runtime_support.objectId(NSWindow, self)));
     }
 
     pub fn setTitle(self: Self, _title: NSString) void {
-        return backend.NSWindowMessages.setTitle(runtime.objectId(NSWindow, self), runtime.objectId(NSString, _title));
+        return backend.NSWindowMessages.setTitle(runtime_support.objectId(NSWindow, self), runtime_support.objectId(NSString, _title));
     }
 
     pub fn contentView(self: Self) ?NSView {
-        return runtime.wrapObject(?NSView, backend.NSWindowMessages.contentView(runtime.objectId(NSWindow, self)));
+        return runtime_support.wrapObject(?NSView, backend.NSWindowMessages.contentView(runtime_support.objectId(NSWindow, self)));
     }
 
     pub fn setContentView(self: Self, _contentView: ?NSView) void {
-        return backend.NSWindowMessages.setContentView(runtime.objectId(NSWindow, self), runtime.objectId(?NSView, _contentView));
+        return backend.NSWindowMessages.setContentView(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSView, _contentView));
     }
 
     pub fn delegate(self: Self) ?NSWindowDelegate {
-        return runtime.wrapObject(?NSWindowDelegate, backend.NSWindowMessages.delegate(runtime.objectId(NSWindow, self)));
+        return runtime_support.wrapObject(?NSWindowDelegate, backend.NSWindowMessages.delegate(runtime_support.objectId(NSWindow, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSWindowDelegate) void {
-        return backend.NSWindowMessages.setDelegate(runtime.objectId(NSWindow, self), runtime.objectId(?NSWindowDelegate, _delegate));
+        return backend.NSWindowMessages.setDelegate(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSWindowDelegate, _delegate));
     }
 
     pub fn makeFirstResponder(self: Self, _responder: ?NSResponder) bool {
-        return runtime.fromBOOL(backend.NSWindowMessages.makeFirstResponder(runtime.objectId(NSWindow, self), runtime.objectId(?NSResponder, _responder)));
+        return runtime_support.fromBOOL(backend.NSWindowMessages.makeFirstResponder(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSResponder, _responder)));
     }
 
     pub fn firstResponder(self: Self) ?NSResponder {
-        return runtime.wrapObject(?NSResponder, backend.NSWindowMessages.firstResponder(runtime.objectId(NSWindow, self)));
+        return runtime_support.wrapObject(?NSResponder, backend.NSWindowMessages.firstResponder(runtime_support.objectId(NSWindow, self)));
     }
 
     pub fn backgroundColor(self: Self) NSColor {
-        return runtime.wrapObject(NSColor, backend.NSWindowMessages.backgroundColor(runtime.objectId(NSWindow, self)));
+        return runtime_support.wrapObject(NSColor, backend.NSWindowMessages.backgroundColor(runtime_support.objectId(NSWindow, self)));
     }
 
     pub fn setBackgroundColor(self: Self, _backgroundColor: ?NSColor) void {
-        return backend.NSWindowMessages.setBackgroundColor(runtime.objectId(NSWindow, self), runtime.objectId(?NSColor, _backgroundColor));
+        return backend.NSWindowMessages.setBackgroundColor(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSColor, _backgroundColor));
     }
 
     pub fn makeKeyAndOrderFront(self: Self, _sender: ?objc.Object) void {
-        return backend.NSWindowMessages.makeKeyAndOrderFront(runtime.objectId(NSWindow, self), runtime.pass(?objc.Object, _sender));
+        return backend.NSWindowMessages.makeKeyAndOrderFront(runtime_support.objectId(NSWindow, self), runtime_support.pass(?objc.Object, _sender));
     }
 
     pub fn setInitialFirstResponder(self: Self, _initialFirstResponder: ?NSView) void {
-        return backend.NSWindowMessages.setInitialFirstResponder(runtime.objectId(NSWindow, self), runtime.objectId(?NSView, _initialFirstResponder));
+        return backend.NSWindowMessages.setInitialFirstResponder(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSView, _initialFirstResponder));
     }
 
     pub fn selectNextKeyView(self: Self, _sender: ?objc.Object) void {
-        return backend.NSWindowMessages.selectNextKeyView(runtime.objectId(NSWindow, self), runtime.pass(?objc.Object, _sender));
+        return backend.NSWindowMessages.selectNextKeyView(runtime_support.objectId(NSWindow, self), runtime_support.pass(?objc.Object, _sender));
     }
 
     pub fn selectPreviousKeyView(self: Self, _sender: ?objc.Object) void {
-        return backend.NSWindowMessages.selectPreviousKeyView(runtime.objectId(NSWindow, self), runtime.pass(?objc.Object, _sender));
+        return backend.NSWindowMessages.selectPreviousKeyView(runtime_support.objectId(NSWindow, self), runtime_support.pass(?objc.Object, _sender));
     }
 
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithContentRectStyleMaskBacking(_contentRect: NSRect, _style: NSWindowStyleMask, _backingStoreType: NSBackingStoreType, _flag: bool, _screen: ?NSScreen) DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSWindowMessages.initWithContentRectStyleMaskBacking(_class, runtime.pass(NSRect, _contentRect), runtime.packOptions(NSWindowStyleMask, _style), runtime.unwrapEnum(NSBackingStoreType, NSUInteger, _backingStoreType), runtime.toBOOL(_flag), runtime.objectId(?NSScreen, _screen)));
+                return runtime_support.wrapObject(DesiredType, backend.NSWindowMessages.initWithContentRectStyleMaskBacking(_class, runtime_support.pass(NSRect, _contentRect), runtime_support.packOptions(NSWindowStyleMask, _style), runtime_support.unwrapEnum(NSBackingStoreType, NSUInteger, _backingStoreType), runtime_support.toBOOL(_flag), runtime_support.objectId(?NSScreen, _screen)));
             }
 
             pub fn initialFirstResponder() ?*DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(?*DesiredType, backend.NSWindowMessages.initialFirstResponder(_class));
+                return runtime_support.wrapObject(?*DesiredType, backend.NSWindowMessages.initialFirstResponder(_class));
             }
         };
     }
@@ -190,7 +188,7 @@ pub const NSWindow = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSWindow,
                 NSResponder,
                 NSObject,
@@ -198,7 +196,7 @@ pub const NSWindow = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSAccessibility,
                 NSAccessibilityElement,
                 NSAnimatablePropertyContainer,
@@ -219,7 +217,7 @@ const NSCursorRectForNSWindow = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -235,7 +233,7 @@ const NSDeprecatedForNSWindow = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -251,7 +249,7 @@ const NSCarbonExtensionsForNSWindow = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -267,7 +265,7 @@ const NSEventForNSWindow = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -283,7 +281,7 @@ const NSDragForNSWindow = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -452,21 +450,21 @@ pub const NSWindowDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSWindowDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSWindowDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_window_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSWindowDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSWindowDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSWindowDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -476,8 +474,8 @@ pub const NSWindowDelegate = struct {
                 return struct {
                     fn dispatchWindowWillClose(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.windowWillClose) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -499,7 +497,7 @@ pub const NSWindowDelegate = struct {
             };
 
             pub const Handler = struct {
-                windowWillClose: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                windowWillClose: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
             };
         };
     }

@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
@@ -21,23 +22,23 @@ pub const NSScreen = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn mainScreen() ?NSScreen {
-        return runtime.wrapObject(?NSScreen, backend.NSScreenMessages.mainScreen());
+        return runtime_support.wrapObject(?NSScreen, backend.NSScreenMessages.mainScreen());
     }
 
     pub fn frame(self: Self) NSRect {
-        return backend.NSScreenMessages.frame(runtime.objectId(NSScreen, self));
+        return backend.NSScreenMessages.frame(runtime_support.objectId(NSScreen, self));
     }
 
     pub fn visibleFrame(self: Self) NSRect {
-        return backend.NSScreenMessages.visibleFrame(runtime.objectId(NSScreen, self));
+        return backend.NSScreenMessages.visibleFrame(runtime_support.objectId(NSScreen, self));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -51,14 +52,14 @@ pub const NSScreen = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSScreen,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };
@@ -70,7 +71,7 @@ const ExtensionsForNSScreen = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -86,7 +87,7 @@ const NSDeprecatedForNSScreen = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {

@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSUserInterfaceItemIdentifier = NSString;
 const NSString = foundation.NSString;
@@ -21,20 +22,20 @@ pub const NSUserInterfaceItemIdentification = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSUserInterfaceItemIdentification", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSUserInterfaceItemIdentification", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSUserInterfaceItemIdentificationMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSUserInterfaceItemIdentification.Protocol(ContextType).Dispatch(_delegate_handlers.handler_user_interface_item_identification).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSUserInterfaceItemIdentificationMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSUserInterfaceItemIdentification, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSUserInterfaceItemIdentification, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };

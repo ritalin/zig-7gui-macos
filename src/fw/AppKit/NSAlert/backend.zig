@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const appKit = @import("AppKit");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSModalResponse = appKit.NSModalResponse;
 
@@ -9,6 +10,7 @@ pub const NSAlertSelectors = struct {
     var _sel_messageText: ?objc.Sel = null;
     var _sel_setMessageText: ?objc.Sel = null;
     var _sel_runModal: ?objc.Sel = null;
+    var _sel_beginSheetModalForWindowCompletionHandler: ?objc.Sel = null;
 
     pub fn messageText() objc.Sel {
         if (_sel_messageText == null) {
@@ -30,6 +32,13 @@ pub const NSAlertSelectors = struct {
         }
         return _sel_runModal.?;
     }
+
+    pub fn beginSheetModalForWindowCompletionHandler() objc.Sel {
+        if (_sel_beginSheetModalForWindowCompletionHandler == null) {
+            _sel_beginSheetModalForWindowCompletionHandler = objc.Sel.registerName("beginSheetModalForWindow:completionHandler:");
+        }
+        return _sel_beginSheetModalForWindowCompletionHandler.?;
+    }
 };
 
 pub const NSAlertMessages = struct {
@@ -43,11 +52,18 @@ pub const NSAlertMessages = struct {
 
     pub fn setMessageText(self: objc.Object, _messageText: objc.Object) void {
         return self.msgSend(void, NSAlertSelectors.setMessageText(), .{
-            runtime.unwrapOptionalObject(_messageText),
+            runtime_support.unwrapOptionalObject(_messageText),
         });
     }
 
     pub fn runModal(self: objc.Object) NSModalResponse {
         return self.msgSend(NSModalResponse, NSAlertSelectors.runModal(), .{});
+    }
+
+    pub fn beginSheetModalForWindowCompletionHandler(self: objc.Object, _sheetWindow: objc.Object, _handler: ?runtime_support.BlockContextRef) void {
+        return self.msgSend(void, NSAlertSelectors.beginSheetModalForWindowCompletionHandler(), .{
+            runtime_support.unwrapOptionalObject(_sheetWindow),
+            _handler,
+        });
     }
 };

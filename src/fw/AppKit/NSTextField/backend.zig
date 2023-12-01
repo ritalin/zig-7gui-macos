@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSTextFieldSelectors = struct {
     var _sel_backgroundColor: ?objc.Sel = null;
@@ -59,12 +60,12 @@ pub const NSTextFieldMessages = struct {
     }
 
     pub fn backgroundColor(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.backgroundColor(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.backgroundColor(), .{}));
     }
 
     pub fn setBackgroundColor(self: objc.Object, _backgroundColor: ?objc.Object) void {
         return self.msgSend(void, NSTextFieldSelectors.setBackgroundColor(), .{
-            runtime.unwrapOptionalObject(_backgroundColor),
+            runtime_support.unwrapOptionalObject(_backgroundColor),
         });
     }
 
@@ -79,12 +80,12 @@ pub const NSTextFieldMessages = struct {
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSTextFieldSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObject(_delegate),
+            runtime_support.unwrapOptionalObject(_delegate),
         });
     }
 };
@@ -123,19 +124,19 @@ pub const NSTextFieldConvenienceForNSTextFieldMessages = struct {
 
     pub fn labelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.labelWithString(), .{
-            runtime.unwrapOptionalObject(_stringValue),
+            runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn wrappingLabelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.wrappingLabelWithString(), .{
-            runtime.unwrapOptionalObject(_stringValue),
+            runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn textFieldWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
         return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.textFieldWithString(), .{
-            runtime.unwrapOptionalObject(_stringValue),
+            runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 };
@@ -143,14 +144,14 @@ pub const NSTextFieldConvenienceForNSTextFieldMessages = struct {
 pub const NSTextFieldDelegateSelectors = struct {};
 
 pub const NSTextFieldDelegateMessages = struct {
-    pub const init = runtime.backend_support.newInstance;
-    pub const dealloc = runtime.backend_support.destroyInstance;
-    pub const registerMessage = runtime.backend_support.ObjectRegistry.registerMessage;
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
         }
         return class.?;
     }

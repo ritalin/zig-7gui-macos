@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSNotificationName = NSString;
 const NSCoding = foundation.NSCoding;
@@ -22,11 +23,11 @@ pub const NSNotification = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -40,14 +41,14 @@ pub const NSNotification = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSNotification,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSCoding,
                 NSCopying,
             });
@@ -65,11 +66,11 @@ pub const NSNotificationCenter = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -83,14 +84,14 @@ pub const NSNotificationCenter = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSNotificationCenter,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };
@@ -102,7 +103,7 @@ const NSNotificationCreationForNSNotification = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {

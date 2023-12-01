@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSAttributedStringKey = NSString;
 const NSCoding = foundation.NSCoding;
@@ -30,15 +31,15 @@ pub const NSAttributedString = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn string(self: Self) NSString {
-        return runtime.wrapObject(NSString, backend.NSAttributedStringMessages.string(runtime.objectId(NSAttributedString, self)));
+        return runtime_support.wrapObject(NSString, backend.NSAttributedStringMessages.string(runtime_support.objectId(NSAttributedString, self)));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -52,14 +53,14 @@ pub const NSAttributedString = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSAttributedString,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSCopying,
                 NSMutableCopying,
                 NSSecureCoding,
@@ -80,11 +81,11 @@ pub const NSMutableAttributedString = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -98,7 +99,7 @@ pub const NSMutableAttributedString = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSMutableAttributedString,
                 NSAttributedString,
                 NSObject,
@@ -106,7 +107,7 @@ pub const NSMutableAttributedString = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };
@@ -118,14 +119,14 @@ const NSExtendedAttributedStringForNSAttributedString = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithString(_str: NSString) DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSExtendedAttributedStringForNSAttributedStringMessages.initWithString(_class, runtime.objectId(NSString, _str)));
+                return runtime_support.wrapObject(DesiredType, backend.NSExtendedAttributedStringForNSAttributedStringMessages.initWithString(_class, runtime_support.objectId(NSString, _str)));
             }
         };
     }
@@ -138,11 +139,11 @@ const NSExtendedMutableAttributedStringForNSMutableAttributedString = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     pub fn setAttributedString(self: Category, _attrString: NSAttributedString) void {
-        return backend.NSExtendedMutableAttributedStringForNSMutableAttributedStringMessages.setAttributedString(runtime.objectId(NSExtendedMutableAttributedStringForNSMutableAttributedString, self), runtime.objectId(NSAttributedString, _attrString));
+        return backend.NSExtendedMutableAttributedStringForNSMutableAttributedStringMessages.setAttributedString(runtime_support.objectId(NSExtendedMutableAttributedStringForNSMutableAttributedString, self), runtime_support.objectId(NSAttributedString, _attrString));
     }
 
     fn Constructor(comptime DesiredType: type) type {

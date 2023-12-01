@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSRect = foundation.NSRect;
 
@@ -38,7 +39,7 @@ pub const NSScreenMessages = struct {
     }
 
     pub fn mainScreen() ?objc.Object {
-        return runtime.wrapOptionalObjectId(getClass().msgSend(objc.c.id, NSScreenSelectors.mainScreen(), .{}));
+        return runtime_support.wrapOptionalObjectId(getClass().msgSend(objc.c.id, NSScreenSelectors.mainScreen(), .{}));
     }
 
     pub fn frame(self: objc.Object) NSRect {

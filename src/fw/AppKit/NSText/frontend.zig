@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
@@ -22,7 +23,6 @@ const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSEnterCharacter: c_uint = 0x0003;
 pub const NSBackspaceCharacter: c_uint = 0x0008;
@@ -50,8 +50,6 @@ pub const NSTextWritingDirectionOverride: c_uint = (1 << 1);
 pub const NSText = struct {
     pub const Self = @This();
 
-    var DelegateResolver: ?*ObjectResolver(NSText) = null;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -59,35 +57,35 @@ pub const NSText = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn string(self: Self) NSString {
-        return runtime.wrapObject(NSString, backend.NSTextMessages.string(runtime.objectId(NSText, self)));
+        return runtime_support.wrapObject(NSString, backend.NSTextMessages.string(runtime_support.objectId(NSText, self)));
     }
 
     pub fn setString(self: Self, _string: NSString) void {
-        return backend.NSTextMessages.setString(runtime.objectId(NSText, self), runtime.objectId(NSString, _string));
+        return backend.NSTextMessages.setString(runtime_support.objectId(NSText, self), runtime_support.objectId(NSString, _string));
     }
 
     pub fn delegate(self: Self) ?NSTextDelegate {
-        return runtime.wrapObject(?NSTextDelegate, backend.NSTextMessages.delegate(runtime.objectId(NSText, self)));
+        return runtime_support.wrapObject(?NSTextDelegate, backend.NSTextMessages.delegate(runtime_support.objectId(NSText, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSTextDelegate) void {
-        return backend.NSTextMessages.setDelegate(runtime.objectId(NSText, self), runtime.objectId(?NSTextDelegate, _delegate));
+        return backend.NSTextMessages.setDelegate(runtime_support.objectId(NSText, self), runtime_support.objectId(?NSTextDelegate, _delegate));
     }
 
     pub fn isEditable(self: Self) bool {
-        return runtime.fromBOOL(backend.NSTextMessages.isEditable(runtime.objectId(NSText, self)));
+        return runtime_support.fromBOOL(backend.NSTextMessages.isEditable(runtime_support.objectId(NSText, self)));
     }
 
     pub fn setEditable(self: Self, _editable: bool) void {
-        return backend.NSTextMessages.setEditable(runtime.objectId(NSText, self), runtime.toBOOL(_editable));
+        return backend.NSTextMessages.setEditable(runtime_support.objectId(NSText, self), runtime_support.toBOOL(_editable));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -101,7 +99,7 @@ pub const NSText = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSText,
                 NSView,
                 NSResponder,
@@ -110,7 +108,7 @@ pub const NSText = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSChangeSpelling,
                 NSIgnoreMisspelledWords,
             });
@@ -197,21 +195,21 @@ pub const NSTextDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSTextDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSTextDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSTextDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSTextDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSTextDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -221,8 +219,8 @@ pub const NSTextDelegate = struct {
                 return struct {
                     fn dispatchTextDidChange(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.textDidChange) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -244,7 +242,7 @@ pub const NSTextDelegate = struct {
             };
 
             pub const Handler = struct {
-                textDidChange: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                textDidChange: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
             };
         };
     }

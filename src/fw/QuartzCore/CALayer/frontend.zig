@@ -5,6 +5,7 @@ const coreGraphics = @import("CoreGraphics");
 const foundation = @import("Foundation");
 const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const CGColorRef = coreGraphics.CGColorRef;
 const NSCoding = foundation.NSCoding;
@@ -13,7 +14,6 @@ const CAMediaTiming = quartzCore.CAMediaTiming;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const CAAutoresizingMask = std.enums.EnumSet(enum(c_uint) {
     kCALayerMinXMargin = 1 << 0,
@@ -41,8 +41,6 @@ pub const CACornerMask = std.enums.EnumSet(enum(NSUInteger) {
 pub const CALayer = struct {
     pub const Self = @This();
 
-    var DelegateResolver: ?*ObjectResolver(CALayer) = null;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -50,19 +48,19 @@ pub const CALayer = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn backgroundColor(self: Self) ?CGColorRef {
-        return backend.CALayerMessages.backgroundColor(runtime.objectId(CALayer, self));
+        return backend.CALayerMessages.backgroundColor(runtime_support.objectId(CALayer, self));
     }
 
     pub fn setBackgroundColor(self: Self, _backgroundColor: ?CGColorRef) void {
-        return backend.CALayerMessages.setBackgroundColor(runtime.objectId(CALayer, self), runtime.pass(?CGColorRef, _backgroundColor));
+        return backend.CALayerMessages.setBackgroundColor(runtime_support.objectId(CALayer, self), runtime_support.pass(?CGColorRef, _backgroundColor));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -76,14 +74,14 @@ pub const CALayer = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 CALayer,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 CAMediaTiming,
                 NSSecureCoding,
                 NSCoding,

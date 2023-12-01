@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSPoint = CGPoint;
 pub const NSPointPointer = *NSPoint;

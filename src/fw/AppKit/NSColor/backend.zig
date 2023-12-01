@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const CGColorRef = coreGraphics.CGColorRef;
 const NSInteger = runtime.NSInteger;
@@ -763,7 +764,7 @@ pub const NSColorMessages = struct {
     }
 
     pub fn colorWithCGColor(_cgColor: CGColorRef) ?objc.Object {
-        return runtime.wrapOptionalObjectId(getClass().msgSend(objc.c.id, NSColorSelectors.colorWithCGColor(), .{
+        return runtime_support.wrapOptionalObjectId(getClass().msgSend(objc.c.id, NSColorSelectors.colorWithCGColor(), .{
             _cgColor,
         }));
     }

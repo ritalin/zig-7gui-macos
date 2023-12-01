@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSCoding = foundation.NSCoding;
 const NSObject = runtime.NSObject;
@@ -18,11 +19,11 @@ pub const NSResponder = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -36,14 +37,14 @@ pub const NSResponder = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSResponder,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSCoding,
             });
         }
@@ -63,21 +64,21 @@ pub const NSStandardKeyBindingResponding = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSStandardKeyBindingResponding", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSStandardKeyBindingResponding", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSStandardKeyBindingRespondingMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSStandardKeyBindingResponding.Protocol(ContextType).Dispatch(_delegate_handlers.handler_standard_key_binding_responding).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSStandardKeyBindingRespondingMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSStandardKeyBindingResponding, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSStandardKeyBindingResponding, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -87,7 +88,7 @@ pub const NSStandardKeyBindingResponding = struct {
                 return struct {
                     fn dispatchInsertTab(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertTab) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -98,7 +99,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertBacktab(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertBacktab) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -109,7 +110,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertNewline(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertNewline) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -120,7 +121,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertParagraphSeparator(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertParagraphSeparator) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -131,7 +132,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertNewlineIgnoringFieldEditor(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertNewlineIgnoringFieldEditor) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -142,7 +143,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertTabIgnoringFieldEditor(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertTabIgnoringFieldEditor) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -153,7 +154,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertLineBreak(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertLineBreak) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -164,7 +165,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertContainerBreak(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertContainerBreak) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -175,7 +176,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertSingleQuoteIgnoringSubstitution(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertSingleQuoteIgnoringSubstitution) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -186,7 +187,7 @@ pub const NSStandardKeyBindingResponding = struct {
 
                     fn dispatchInsertDoubleQuoteIgnoringSubstitution(_id: objc.c.id, _: objc.c.SEL, _sender: objc.c.id) void {
                         if (_delegate_handler.insertDoubleQuoteIgnoringSubstitution) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
                             var sender = objc.Object.fromId(_sender);
                             return handler(context, sender) catch {
                                 unreachable;
@@ -236,16 +237,16 @@ pub const NSStandardKeyBindingResponding = struct {
             };
 
             pub const Handler = struct {
-                insertTab: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertBacktab: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertNewline: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertParagraphSeparator: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertNewlineIgnoringFieldEditor: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertTabIgnoringFieldEditor: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertLineBreak: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertContainerBreak: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertSingleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
-                insertDoubleQuoteIgnoringSubstitution: ?(*const fn (context: *ContextType, _: ?objc.Object) anyerror!void) = null,
+                insertTab: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertBacktab: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertNewline: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertParagraphSeparator: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertNewlineIgnoringFieldEditor: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertTabIgnoringFieldEditor: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertLineBreak: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertContainerBreak: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertSingleQuoteIgnoringSubstitution: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
+                insertDoubleQuoteIgnoringSubstitution: ?*const fn (context: *ContextType, _: ?objc.Object) anyerror!void = null,
             };
         };
     }

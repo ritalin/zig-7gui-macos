@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSTextSelectors = struct {
     var _sel_string: ?objc.Sel = null;
@@ -64,17 +65,17 @@ pub const NSTextMessages = struct {
 
     pub fn setString(self: objc.Object, _string: objc.Object) void {
         return self.msgSend(void, NSTextSelectors.setString(), .{
-            runtime.unwrapOptionalObject(_string),
+            runtime_support.unwrapOptionalObject(_string),
         });
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSTextSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObject(_delegate),
+            runtime_support.unwrapOptionalObject(_delegate),
         });
     }
 
@@ -101,19 +102,19 @@ pub const NSTextDelegateSelectors = struct {
 };
 
 pub const NSTextDelegateMessages = struct {
-    pub const init = runtime.backend_support.newInstance;
-    pub const dealloc = runtime.backend_support.destroyInstance;
-    pub const registerMessage = runtime.backend_support.ObjectRegistry.registerMessage;
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
         }
         return class.?;
     }
 
-    pub fn registerTextDidChange(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
-        runtime.backend_support.ObjectRegistry.registerMessage(_class, "textDidChange:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
+    pub fn registerTextDidChange(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+        runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "textDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

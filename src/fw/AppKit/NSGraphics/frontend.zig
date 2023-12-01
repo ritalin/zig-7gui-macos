@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSColorSpaceName = NSString;
 pub const NSDeviceDescriptionKey = NSString;

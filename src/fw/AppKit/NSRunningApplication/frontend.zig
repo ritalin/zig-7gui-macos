@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
@@ -23,11 +24,11 @@ pub const NSRunningApplication = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -41,14 +42,14 @@ pub const NSRunningApplication = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSRunningApplication,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };

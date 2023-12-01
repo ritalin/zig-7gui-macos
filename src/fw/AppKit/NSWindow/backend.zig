@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSRect = foundation.NSRect;
 const NSUInteger = runtime.NSUInteger;
@@ -143,12 +144,12 @@ pub const NSWindowMessages = struct {
     }
 
     pub fn initWithContentRectStyleMaskBacking(_class: objc.Class, _contentRect: NSRect, _style: NSUInteger, _backingStoreType: NSUInteger, _flag: objc.c.BOOL, _screen: ?objc.Object) objc.Object {
-        return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSWindowSelectors.initWithContentRectStyleMaskBacking(), .{
+        return runtime_support.backend_support.allocInstance(_class).msgSend(objc.Object, NSWindowSelectors.initWithContentRectStyleMaskBacking(), .{
             _contentRect,
             _style,
             _backingStoreType,
             _flag,
-            runtime.unwrapOptionalObject(_screen),
+            runtime_support.unwrapOptionalObject(_screen),
         });
     }
 
@@ -158,38 +159,38 @@ pub const NSWindowMessages = struct {
 
     pub fn setTitle(self: objc.Object, _title: objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setTitle(), .{
-            runtime.unwrapOptionalObject(_title),
+            runtime_support.unwrapOptionalObject(_title),
         });
     }
 
     pub fn contentView(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.contentView(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.contentView(), .{}));
     }
 
     pub fn setContentView(self: objc.Object, _contentView: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setContentView(), .{
-            runtime.unwrapOptionalObject(_contentView),
+            runtime_support.unwrapOptionalObject(_contentView),
         });
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setDelegate(), .{
-            runtime.unwrapOptionalObject(_delegate),
+            runtime_support.unwrapOptionalObject(_delegate),
         });
     }
 
     pub fn makeFirstResponder(self: objc.Object, _responder: ?objc.Object) objc.c.BOOL {
         return self.msgSend(objc.c.BOOL, NSWindowSelectors.makeFirstResponder(), .{
-            runtime.unwrapOptionalObject(_responder),
+            runtime_support.unwrapOptionalObject(_responder),
         });
     }
 
     pub fn firstResponder(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.firstResponder(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSWindowSelectors.firstResponder(), .{}));
     }
 
     pub fn backgroundColor(self: objc.Object) objc.Object {
@@ -198,35 +199,35 @@ pub const NSWindowMessages = struct {
 
     pub fn setBackgroundColor(self: objc.Object, _backgroundColor: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setBackgroundColor(), .{
-            runtime.unwrapOptionalObject(_backgroundColor),
+            runtime_support.unwrapOptionalObject(_backgroundColor),
         });
     }
 
     pub fn makeKeyAndOrderFront(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.makeKeyAndOrderFront(), .{
-            runtime.unwrapOptionalObject(_sender),
+            runtime_support.unwrapOptionalObject(_sender),
         });
     }
 
     pub fn initialFirstResponder(_class: objc.Class) ?objc.Object {
-        return runtime.wrapOptionalObjectId(runtime.backend_support.allocInstance(_class).msgSend(objc.c.id, NSWindowSelectors.initialFirstResponder(), .{}));
+        return runtime_support.wrapOptionalObjectId(runtime_support.backend_support.allocInstance(_class).msgSend(objc.c.id, NSWindowSelectors.initialFirstResponder(), .{}));
     }
 
     pub fn setInitialFirstResponder(self: objc.Object, _initialFirstResponder: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.setInitialFirstResponder(), .{
-            runtime.unwrapOptionalObject(_initialFirstResponder),
+            runtime_support.unwrapOptionalObject(_initialFirstResponder),
         });
     }
 
     pub fn selectNextKeyView(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.selectNextKeyView(), .{
-            runtime.unwrapOptionalObject(_sender),
+            runtime_support.unwrapOptionalObject(_sender),
         });
     }
 
     pub fn selectPreviousKeyView(self: objc.Object, _sender: ?objc.Object) void {
         return self.msgSend(void, NSWindowSelectors.selectPreviousKeyView(), .{
-            runtime.unwrapOptionalObject(_sender),
+            runtime_support.unwrapOptionalObject(_sender),
         });
     }
 };
@@ -283,19 +284,19 @@ pub const NSWindowDelegateSelectors = struct {
 };
 
 pub const NSWindowDelegateMessages = struct {
-    pub const init = runtime.backend_support.newInstance;
-    pub const dealloc = runtime.backend_support.destroyInstance;
-    pub const registerMessage = runtime.backend_support.ObjectRegistry.registerMessage;
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
         }
         return class.?;
     }
 
-    pub fn registerWindowWillClose(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
-        runtime.backend_support.ObjectRegistry.registerMessage(_class, "windowWillClose:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
+    pub fn registerWindowWillClose(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+        runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "windowWillClose:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

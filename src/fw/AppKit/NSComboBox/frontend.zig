@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
@@ -29,12 +30,9 @@ const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSComboBox = struct {
     pub const Self = @This();
-
-    var DelegateResolver: ?*ObjectResolver(NSComboBox) = null;
 
     _id: objc.Object,
 
@@ -43,47 +41,47 @@ pub const NSComboBox = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn usesDataSource(self: Self) bool {
-        return runtime.fromBOOL(backend.NSComboBoxMessages.usesDataSource(runtime.objectId(NSComboBox, self)));
+        return runtime_support.fromBOOL(backend.NSComboBoxMessages.usesDataSource(runtime_support.objectId(NSComboBox, self)));
     }
 
     pub fn setUsesDataSource(self: Self, _usesDataSource: bool) void {
-        return backend.NSComboBoxMessages.setUsesDataSource(runtime.objectId(NSComboBox, self), runtime.toBOOL(_usesDataSource));
+        return backend.NSComboBoxMessages.setUsesDataSource(runtime_support.objectId(NSComboBox, self), runtime_support.toBOOL(_usesDataSource));
     }
 
     pub fn selectItemAtIndex(self: Self, _index: NSInteger) void {
-        return backend.NSComboBoxMessages.selectItemAtIndex(runtime.objectId(NSComboBox, self), runtime.pass(NSInteger, _index));
+        return backend.NSComboBoxMessages.selectItemAtIndex(runtime_support.objectId(NSComboBox, self), runtime_support.pass(NSInteger, _index));
     }
 
     pub fn deselectItemAtIndex(self: Self, _index: NSInteger) void {
-        return backend.NSComboBoxMessages.deselectItemAtIndex(runtime.objectId(NSComboBox, self), runtime.pass(NSInteger, _index));
+        return backend.NSComboBoxMessages.deselectItemAtIndex(runtime_support.objectId(NSComboBox, self), runtime_support.pass(NSInteger, _index));
     }
 
     pub fn indexOfSelectedItem(self: Self) NSInteger {
-        return backend.NSComboBoxMessages.indexOfSelectedItem(runtime.objectId(NSComboBox, self));
+        return backend.NSComboBoxMessages.indexOfSelectedItem(runtime_support.objectId(NSComboBox, self));
     }
 
     pub fn delegate(self: Self) ?NSComboBoxDelegate {
-        return runtime.wrapObject(?NSComboBoxDelegate, backend.NSComboBoxMessages.delegate(runtime.objectId(NSComboBox, self)));
+        return runtime_support.wrapObject(?NSComboBoxDelegate, backend.NSComboBoxMessages.delegate(runtime_support.objectId(NSComboBox, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSComboBoxDelegate) void {
-        return backend.NSComboBoxMessages.setDelegate(runtime.objectId(NSComboBox, self), runtime.objectId(?NSComboBoxDelegate, _delegate));
+        return backend.NSComboBoxMessages.setDelegate(runtime_support.objectId(NSComboBox, self), runtime_support.objectId(?NSComboBoxDelegate, _delegate));
     }
 
     pub fn dataSource(self: Self) ?NSComboBoxDataSource {
-        return runtime.wrapObject(?NSComboBoxDataSource, backend.NSComboBoxMessages.dataSource(runtime.objectId(NSComboBox, self)));
+        return runtime_support.wrapObject(?NSComboBoxDataSource, backend.NSComboBoxMessages.dataSource(runtime_support.objectId(NSComboBox, self)));
     }
 
     pub fn setDataSource(self: Self, _dataSource: ?NSComboBoxDataSource) void {
-        return backend.NSComboBoxMessages.setDataSource(runtime.objectId(NSComboBox, self), runtime.objectId(?NSComboBoxDataSource, _dataSource));
+        return backend.NSComboBoxMessages.setDataSource(runtime_support.objectId(NSComboBox, self), runtime_support.objectId(?NSComboBoxDataSource, _dataSource));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -97,7 +95,7 @@ pub const NSComboBox = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSComboBox,
                 NSTextField,
                 NSControl,
@@ -108,7 +106,7 @@ pub const NSComboBox = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };
@@ -126,21 +124,21 @@ pub const NSComboBoxDataSource = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSComboBoxDataSource", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDataSource", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSComboBoxDataSourceMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSComboBoxDataSource.Protocol(ContextType).Dispatch(_delegate_handlers.handler_combo_box_data_source).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSComboBoxDataSourceMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSComboBoxDataSource, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSComboBoxDataSource, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -150,8 +148,8 @@ pub const NSComboBoxDataSource = struct {
                 return struct {
                     fn dispatchNumberOfItemsInComboBox(_id: objc.c.id, _: objc.c.SEL, _comboBox: objc.c.id) NSInteger {
                         if (_delegate_handler.numberOfItemsInComboBox) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var comboBox = runtime.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var comboBox = runtime_support.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
                             return handler(context, comboBox) catch {
                                 unreachable;
                             };
@@ -161,9 +159,9 @@ pub const NSComboBoxDataSource = struct {
 
                     fn dispatchComboBoxObjectValueForItemAtIndex(_id: objc.c.id, _: objc.c.SEL, _comboBox: objc.c.id, _index: NSInteger) objc.c.id {
                         if (_delegate_handler.comboBoxObjectValueForItemAtIndex) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var comboBox = runtime.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
-                            return runtime.unwrapOptionalObject(handler(context, comboBox, _index) catch {
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var comboBox = runtime_support.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
+                            return runtime_support.unwrapOptionalObject(handler(context, comboBox, _index) catch {
                                 unreachable;
                             });
                         }
@@ -172,9 +170,9 @@ pub const NSComboBoxDataSource = struct {
 
                     fn dispatchComboBoxIndexOfItemWithStringValue(_id: objc.c.id, _: objc.c.SEL, _comboBox: objc.c.id, _string: objc.c.id) NSUInteger {
                         if (_delegate_handler.comboBoxIndexOfItemWithStringValue) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var comboBox = runtime.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
-                            var string = runtime.wrapObject(NSString, objc.Object.fromId(_string));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var comboBox = runtime_support.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
+                            var string = runtime_support.wrapObject(NSString, objc.Object.fromId(_string));
                             return handler(context, comboBox, string) catch {
                                 unreachable;
                             };
@@ -184,10 +182,10 @@ pub const NSComboBoxDataSource = struct {
 
                     fn dispatchComboBoxCompletedString(_id: objc.c.id, _: objc.c.SEL, _comboBox: objc.c.id, _string: objc.c.id) objc.c.id {
                         if (_delegate_handler.comboBoxCompletedString) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var comboBox = runtime.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
-                            var string = runtime.wrapObject(NSString, objc.Object.fromId(_string));
-                            return runtime.unwrapOptionalObject(?NSString, handler(context, comboBox, string) catch {
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var comboBox = runtime_support.wrapObject(NSComboBox, objc.Object.fromId(_comboBox));
+                            var string = runtime_support.wrapObject(NSString, objc.Object.fromId(_string));
+                            return runtime_support.unwrapOptionalObject(?NSString, handler(context, comboBox, string) catch {
                                 unreachable;
                             });
                         }
@@ -217,10 +215,10 @@ pub const NSComboBoxDataSource = struct {
             };
 
             pub const Handler = struct {
-                numberOfItemsInComboBox: ?(*const fn (context: *ContextType, _: NSComboBox) anyerror!NSInteger) = null,
-                comboBoxObjectValueForItemAtIndex: ?(*const fn (context: *ContextType, _: NSComboBox, _: NSInteger) anyerror!?objc.Object) = null,
-                comboBoxIndexOfItemWithStringValue: ?(*const fn (context: *ContextType, _: NSComboBox, _: NSString) anyerror!NSUInteger) = null,
-                comboBoxCompletedString: ?(*const fn (context: *ContextType, _: NSComboBox, _: NSString) anyerror!?NSString) = null,
+                numberOfItemsInComboBox: ?*const fn (context: *ContextType, _: NSComboBox) anyerror!NSInteger = null,
+                comboBoxObjectValueForItemAtIndex: ?*const fn (context: *ContextType, _: NSComboBox, _: NSInteger) anyerror!?objc.Object = null,
+                comboBoxIndexOfItemWithStringValue: ?*const fn (context: *ContextType, _: NSComboBox, _: NSString) anyerror!NSUInteger = null,
+                comboBoxCompletedString: ?*const fn (context: *ContextType, _: NSComboBox, _: NSString) anyerror!?NSString = null,
             };
         };
     }
@@ -239,23 +237,23 @@ pub const NSComboBoxDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSComboBoxDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSComboBoxDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSComboBoxDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_combo_box_delegate).initClass(class);
                             NSTextFieldDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_field_delegate).initClass(class);
                             NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSComboBoxDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSComboBoxDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSComboBoxDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -265,8 +263,8 @@ pub const NSComboBoxDelegate = struct {
                 return struct {
                     fn dispatchComboBoxSelectionDidChange(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.comboBoxSelectionDidChange) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -290,7 +288,7 @@ pub const NSComboBoxDelegate = struct {
             };
 
             pub const Handler = struct {
-                comboBoxSelectionDidChange: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                comboBoxSelectionDidChange: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
             };
         };
     }

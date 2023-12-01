@@ -3,6 +3,7 @@ const objc = @import("objc");
 const runtime = @import("Runtime");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
+const runtime_support = @import("Runtime-Support");
 const appKit_support = @import("AppKit-Support");
 
 const AppContext = appKit_support.ApplicationContext(TempConvContext);
@@ -13,8 +14,8 @@ const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(
             .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
             .applicationDidFinishLaunching = TempConvContext.handleDidFinishLaunching,
         },
-    }, 
-    runtime.identity_seed.FixValueSeed("a4e1c7ee-f5e8-46f4-9caa-733f9754f00b"),
+    },
+    runtime_support.identity_seed.FixValueSeed("a4e1c7ee-f5e8-46f4-9caa-733f9754f00b"),
 );
 
 // const WindowDelegate = appKit.NSWindowDelegate.Protocol(TempConvContext).Derive(
@@ -22,7 +23,7 @@ const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(
 //         .handler_window_delegate = .{
 //             .windowWillClose = TempConvContext.handleWindowWillClose,
 //         },
-//     }, 
+//     },
 //     runtime.identity_seed.FixValueSeed("Default")
 // );
 
@@ -65,18 +66,17 @@ const TempConvContext = struct {
             else => {
                 std.debug.print("Debug: Celcius temp > unexpected error occured ({}).\n", .{(err)});
                 return;
-            }
+            },
         };
 
-        var temp_to = 
-            if (temp_from) |value| temp: {
-                var new_value = value * (9.0/5.0) + 32.0;
-                break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
-            }
-            else temp: {
-                break :temp try context.allocator.dupeZ(u8, "");
-            }
-        ;
+        var temp_to =
+            if (temp_from) |value|
+        temp: {
+            var new_value = value * (9.0 / 5.0) + 32.0;
+            break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
+        } else temp: {
+            break :temp try context.allocator.dupeZ(u8, "");
+        };
         defer context.allocator.free(temp_to);
 
         updateTemperature(context.values.text_fahrenheit, temp_to);
@@ -96,31 +96,29 @@ const TempConvContext = struct {
             else => {
                 std.debug.print("Debug: Celcius temp > unexpected error occured ({}).\n", .{(err)});
                 return;
-            }
+            },
         };
 
-        var temp_to = 
-            if (temp_from) |value| temp: {
-                var new_value = (value - 32.0) * (5.0/9.0);
-                break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
-            }
-            else temp: {
-                break :temp try context.allocator.dupeZ(u8, "");
-            }
-        ;
+        var temp_to =
+            if (temp_from) |value|
+        temp: {
+            var new_value = (value - 32.0) * (5.0 / 9.0);
+            break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
+        } else temp: {
+            break :temp try context.allocator.dupeZ(u8, "");
+        };
         defer context.allocator.free(temp_to);
 
         updateTemperature(context.values.text_celcius, temp_to);
     }
 
-    const TemperatureError = error { InvalidValue };
+    const TemperatureError = error{InvalidValue};
 
-    fn readTemperature(text_view: appKit.NSTextView) (std.fmt.ParseIntError||TemperatureError)!?f32 {
+    fn readTemperature(text_view: appKit.NSTextView) (std.fmt.ParseIntError || TemperatureError)!?f32 {
         if (text_view.textStorage()) |storage| {
             var s0 = storage
                 .as(foundation.NSAttributedString).string()
-                .as(foundation.NSString.ExtensionMethods).utf8String()
-            ;
+                .as(foundation.NSString.ExtensionMethods).utf8String();
             if (s0 == null) return null;
 
             if (s0) |x| {
@@ -149,7 +147,7 @@ const TempConvContext = struct {
     fn handleTabStop(context: *TempConvContext, _textView: appKit.NSTextView, _commandSelector: objc.Sel) !bool {
         _ = _textView;
 
-        if(std.meta.eql(_commandSelector, appKit.NSStandardKeyBindingRespondingSelectors.insertTab())) {
+        if (std.meta.eql(_commandSelector, appKit.NSStandardKeyBindingRespondingSelectors.insertTab())) {
             context.values.window.selectNextKeyView(null);
             return true;
         }
@@ -169,42 +167,41 @@ const TempConvContext = struct {
 const ToFahrenheitDelegate =
     appKit.NSTextViewDelegate.Protocol(TempConvContext).Derive(
     // appKit.NSTextDelegate.Protocol(TempConvContext).Derive(
-        .{
-            .handler_text_view_delegate = .{
-                .textViewDoCommandBySelector = TempConvContext.handleTabStop,
-            },
-            .handler_text_delegate = .{
-                .textDidChange = TempConvContext.toFahrenheitTemperature,
-            }, 
+    .{
+        .handler_text_view_delegate = .{
+            .textViewDoCommandBySelector = TempConvContext.handleTabStop,
         },
-        runtime.identity_seed.FixValueSeed("0631ee4b-fdcd-4efe-999d-61f7aefd2798"),
-    );
+        .handler_text_delegate = .{
+            .textDidChange = TempConvContext.toFahrenheitTemperature,
+        },
+    },
+    runtime_support.identity_seed.FixValueSeed("0631ee4b-fdcd-4efe-999d-61f7aefd2798"),
+);
 
 const ToCelciusDelegate =
     appKit.NSTextViewDelegate.Protocol(TempConvContext).Derive(
     // appKit.NSTextDelegate.Protocol(TempConvContext).Derive(
-        .{
-            .handler_text_view_delegate = .{
-                .textViewDoCommandBySelector = TempConvContext.handleTabStop,
-            },
-            .handler_text_delegate = .{
-                .textDidChange = TempConvContext.toCelciusTemperature,
-            },
-        }, 
-        runtime.identity_seed.FixValueSeed("570c2bb9-a451-43cf-93e3-800fbf883e9b"),
-    );
+    .{
+        .handler_text_view_delegate = .{
+            .textViewDoCommandBySelector = TempConvContext.handleTabStop,
+        },
+        .handler_text_delegate = .{
+            .textDidChange = TempConvContext.toCelciusTemperature,
+        },
+    },
+    runtime_support.identity_seed.FixValueSeed("570c2bb9-a451-43cf-93e3-800fbf883e9b"),
+);
 
 fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
     var center: foundation.NSPoint =
-        if (appKit.NSScreen.mainScreen()) |screen| origin: {
-            var desktop_rect = screen.visibleFrame();
+        if (appKit.NSScreen.mainScreen()) |screen|
+    origin: {
+        var desktop_rect = screen.visibleFrame();
 
-            break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-        } 
-        else origin: {
-            break :origin .{ .x = 50, .y = 50 };
-        }
-    ;
+        break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+    } else origin: {
+        break :origin .{ .x = 50, .y = 50 };
+    };
     const window_size: foundation.NSSize = .{ .width = 300, .height = 48 };
 
     var rect = foundation.NSRect{
@@ -227,7 +224,6 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.
         .window = w,
         .text_celcius = undefined,
         .text_fahrenheit = undefined,
-        
     };
 
     if (w.contentView()) |root| {

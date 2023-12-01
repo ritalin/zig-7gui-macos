@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const CGColorRef = coreGraphics.CGColorRef;
 

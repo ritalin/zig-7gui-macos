@@ -27,12 +27,21 @@ pub fn build(b: *std.Build) !void {
         .{ .name = "objc", .module = mod_objc },
     } });
     try mod_runtime.dependencies.put("Runtime", mod_runtime);
+
+    const mod_runtime_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/RuntimeSupport.zig" }, .dependencies = &.{
+        .{ .name = "objc", .module = mod_objc },
+        .{ .name = "Runtime", .module = mod_runtime },
+    } });
+    try mod_runtime_support.dependencies.put("Runtime-Support", mod_runtime_support);
+    try mod_runtime.dependencies.put("Runtime-Support", mod_runtime_support);
+
     // QuartzCore.framework (referencing from AppKit.framework)
     const mod_quartz = b.createModule(.{
         .source_file = .{ .path = "src/fw/QuartzCore.zig" },
         .dependencies = &.{
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
+            .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
     try mod_quartz.dependencies.put("QuartzCore", mod_quartz);
@@ -43,6 +52,7 @@ pub fn build(b: *std.Build) !void {
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "QuartzCore", .module = mod_quartz },
+            .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
     try mod_coreGraphics.dependencies.put("CoreGraphics", mod_coreGraphics);
@@ -56,6 +66,7 @@ pub fn build(b: *std.Build) !void {
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "CoreGraphics", .module = mod_coreGraphics },
+            .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
     try mod_foundation.dependencies.put("Foundation", mod_foundation);
@@ -70,19 +81,18 @@ pub fn build(b: *std.Build) !void {
             .{ .name = "Foundation", .module = mod_foundation },
             .{ .name = "QuartzCore", .module = mod_quartz },
             .{ .name = "CoreGraphics", .module = mod_coreGraphics },
+            .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
     try mod_appKit.dependencies.put("AppKit", mod_appKit);
 
     // AppKit support package (event handling, etc..)
-    const mod_appKit_support = b.createModule(.{
-        .source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" },
-        .dependencies = &.{
-            .{ .name = "objc", .module = mod_objc },
-            .{ .name = "Runtime", .module = mod_runtime },
-            .{ .name = "AppKit", .module = mod_appKit },
-        }
-    });
+    const mod_appKit_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" }, .dependencies = &.{
+        .{ .name = "objc", .module = mod_objc },
+        .{ .name = "Runtime", .module = mod_runtime },
+        .{ .name = "AppKit", .module = mod_appKit },
+        .{ .name = "Runtime-Support", .module = mod_runtime_support },
+    } });
 
     const dep_time = b.dependency("time", .{
         .target = target,
@@ -97,9 +107,9 @@ pub fn build(b: *std.Build) !void {
     const mod_time_parser = dep_time_parser.module("time-parser");
 
     const examples = std.ComptimeStringMap([]const u8, .{
-        .{"counter", "src/examples/01_counter/main.zig"},
-        .{"temp_conv", "src/examples/02_temp_conv/main.zig"},
-        .{"book_flight", "src/examples/03_book_flight/main.zig"},
+        .{ "counter", "src/examples/01_counter/main.zig" },
+        .{ "temp_conv", "src/examples/02_temp_conv/main.zig" },
+        .{ "book_flight", "src/examples/03_book_flight/main.zig" },
     });
 
     // create example step
@@ -120,6 +130,7 @@ pub fn build(b: *std.Build) !void {
         exe.addModule("CoreGraphics", mod_coreGraphics);
         exe.addModule("Foundation", mod_foundation);
         exe.addModule("AppKit", mod_appKit);
+        exe.addModule("Runtime-Support", mod_runtime_support);
         exe.addModule("AppKit-Support", mod_appKit_support);
 
         exe.addModule("time", mod_time);

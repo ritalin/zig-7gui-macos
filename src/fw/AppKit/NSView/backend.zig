@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSPoint = foundation.NSPoint;
 const NSRect = foundation.NSRect;
@@ -104,18 +105,18 @@ pub const NSViewMessages = struct {
     }
 
     pub fn initWithFrame(_class: objc.Class, _frameRect: NSRect) objc.Object {
-        return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSViewSelectors.initWithFrame(), .{
+        return runtime_support.backend_support.allocInstance(_class).msgSend(objc.Object, NSViewSelectors.initWithFrame(), .{
             _frameRect,
         });
     }
 
     pub fn superview(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSViewSelectors.superview(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSViewSelectors.superview(), .{}));
     }
 
     pub fn addSubview(self: objc.Object, _view: objc.Object) void {
         return self.msgSend(void, NSViewSelectors.addSubview(), .{
-            runtime.unwrapOptionalObject(_view),
+            runtime_support.unwrapOptionalObject(_view),
         });
     }
 
@@ -157,7 +158,7 @@ pub const NSViewMessages = struct {
 
     pub fn setLayer(self: objc.Object, _layer: objc.Object) void {
         return self.msgSend(void, NSViewSelectors.setLayer(), .{
-            runtime.unwrapOptionalObject(_layer),
+            runtime_support.unwrapOptionalObject(_layer),
         });
     }
 };

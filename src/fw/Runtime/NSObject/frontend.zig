@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSObject = struct {
     pub const Self = @This();
@@ -13,22 +14,22 @@ pub const NSObject = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn dealloc(self: Self) void {
-        return backend.NSObjectMessages.dealloc(runtime.objectId(NSObject, self));
+        return backend.NSObjectMessages.dealloc(runtime_support.objectId(NSObject, self));
     }
 
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn init() DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSObjectMessages.init(_class));
+                return runtime_support.wrapObject(DesiredType, backend.NSObjectMessages.init(_class));
             }
         };
     }
@@ -39,13 +40,13 @@ pub const NSObject = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSObjectProtocol,
             });
         }
@@ -65,20 +66,20 @@ pub const NSObjectProtocol = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSObjectProtocol", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSObjectProtocol", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSObjectProtocolMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSObjectProtocolMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSObjectProtocol, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSObjectProtocol, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };

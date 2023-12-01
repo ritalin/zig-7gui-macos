@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSPasteboardTypeFindPanelSearchOptionKey = NSString;
 const NSAccessibility = appKit.NSAccessibility;
@@ -49,15 +50,15 @@ pub const NSTextView = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn textStorage(self: Self) ?NSTextStorage {
-        return runtime.wrapObject(?NSTextStorage, backend.NSTextViewMessages.textStorage(runtime.objectId(NSTextView, self)));
+        return runtime_support.wrapObject(?NSTextStorage, backend.NSTextViewMessages.textStorage(runtime_support.objectId(NSTextView, self)));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -71,7 +72,7 @@ pub const NSTextView = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSTextView,
                 NSText,
                 NSView,
@@ -81,7 +82,7 @@ pub const NSTextView = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSAccessibilityNavigableStaticText,
                 NSColorChanging,
                 NSDraggingSource,
@@ -107,23 +108,23 @@ const NSSharingForNSTextView = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     pub fn delegate(self: Category) ?NSTextViewDelegate {
-        return runtime.wrapObject(?NSTextViewDelegate, backend.NSSharingForNSTextViewMessages.delegate(runtime.objectId(NSSharingForNSTextView, self)));
+        return runtime_support.wrapObject(?NSTextViewDelegate, backend.NSSharingForNSTextViewMessages.delegate(runtime_support.objectId(NSSharingForNSTextView, self)));
     }
 
     pub fn setDelegate(self: Category, _delegate: ?NSTextViewDelegate) void {
-        return backend.NSSharingForNSTextViewMessages.setDelegate(runtime.objectId(NSSharingForNSTextView, self), runtime.objectId(?NSTextViewDelegate, _delegate));
+        return backend.NSSharingForNSTextViewMessages.setDelegate(runtime_support.objectId(NSSharingForNSTextView, self), runtime_support.objectId(?NSTextViewDelegate, _delegate));
     }
 
     pub fn isEditable(self: Category) bool {
-        return runtime.fromBOOL(backend.NSSharingForNSTextViewMessages.isEditable(runtime.objectId(NSSharingForNSTextView, self)));
+        return runtime_support.fromBOOL(backend.NSSharingForNSTextViewMessages.isEditable(runtime_support.objectId(NSSharingForNSTextView, self)));
     }
 
     pub fn setEditable(self: Category, _editable: bool) void {
-        return backend.NSSharingForNSTextViewMessages.setEditable(runtime.objectId(NSSharingForNSTextView, self), runtime.toBOOL(_editable));
+        return backend.NSSharingForNSTextViewMessages.setEditable(runtime_support.objectId(NSSharingForNSTextView, self), runtime_support.toBOOL(_editable));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -222,22 +223,22 @@ pub const NSTextViewDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSTextViewDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextViewDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSTextViewDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextViewDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_view_delegate).initClass(class);
                             NSTextDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSTextViewDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSTextViewDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSTextViewDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -247,10 +248,10 @@ pub const NSTextViewDelegate = struct {
                 return struct {
                     fn dispatchTextViewDoCommandBySelector(_id: objc.c.id, _: objc.c.SEL, _textView: objc.c.id, _commandSelector: objc.c.SEL) objc.c.BOOL {
                         if (_delegate_handler.textViewDoCommandBySelector) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var textView = runtime.wrapObject(NSTextView, objc.Object.fromId(_textView));
-                            var commandSelector = runtime.wrapSelector(_commandSelector);
-                            return runtime.toBOOL(handler(context, textView, commandSelector) catch {
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var textView = runtime_support.wrapObject(NSTextView, objc.Object.fromId(_textView));
+                            var commandSelector = runtime_support.wrapSelector(_commandSelector);
+                            return runtime_support.toBOOL(handler(context, textView, commandSelector) catch {
                                 unreachable;
                             });
                         }
@@ -272,7 +273,7 @@ pub const NSTextViewDelegate = struct {
             };
 
             pub const Handler = struct {
-                textViewDoCommandBySelector: ?(*const fn (context: *ContextType, _: NSTextView, _: objc.Sel) anyerror!bool) = null,
+                textViewDoCommandBySelector: ?*const fn (context: *ContextType, _: NSTextView, _: objc.Sel) anyerror!bool = null,
             };
         };
     }

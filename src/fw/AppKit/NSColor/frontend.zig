@@ -5,6 +5,7 @@ const appKit = @import("AppKit");
 const coreGraphics = @import("CoreGraphics");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSAppKitVersion = appKit.NSAppKitVersion;
 const NSPasteboardReading = appKit.NSPasteboardReading;
@@ -30,263 +31,263 @@ pub const NSColor = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn @"type"(self: Self) NSColorType {
-        return runtime.toEnum(NSColorType, backend.NSColorMessages.type(runtime.objectId(NSColor, self)));
+        return runtime_support.toEnum(NSColorType, backend.NSColorMessages.type(runtime_support.objectId(NSColor, self)));
     }
 
     pub fn blackColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.blackColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.blackColor());
     }
 
     pub fn darkGrayColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.darkGrayColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.darkGrayColor());
     }
 
     pub fn lightGrayColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.lightGrayColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.lightGrayColor());
     }
 
     pub fn whiteColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.whiteColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.whiteColor());
     }
 
     pub fn grayColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.grayColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.grayColor());
     }
 
     pub fn redColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.redColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.redColor());
     }
 
     pub fn greenColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.greenColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.greenColor());
     }
 
     pub fn blueColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.blueColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.blueColor());
     }
 
     pub fn cyanColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.cyanColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.cyanColor());
     }
 
     pub fn yellowColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.yellowColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.yellowColor());
     }
 
     pub fn magentaColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.magentaColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.magentaColor());
     }
 
     pub fn orangeColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.orangeColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.orangeColor());
     }
 
     pub fn purpleColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.purpleColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.purpleColor());
     }
 
     pub fn brownColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.brownColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.brownColor());
     }
 
     pub fn clearColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.clearColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.clearColor());
     }
 
     pub fn labelColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.labelColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.labelColor());
     }
 
     pub fn secondaryLabelColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.secondaryLabelColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.secondaryLabelColor());
     }
 
     pub fn tertiaryLabelColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.tertiaryLabelColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.tertiaryLabelColor());
     }
 
     pub fn quaternaryLabelColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.quaternaryLabelColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.quaternaryLabelColor());
     }
 
     pub fn linkColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.linkColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.linkColor());
     }
 
     pub fn placeholderTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.placeholderTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.placeholderTextColor());
     }
 
     pub fn windowFrameTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.windowFrameTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.windowFrameTextColor());
     }
 
     pub fn selectedMenuItemTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedMenuItemTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedMenuItemTextColor());
     }
 
     pub fn alternateSelectedControlTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.alternateSelectedControlTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.alternateSelectedControlTextColor());
     }
 
     pub fn headerTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.headerTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.headerTextColor());
     }
 
     pub fn separatorColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.separatorColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.separatorColor());
     }
 
     pub fn gridColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.gridColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.gridColor());
     }
 
     pub fn windowBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.windowBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.windowBackgroundColor());
     }
 
     pub fn underPageBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.underPageBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.underPageBackgroundColor());
     }
 
     pub fn controlBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.controlBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.controlBackgroundColor());
     }
 
     pub fn selectedContentBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedContentBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedContentBackgroundColor());
     }
 
     pub fn unemphasizedSelectedContentBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedContentBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedContentBackgroundColor());
     }
 
     pub fn findHighlightColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.findHighlightColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.findHighlightColor());
     }
 
     pub fn textColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.textColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.textColor());
     }
 
     pub fn textBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.textBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.textBackgroundColor());
     }
 
     pub fn selectedTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedTextColor());
     }
 
     pub fn selectedTextBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedTextBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedTextBackgroundColor());
     }
 
     pub fn unemphasizedSelectedTextBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedTextBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedTextBackgroundColor());
     }
 
     pub fn unemphasizedSelectedTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.unemphasizedSelectedTextColor());
     }
 
     pub fn controlColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.controlColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.controlColor());
     }
 
     pub fn controlTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.controlTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.controlTextColor());
     }
 
     pub fn selectedControlColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedControlColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedControlColor());
     }
 
     pub fn selectedControlTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.selectedControlTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.selectedControlTextColor());
     }
 
     pub fn disabledControlTextColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.disabledControlTextColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.disabledControlTextColor());
     }
 
     pub fn keyboardFocusIndicatorColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.keyboardFocusIndicatorColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.keyboardFocusIndicatorColor());
     }
 
     pub fn scrubberTexturedBackgroundColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.scrubberTexturedBackgroundColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.scrubberTexturedBackgroundColor());
     }
 
     pub fn systemRedColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemRedColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemRedColor());
     }
 
     pub fn systemGreenColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemGreenColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemGreenColor());
     }
 
     pub fn systemBlueColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemBlueColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemBlueColor());
     }
 
     pub fn systemOrangeColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemOrangeColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemOrangeColor());
     }
 
     pub fn systemYellowColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemYellowColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemYellowColor());
     }
 
     pub fn systemBrownColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemBrownColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemBrownColor());
     }
 
     pub fn systemPinkColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemPinkColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemPinkColor());
     }
 
     pub fn systemPurpleColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemPurpleColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemPurpleColor());
     }
 
     pub fn systemGrayColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemGrayColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemGrayColor());
     }
 
     pub fn systemTealColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemTealColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemTealColor());
     }
 
     pub fn systemIndigoColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.systemIndigoColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.systemIndigoColor());
     }
 
     pub fn controlAccentColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.controlAccentColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.controlAccentColor());
     }
 
     pub fn highlightColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.highlightColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.highlightColor());
     }
 
     pub fn shadowColor() NSColor {
-        return runtime.wrapObject(NSColor, backend.NSColorMessages.shadowColor());
+        return runtime_support.wrapObject(NSColor, backend.NSColorMessages.shadowColor());
     }
 
     pub fn colorWithCGColor(_cgColor: CGColorRef) ?NSColor {
-        return runtime.wrapObject(?NSColor, backend.NSColorMessages.colorWithCGColor(runtime.pass(CGColorRef, _cgColor)));
+        return runtime_support.wrapObject(?NSColor, backend.NSColorMessages.colorWithCGColor(runtime_support.pass(CGColorRef, _cgColor)));
     }
 
     pub fn cgColor(self: Self) CGColorRef {
-        return backend.NSColorMessages.cgColor(runtime.objectId(NSColor, self));
+        return backend.NSColorMessages.cgColor(runtime_support.objectId(NSColor, self));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -300,14 +301,14 @@ pub const NSColor = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSColor,
                 NSObject,
             });
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSCopying,
                 NSPasteboardReading,
                 NSPasteboardWriting,

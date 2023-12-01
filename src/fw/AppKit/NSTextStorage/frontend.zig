@@ -3,6 +3,7 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSTextStorageEditedOptions = NSUInteger;
 const NSAttributedString = foundation.NSAttributedString;
@@ -15,7 +16,6 @@ const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSTextStorageEditActions = std.enums.EnumSet(enum(NSUInteger) {
     EditedAttributes = (1 << 0),
@@ -25,8 +25,6 @@ pub const NSTextStorageEditActions = std.enums.EnumSet(enum(NSUInteger) {
 pub const NSTextStorage = struct {
     pub const Self = @This();
 
-    var DelegateResolver: ?*ObjectResolver(NSTextStorage) = null;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -34,11 +32,11 @@ pub const NSTextStorage = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -52,7 +50,7 @@ pub const NSTextStorage = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSTextStorage,
                 NSMutableAttributedString,
                 NSAttributedString,
@@ -61,7 +59,7 @@ pub const NSTextStorage = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSSecureCoding,
                 NSCoding,
             });

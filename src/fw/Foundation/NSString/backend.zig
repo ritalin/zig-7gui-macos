@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const unichar = c_ushort;
 const NSUInteger = runtime.NSUInteger;
@@ -117,7 +118,7 @@ pub const NSStringExtensionMethodsForNSStringMessages = struct {
     }
 
     pub fn initWithUTF8String(_class: objc.Class, _nullTerminatedCString: [*c]const u8) ?objc.Object {
-        return runtime.wrapOptionalObjectId(runtime.backend_support.allocInstance(_class).msgSend(objc.c.id, NSStringExtensionMethodsForNSStringSelectors.initWithUTF8String(), .{
+        return runtime_support.wrapOptionalObjectId(runtime_support.backend_support.allocInstance(_class).msgSend(objc.c.id, NSStringExtensionMethodsForNSStringSelectors.initWithUTF8String(), .{
             _nullTerminatedCString,
         }));
     }

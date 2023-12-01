@@ -5,6 +5,7 @@ const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSTrackingRectTag = NSInteger;
 pub const NSToolTipTag = NSInteger;
@@ -49,58 +50,58 @@ pub const NSView = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn superview(self: Self) ?NSView {
-        return runtime.wrapObject(?NSView, backend.NSViewMessages.superview(runtime.objectId(NSView, self)));
+        return runtime_support.wrapObject(?NSView, backend.NSViewMessages.superview(runtime_support.objectId(NSView, self)));
     }
 
     pub fn addSubview(self: Self, _view: NSView) void {
-        return backend.NSViewMessages.addSubview(runtime.objectId(NSView, self), runtime.objectId(NSView, _view));
+        return backend.NSViewMessages.addSubview(runtime_support.objectId(NSView, self), runtime_support.objectId(NSView, _view));
     }
 
     pub fn setFrameOrigin(self: Self, _newOrigin: NSPoint) void {
-        return backend.NSViewMessages.setFrameOrigin(runtime.objectId(NSView, self), runtime.pass(NSPoint, _newOrigin));
+        return backend.NSViewMessages.setFrameOrigin(runtime_support.objectId(NSView, self), runtime_support.pass(NSPoint, _newOrigin));
     }
 
     pub fn setFrameSize(self: Self, _newSize: NSSize) void {
-        return backend.NSViewMessages.setFrameSize(runtime.objectId(NSView, self), runtime.pass(NSSize, _newSize));
+        return backend.NSViewMessages.setFrameSize(runtime_support.objectId(NSView, self), runtime_support.pass(NSSize, _newSize));
     }
 
     pub fn frame(self: Self) NSRect {
-        return backend.NSViewMessages.frame(runtime.objectId(NSView, self));
+        return backend.NSViewMessages.frame(runtime_support.objectId(NSView, self));
     }
 
     pub fn setFrame(self: Self, _frame: NSRect) void {
-        return backend.NSViewMessages.setFrame(runtime.objectId(NSView, self), runtime.pass(NSRect, _frame));
+        return backend.NSViewMessages.setFrame(runtime_support.objectId(NSView, self), runtime_support.pass(NSRect, _frame));
     }
 
     pub fn wantsLayer(self: Self) bool {
-        return runtime.fromBOOL(backend.NSViewMessages.wantsLayer(runtime.objectId(NSView, self)));
+        return runtime_support.fromBOOL(backend.NSViewMessages.wantsLayer(runtime_support.objectId(NSView, self)));
     }
 
     pub fn setWantsLayer(self: Self, _wantsLayer: bool) void {
-        return backend.NSViewMessages.setWantsLayer(runtime.objectId(NSView, self), runtime.toBOOL(_wantsLayer));
+        return backend.NSViewMessages.setWantsLayer(runtime_support.objectId(NSView, self), runtime_support.toBOOL(_wantsLayer));
     }
 
     pub fn layer(self: Self) CALayer {
-        return runtime.wrapObject(CALayer, backend.NSViewMessages.layer(runtime.objectId(NSView, self)));
+        return runtime_support.wrapObject(CALayer, backend.NSViewMessages.layer(runtime_support.objectId(NSView, self)));
     }
 
     pub fn setLayer(self: Self, _layer: CALayer) void {
-        return backend.NSViewMessages.setLayer(runtime.objectId(NSView, self), runtime.objectId(CALayer, _layer));
+        return backend.NSViewMessages.setLayer(runtime_support.objectId(NSView, self), runtime_support.objectId(CALayer, _layer));
     }
 
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithFrame(_frameRect: NSRect) DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSViewMessages.initWithFrame(_class, runtime.pass(NSRect, _frameRect)));
+                return runtime_support.wrapObject(DesiredType, backend.NSViewMessages.initWithFrame(_class, runtime_support.pass(NSRect, _frameRect)));
             }
         };
     }
@@ -111,7 +112,7 @@ pub const NSView = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSView,
                 NSResponder,
                 NSObject,
@@ -119,7 +120,7 @@ pub const NSView = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSAccessibility,
                 NSAccessibilityElement,
                 NSAnimatablePropertyContainer,
@@ -143,7 +144,7 @@ const NSLayerDelegateContentsScaleUpdatingForNSObject = struct {
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
     }
 
     fn Constructor(comptime DesiredType: type) type {

@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSAppKitVersion = f64;
 pub const NSModalResponse = NSInteger;
@@ -25,7 +26,6 @@ const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-const ObjectResolver = runtime.ObjectResolver;
 
 pub const NSAppKitVersionNumber10_0: NSAppKitVersion = 577;
 pub const NSAppKitVersionNumber10_1: NSAppKitVersion = 620;
@@ -117,44 +117,42 @@ pub const NSWindowListOptions = std.enums.EnumSet(enum(NSInteger) {
 pub const NSApplication = struct {
     pub const Self = @This();
 
-    var DelegateResolver: ?*ObjectResolver(NSApplication) = null;
-
     _id: objc.Object,
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn sharedApplication() NSApplication {
-        return runtime.wrapObject(NSApplication, backend.NSApplicationMessages.sharedApplication());
+        return runtime_support.wrapObject(NSApplication, backend.NSApplicationMessages.sharedApplication());
     }
 
     pub fn delegate(self: Self) ?NSApplicationDelegate {
-        return runtime.wrapObject(?NSApplicationDelegate, backend.NSApplicationMessages.delegate(runtime.objectId(NSApplication, self)));
+        return runtime_support.wrapObject(?NSApplicationDelegate, backend.NSApplicationMessages.delegate(runtime_support.objectId(NSApplication, self)));
     }
 
     pub fn setDelegate(self: Self, _delegate: ?NSApplicationDelegate) void {
-        return backend.NSApplicationMessages.setDelegate(runtime.objectId(NSApplication, self), runtime.objectId(?NSApplicationDelegate, _delegate));
+        return backend.NSApplicationMessages.setDelegate(runtime_support.objectId(NSApplication, self), runtime_support.objectId(?NSApplicationDelegate, _delegate));
     }
 
     pub fn activateIgnoringOtherApps(self: Self, _flag: bool) void {
-        return backend.NSApplicationMessages.activateIgnoringOtherApps(runtime.objectId(NSApplication, self), runtime.toBOOL(_flag));
+        return backend.NSApplicationMessages.activateIgnoringOtherApps(runtime_support.objectId(NSApplication, self), runtime_support.toBOOL(_flag));
     }
 
     pub fn run(self: Self) void {
-        return backend.NSApplicationMessages.run(runtime.objectId(NSApplication, self));
+        return backend.NSApplicationMessages.run(runtime_support.objectId(NSApplication, self));
     }
 
     pub fn activationPolicy(self: Self) NSApplicationActivationPolicy {
-        return runtime.toEnum(NSApplicationActivationPolicy, backend.NSApplicationMessages.activationPolicy(runtime.objectId(NSApplication, self)));
+        return runtime_support.toEnum(NSApplicationActivationPolicy, backend.NSApplicationMessages.activationPolicy(runtime_support.objectId(NSApplication, self)));
     }
 
     pub fn setActivationPolicy(self: Self, _activationPolicy: NSApplicationActivationPolicy) bool {
-        return runtime.fromBOOL(backend.NSApplicationMessages.setActivationPolicy(runtime.objectId(NSApplication, self), runtime.unwrapEnum(NSApplicationActivationPolicy, NSInteger, _activationPolicy)));
+        return runtime_support.fromBOOL(backend.NSApplicationMessages.setActivationPolicy(runtime_support.objectId(NSApplication, self), runtime_support.unwrapEnum(NSApplicationActivationPolicy, NSInteger, _activationPolicy)));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -168,7 +166,7 @@ pub const NSApplication = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSApplication,
                 NSResponder,
                 NSObject,
@@ -176,7 +174,7 @@ pub const NSApplication = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSAccessibility,
                 NSAccessibilityElement,
                 NSMenuItemValidation,
@@ -256,21 +254,21 @@ pub const NSApplicationDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSApplicationDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSApplicationDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSApplicationDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSApplicationDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_application_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSApplicationDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSApplicationDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSApplicationDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -280,8 +278,8 @@ pub const NSApplicationDelegate = struct {
                 return struct {
                     fn dispatchApplicationWillFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationWillFinishLaunching) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -291,8 +289,8 @@ pub const NSApplicationDelegate = struct {
 
                     fn dispatchApplicationDidFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationDidFinishLaunching) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -317,8 +315,8 @@ pub const NSApplicationDelegate = struct {
             };
 
             pub const Handler = struct {
-                applicationWillFinishLaunching: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
-                applicationDidFinishLaunching: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                applicationWillFinishLaunching: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
+                applicationDidFinishLaunching: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
             };
         };
     }

@@ -59,3 +59,4 @@ pub const NSComboBoxDataSource = AppKit_NSComboBox.NSComboBoxDataSource;
 
 const AppKit_NSAlert = @import("./AppKit/NSAlert/frontend.zig");
 pub const NSAlert = AppKit_NSAlert.NSAlert;
+pub const NSAlertSelectors = @import("./AppKit/NSAlert/backend.zig").NSAlertSelectors;

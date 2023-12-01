@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSAttributedStringSelectors = struct {
     var _sel_string: ?objc.Sel = null;
@@ -48,8 +49,8 @@ pub const NSExtendedAttributedStringForNSAttributedStringMessages = struct {
     }
 
     pub fn initWithString(_class: objc.Class, _str: objc.Object) objc.Object {
-        return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSExtendedAttributedStringForNSAttributedStringSelectors.initWithString(), .{
-            runtime.unwrapOptionalObject(_str),
+        return runtime_support.backend_support.allocInstance(_class).msgSend(objc.Object, NSExtendedAttributedStringForNSAttributedStringSelectors.initWithString(), .{
+            runtime_support.unwrapOptionalObject(_str),
         });
     }
 };
@@ -72,7 +73,7 @@ pub const NSExtendedMutableAttributedStringForNSMutableAttributedStringMessages 
 
     pub fn setAttributedString(self: objc.Object, _attrString: objc.Object) void {
         return self.msgSend(void, NSExtendedMutableAttributedStringForNSMutableAttributedStringSelectors.setAttributedString(), .{
-            runtime.unwrapOptionalObject(_attrString),
+            runtime_support.unwrapOptionalObject(_attrString),
         });
     }
 };

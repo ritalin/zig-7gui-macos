@@ -4,6 +4,7 @@ const backend = @import("./backend.zig");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
@@ -33,90 +34,90 @@ pub const NSControl = struct {
     }
 
     pub inline fn as(self: Self, comptime DesiredType: type) DesiredType {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).as(self, DesiredType);
     }
 
     pub inline fn of(comptime DesiredType: type) type {
-        return runtime.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+        return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
     pub fn target(self: Self) ?objc.Object {
-        return backend.NSControlMessages.target(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.target(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setTarget(self: Self, _target: ?objc.Object) void {
-        return backend.NSControlMessages.setTarget(runtime.objectId(NSControl, self), runtime.pass(?objc.Object, _target));
+        return backend.NSControlMessages.setTarget(runtime_support.objectId(NSControl, self), runtime_support.pass(?objc.Object, _target));
     }
 
     pub fn action(self: Self) ?objc.Sel {
-        return backend.NSControlMessages.action(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.action(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setAction(self: Self, _action: ?objc.Sel) void {
-        return backend.NSControlMessages.setAction(runtime.objectId(NSControl, self), runtime.pass(?objc.Sel, _action));
+        return backend.NSControlMessages.setAction(runtime_support.objectId(NSControl, self), runtime_support.pass(?objc.Sel, _action));
     }
 
     pub fn isEnabled(self: Self) bool {
-        return runtime.fromBOOL(backend.NSControlMessages.isEnabled(runtime.objectId(NSControl, self)));
+        return runtime_support.fromBOOL(backend.NSControlMessages.isEnabled(runtime_support.objectId(NSControl, self)));
     }
 
     pub fn setEnabled(self: Self, _enabled: bool) void {
-        return backend.NSControlMessages.setEnabled(runtime.objectId(NSControl, self), runtime.toBOOL(_enabled));
+        return backend.NSControlMessages.setEnabled(runtime_support.objectId(NSControl, self), runtime_support.toBOOL(_enabled));
     }
 
     pub fn stringValue(self: Self) NSString {
-        return runtime.wrapObject(NSString, backend.NSControlMessages.stringValue(runtime.objectId(NSControl, self)));
+        return runtime_support.wrapObject(NSString, backend.NSControlMessages.stringValue(runtime_support.objectId(NSControl, self)));
     }
 
     pub fn setStringValue(self: Self, _stringValue: NSString) void {
-        return backend.NSControlMessages.setStringValue(runtime.objectId(NSControl, self), runtime.objectId(NSString, _stringValue));
+        return backend.NSControlMessages.setStringValue(runtime_support.objectId(NSControl, self), runtime_support.objectId(NSString, _stringValue));
     }
 
     pub fn intValue(self: Self) c_int {
-        return backend.NSControlMessages.intValue(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.intValue(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setIntValue(self: Self, _intValue: c_int) void {
-        return backend.NSControlMessages.setIntValue(runtime.objectId(NSControl, self), _intValue);
+        return backend.NSControlMessages.setIntValue(runtime_support.objectId(NSControl, self), _intValue);
     }
 
     pub fn integerValue(self: Self) NSInteger {
-        return backend.NSControlMessages.integerValue(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.integerValue(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setIntegerValue(self: Self, _integerValue: NSInteger) void {
-        return backend.NSControlMessages.setIntegerValue(runtime.objectId(NSControl, self), runtime.pass(NSInteger, _integerValue));
+        return backend.NSControlMessages.setIntegerValue(runtime_support.objectId(NSControl, self), runtime_support.pass(NSInteger, _integerValue));
     }
 
     pub fn floatValue(self: Self) f32 {
-        return backend.NSControlMessages.floatValue(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.floatValue(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setFloatValue(self: Self, _floatValue: f32) void {
-        return backend.NSControlMessages.setFloatValue(runtime.objectId(NSControl, self), _floatValue);
+        return backend.NSControlMessages.setFloatValue(runtime_support.objectId(NSControl, self), _floatValue);
     }
 
     pub fn doubleValue(self: Self) f64 {
-        return backend.NSControlMessages.doubleValue(runtime.objectId(NSControl, self));
+        return backend.NSControlMessages.doubleValue(runtime_support.objectId(NSControl, self));
     }
 
     pub fn setDoubleValue(self: Self, _doubleValue: f64) void {
-        return backend.NSControlMessages.setDoubleValue(runtime.objectId(NSControl, self), _doubleValue);
+        return backend.NSControlMessages.setDoubleValue(runtime_support.objectId(NSControl, self), _doubleValue);
     }
 
     pub fn alignment(self: Self) NSTextAlignment {
-        return runtime.toEnum(NSTextAlignment, backend.NSControlMessages.alignment(runtime.objectId(NSControl, self)));
+        return runtime_support.toEnum(NSTextAlignment, backend.NSControlMessages.alignment(runtime_support.objectId(NSControl, self)));
     }
 
     pub fn setAlignment(self: Self, _alignment: NSTextAlignment) void {
-        return backend.NSControlMessages.setAlignment(runtime.objectId(NSControl, self), runtime.unwrapEnum(NSTextAlignment, NSInteger, _alignment));
+        return backend.NSControlMessages.setAlignment(runtime_support.objectId(NSControl, self), runtime_support.unwrapEnum(NSTextAlignment, NSInteger, _alignment));
     }
 
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithFrame(_frameRect: NSRect) DesiredType {
                 var _class = DesiredType.Support.getClass();
-                return runtime.wrapObject(DesiredType, backend.NSControlMessages.initWithFrame(_class, runtime.pass(NSRect, _frameRect)));
+                return runtime_support.wrapObject(DesiredType, backend.NSControlMessages.initWithFrame(_class, runtime_support.pass(NSRect, _frameRect)));
             }
         };
     }
@@ -127,7 +128,7 @@ pub const NSControl = struct {
         }
 
         pub fn inheritFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{
+            return runtime_support.typeConstraints(DesiredType.Self, .{
                 NSControl,
                 NSView,
                 NSResponder,
@@ -136,7 +137,7 @@ pub const NSControl = struct {
         }
 
         pub fn protocolFrom(comptime DesiredType: type) bool {
-            return runtime.typeConstraints(DesiredType.Self, .{});
+            return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
 };
@@ -154,21 +155,21 @@ pub const NSControlTextEditingDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime.backend_support.concreteTypeName("NSControlTextEditingDelegate", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSControlTextEditingDelegate", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             var class = backend.NSControlTextEditingDelegateMessages.initClass(_class_name);
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
-                            runtime.backend_support.ObjectRegistry.registerClass(class);
+                            runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
                         var _id = backend.NSControlTextEditingDelegateMessages.init(_class.?);
-                        var _instance = runtime.wrapObject(NSControlTextEditingDelegate, _id);
-                        runtime.ContextReg(ContextType).setContext(_id, context);
+                        var _instance = runtime_support.wrapObject(NSControlTextEditingDelegate, _id);
+                        runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
                 };
@@ -178,8 +179,8 @@ pub const NSControlTextEditingDelegate = struct {
                 return struct {
                     fn dispatchControlTextDidChange(_id: objc.c.id, _: objc.c.SEL, _obj: objc.c.id) void {
                         if (_delegate_handler.controlTextDidChange) |handler| {
-                            var context = runtime.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var obj = runtime.wrapObject(NSNotification, objc.Object.fromId(_obj));
+                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            var obj = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_obj));
                             return handler(context, obj) catch {
                                 unreachable;
                             };
@@ -201,7 +202,7 @@ pub const NSControlTextEditingDelegate = struct {
             };
 
             pub const Handler = struct {
-                controlTextDidChange: ?(*const fn (context: *ContextType, _: NSNotification) anyerror!void) = null,
+                controlTextDidChange: ?*const fn (context: *ContextType, _: NSNotification) anyerror!void = null,
             };
         };
     }

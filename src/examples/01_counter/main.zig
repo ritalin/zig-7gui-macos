@@ -3,6 +3,7 @@ const runtime = @import("Runtime");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 
+const runtime_support = @import("Runtime-Support");
 const appKit_support = @import("AppKit-Support");
 
 const NSApplicationDelegate = appKit.NSApplicationDelegate;
@@ -10,23 +11,17 @@ const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
 
 const NSNotification = foundation.NSNotification;
 
-const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(
-    .{
-        .handler_application_delegate = .{
-            .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
-        },
+const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(.{
+    .handler_application_delegate = .{
+        .applicationWillFinishLaunching = handleApplicationWillFinishLaunching,
     },
-    runtime.identity_seed.FixValueSeed("Default")
-);
+}, runtime_support.identity_seed.FixValueSeed("Default"));
 
-const WindowDelegate = appKit.NSWindowDelegate.Protocol(AppContext).Derive(
-    .{
-        .handler_window_delegate = .{
-            .windowWillClose = handleWindowWillClose,
-        },
-    }, 
-    runtime.identity_seed.FixValueSeed("Default")
-);
+const WindowDelegate = appKit.NSWindowDelegate.Protocol(AppContext).Derive(.{
+    .handler_window_delegate = .{
+        .windowWillClose = handleWindowWillClose,
+    },
+}, runtime_support.identity_seed.FixValueSeed("Default"));
 
 const AppContext = appKit_support.ApplicationContextWithoutState;
 
@@ -64,14 +59,13 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotificat
     std.debug.print("[DEBUG] handleApplicationWillFinishLaunching invoked\n", .{});
 
     var center: foundation.NSPoint =
-        if (appKit.NSScreen.mainScreen()) |screen| center: {
-            var desktop_rect = screen.visibleFrame();
-            std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
+        if (appKit.NSScreen.mainScreen()) |screen|
+    center: {
+        var desktop_rect = screen.visibleFrame();
+        std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
 
-            break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-        } 
-        else .{ .x = 50, .y = 50 }
-    ;
+        break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+    } else .{ .x = 50, .y = 50 };
     const window_size: foundation.NSSize = .{ .width = 300, .height = 48 };
 
     var rect = foundation.NSRect{

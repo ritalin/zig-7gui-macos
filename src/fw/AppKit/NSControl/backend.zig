@@ -2,6 +2,7 @@ const std = @import("std");
 const objc = @import("objc");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const NSRect = foundation.NSRect;
 const NSInteger = runtime.NSInteger;
@@ -167,18 +168,18 @@ pub const NSControlMessages = struct {
     }
 
     pub fn initWithFrame(_class: objc.Class, _frameRect: NSRect) objc.Object {
-        return runtime.backend_support.allocInstance(_class).msgSend(objc.Object, NSControlSelectors.initWithFrame(), .{
+        return runtime_support.backend_support.allocInstance(_class).msgSend(objc.Object, NSControlSelectors.initWithFrame(), .{
             _frameRect,
         });
     }
 
     pub fn target(self: objc.Object) ?objc.Object {
-        return runtime.wrapOptionalObjectId(self.msgSend(objc.c.id, NSControlSelectors.target(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSControlSelectors.target(), .{}));
     }
 
     pub fn setTarget(self: objc.Object, _target: ?objc.Object) void {
         return self.msgSend(void, NSControlSelectors.setTarget(), .{
-            runtime.unwrapOptionalObject(_target),
+            runtime_support.unwrapOptionalObject(_target),
         });
     }
 
@@ -188,7 +189,7 @@ pub const NSControlMessages = struct {
 
     pub fn setAction(self: objc.Object, _action: ?objc.Sel) void {
         return self.msgSend(void, NSControlSelectors.setAction(), .{
-            runtime.unwrapOptionalSelValue(_action),
+            runtime_support.unwrapOptionalSelValue(_action),
         });
     }
 
@@ -208,7 +209,7 @@ pub const NSControlMessages = struct {
 
     pub fn setStringValue(self: objc.Object, _stringValue: objc.Object) void {
         return self.msgSend(void, NSControlSelectors.setStringValue(), .{
-            runtime.unwrapOptionalObject(_stringValue),
+            runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 
@@ -275,19 +276,19 @@ pub const NSControlTextEditingDelegateSelectors = struct {
 };
 
 pub const NSControlTextEditingDelegateMessages = struct {
-    pub const init = runtime.backend_support.newInstance;
-    pub const dealloc = runtime.backend_support.destroyInstance;
-    pub const registerMessage = runtime.backend_support.ObjectRegistry.registerMessage;
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
         }
         return class.?;
     }
 
-    pub fn registerControlTextDidChange(_class: objc.Class, _handler: *runtime.DelegateHandler) void {
-        runtime.backend_support.ObjectRegistry.registerMessage(_class, "controlTextDidChange:", runtime.wrapDelegateHandler(_handler), "v24@0:8@16");
+    pub fn registerControlTextDidChange(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+        runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "controlTextDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

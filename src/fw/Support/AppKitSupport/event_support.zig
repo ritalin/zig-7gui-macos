@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 const HandlerSelectors = struct {
     var _sel_perform: ?objc.Sel = null;
@@ -33,24 +34,24 @@ pub fn Handlers(comptime ContextType: type) type {
 
                         // register raw handler
                         {
-                            runtime.backend_support.ObjectRegistry.registerMessage(class, "perform_handler:", runtime.wrapDelegateHandler(&perform_action), "v@:@");
+                            runtime_support.backend_support.ObjectRegistry.registerMessage(class, "perform_handler:", runtime_support.wrapDelegateHandler(&perform_action), "v@:@");
                         }
                         // register context field
                         {
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                         }
                         // register user-side action handler
                         {
-                            runtime.backend_support.ObjectRegistry.registerField(class, *anyopaque, "action");
+                            runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "action");
                         }
                         objc.c.objc_registerClassPair(class.value);
 
                         _class = class;
                     }
 
-                    var target = runtime.backend_support.allocInstance(_class.?);
+                    var target = runtime_support.backend_support.allocInstance(_class.?);
 
-                    var proxy = runtime.backend_support.ObjectProxy.init(target);
+                    var proxy = runtime_support.backend_support.ObjectProxy.init(target);
                     proxy.field("context").setAsPointer(*ContextType, ctx);
                     proxy.field("action").setAsPointer(HandlerType, handler);
 
@@ -61,12 +62,12 @@ pub fn Handlers(comptime ContextType: type) type {
                 }
 
                 fn perform_action(self: objc.c.id, _: objc.c.SEL, sender: objc.c.id) callconv(.C) void {
-                    var proxy = runtime.backend_support.ObjectProxy.init(objc.Object.fromId(self));
+                    var proxy = runtime_support.backend_support.ObjectProxy.init(objc.Object.fromId(self));
                     var ctx = proxy.field("context").asPointer(*ContextType);
                     var handler = proxy.field("action").asPointer(HandlerType);
 
                     if (handler) |h| {
-                        h(ctx, runtime.wrapObject(SenderObject, objc.Object.fromId(sender))) catch @panic("Unhandled error.");
+                        h(ctx, runtime_support.wrapObject(SenderObject, objc.Object.fromId(sender))) catch @panic("Unhandled error.");
                     }
                 }
             };

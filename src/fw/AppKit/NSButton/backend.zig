@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const runtime = @import("Runtime");
+const runtime_support = @import("Runtime-Support");
 
 pub const NSButtonSelectors = struct {
     var _sel_buttonWithTitleTargetAction: ?objc.Sel = null;
@@ -20,9 +21,9 @@ pub const NSButtonMessages = struct {
 
     pub fn buttonWithTitleTargetAction(_class: objc.Class, _title: objc.Object, _target: ?objc.Object, _action: ?objc.Sel) objc.Object {
         return _class.msgSend(objc.Object, NSButtonSelectors.buttonWithTitleTargetAction(), .{
-            runtime.unwrapOptionalObject(_title),
-            runtime.unwrapOptionalObject(_target),
-            runtime.unwrapOptionalSelValue(_action),
+            runtime_support.unwrapOptionalObject(_title),
+            runtime_support.unwrapOptionalObject(_target),
+            runtime_support.unwrapOptionalSelValue(_action),
         });
     }
 };
