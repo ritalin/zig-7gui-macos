@@ -36,7 +36,7 @@ pub const NSRunningApplication = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSRunningApplicationMessages.getClass();
         }

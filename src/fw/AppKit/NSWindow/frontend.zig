@@ -171,18 +171,18 @@ pub const NSWindow = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithContentRectStyleMaskBacking(_contentRect: NSRect, _style: NSWindowStyleMask, _backingStoreType: NSBackingStoreType, _flag: bool, _screen: ?NSScreen) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSWindowMessages.initWithContentRectStyleMaskBacking(_class, runtime_support.pass(NSRect, _contentRect), runtime_support.packOptions(NSWindowStyleMask, _style), runtime_support.unwrapEnum(NSBackingStoreType, NSUInteger, _backingStoreType), runtime_support.toBOOL(_flag), runtime_support.objectId(?NSScreen, _screen)));
             }
 
             pub fn initialFirstResponder() ?*DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(?*DesiredType, backend.NSWindowMessages.initialFirstResponder(_class));
             }
         };
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSWindowMessages.getClass();
         }

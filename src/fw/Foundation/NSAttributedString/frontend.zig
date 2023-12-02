@@ -47,7 +47,7 @@ pub const NSAttributedString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSAttributedStringMessages.getClass();
         }
@@ -93,7 +93,7 @@ pub const NSMutableAttributedString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSMutableAttributedStringMessages.getClass();
         }
@@ -125,7 +125,7 @@ const NSExtendedAttributedStringForNSAttributedString = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithString(_str: NSString) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSExtendedAttributedStringForNSAttributedStringMessages.initWithString(_class, runtime_support.objectId(NSString, _str)));
             }
         };

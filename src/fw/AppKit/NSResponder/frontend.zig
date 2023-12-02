@@ -31,7 +31,7 @@ pub const NSResponder = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSResponderMessages.getClass();
         }

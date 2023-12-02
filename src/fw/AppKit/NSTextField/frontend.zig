@@ -73,7 +73,7 @@ pub const NSTextField = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSTextFieldMessages.getClass();
         }
@@ -114,17 +114,17 @@ const NSTextFieldConvenienceForNSTextField = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn labelWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.labelWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
 
             pub fn wrappingLabelWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.wrappingLabelWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
 
             pub fn textFieldWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.textFieldWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
         };

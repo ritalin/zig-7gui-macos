@@ -3,6 +3,7 @@ const objc = @import("objc");
 const runtime = @import("Runtime");
 const appKit = @import("AppKit");
 const foundation = @import("Foundation");
+const runtime_support = @import("Runtime-Support");
 const appKit_support = @import("AppKit-Support");
 
 const time = @import("time");
@@ -19,12 +20,12 @@ const AppDelegate = appKit.NSApplicationDelegate.Protocol(AppContext).Derive(
             .applicationWillFinishLaunching = AppRootContext.handleApplicationWillFinishLaunching,
             .applicationDidFinishLaunching = AppRootContext.handleDidFinishLaunching,
         },
-    }, 
-    runtime.identity_seed.FixValueSeed("a4e1c7ee-f5e8-46f4-9caa-733f9754f00b"),
+    },
+    runtime_support.identity_seed.FixValueSeed("a4e1c7ee-f5e8-46f4-9caa-733f9754f00b"),
 );
 
 const FlightBookContext = struct {
-    allocator: std.mem.Allocator, 
+    allocator: std.mem.Allocator,
     values: Values,
     route_context: *FlightRouteContext,
 
@@ -44,10 +45,9 @@ const FlightBookContext = struct {
 
         if (context.route_context.isReturnRoute(index)) {
             context.values.arrival_date.as(appKit.NSControl).setEnabled(true);
-        }
-        else {        
+        } else {
             context.values.arrival_date.as(appKit.NSControl).setEnabled(false);
-            context.syncBookingDate();  
+            context.syncBookingDate();
         }
     }
 
@@ -69,7 +69,7 @@ const FlightBookContext = struct {
     fn parseDate(text_field: appKit.NSTextField) ?time.DateTime {
         var s = text_field.as(appKit.NSControl).stringValue();
         var date_str = s.as(foundation.NSString.ExtensionMethods).utf8String();
-        
+
         return time_parser.fromISO8601(std.mem.sliceTo(date_str, 0)) catch {
             return null;
         };
@@ -84,12 +84,8 @@ const FlightBookContext = struct {
             .accept_arr_date = arrival_date != null,
         };
 
-        context.values.departure_date.setBackgroundColor(
-            if (status.accept_dep_date) appKit.NSColor.whiteColor() else appKit.NSColor.redColor()
-        );
-        context.values.arrival_date.setBackgroundColor(
-            if (status.accept_arr_date) appKit.NSColor.whiteColor() else appKit.NSColor.redColor()
-        );
+        context.values.departure_date.setBackgroundColor(if (status.accept_dep_date) appKit.NSColor.whiteColor() else appKit.NSColor.redColor());
+        context.values.arrival_date.setBackgroundColor(if (status.accept_arr_date) appKit.NSColor.whiteColor() else appKit.NSColor.redColor());
 
         if (status.accept_dep_date and status.accept_arr_date) {
             status.accept_record_book = compareDate(departure_date.?, arrival_date.?).compare(.lte);
@@ -99,8 +95,7 @@ const FlightBookContext = struct {
 
         if (context.route_context.isReturnRoute(index)) {
             context.values.book_button.as(appKit.NSControl).setEnabled(RefreshStatusSet.init(status).eql(RefreshStatusSet.initFull()));
-        }
-        else {
+        } else {
             context.values.book_button.as(appKit.NSControl).setEnabled(status.accept_dep_date);
         }
     }
@@ -114,22 +109,31 @@ const FlightBookContext = struct {
             var route = ctx.selectedRouteName();
             var dep_date = parseDate(ctx.values.departure_date).?;
             var arr_date = parseDate(ctx.values.arrival_date).?;
-            
-            var msg = try std.fmt.allocPrintZ(ctx.allocator, 
-                "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-DD}\n\tarrival: {YYYY-MM-DD}", .{
-                route, dep_date, arr_date
-            });
+
+            var msg = try std.fmt.allocPrintZ(ctx.allocator, "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-DD}\n\tarrival: {YYYY-MM-DD}", .{ route, dep_date, arr_date });
             defer ctx.allocator.free(msg);
 
             std.debug.print("{s}\n", .{msg});
 
             var alert = runtime.NSObject.of(appKit.NSAlert).init();
             alert.setMessageText(foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(msg).?);
-            _ = alert.runModal();
+            // _ = alert.runModal();
+
+            var block: runtime_support.ApiBlock(fn (appKit.NSModalResponse) void) =
+                try appKit.NSAlert.BlockSupport(FlightBookContext).BeginSheetModalForWindowBlock(&handleRecordBookFinished).init(ctx);
+
+            alert.beginSheetModalForWindowCompletionHandler(ctx.values.main_window, block);
         }
     }
 
+    pub fn handleRecordBookFinished(context: *FlightBookContext, r: appKit.NSModalResponse) !void {
+        _ = context;
+        _ = r;
+        std.debug.print("Debug: RecordBook finished !!\n", .{});
+    }
+
     const Values = struct {
+        main_window: appKit.NSWindow,
         booking_route: appKit.NSComboBox,
         departure_date: appKit.NSTextField,
         arrival_date: appKit.NSTextField,
@@ -142,10 +146,7 @@ const FlightBookContext = struct {
 };
 
 const FlightRouteContext = struct {
-    const routes = std.ComptimeStringMap(NSUInteger, .{
-        .{"one-way flight", 0}, 
-        .{"return flight", 1}
-    });
+    const routes = std.ComptimeStringMap(NSUInteger, .{ .{ "one-way flight", 0 }, .{ "return flight", 1 } });
 
     allocator: std.mem.Allocator,
 
@@ -196,7 +197,7 @@ const BookingRouteDataSource = appKit.NSComboBoxDataSource.Protocol(FlightRouteC
             .comboBoxIndexOfItemWithStringValue = FlightRouteContext.handleIndexOfItemWithStringValue,
         },
     },
-    runtime.identity_seed.FixValueSeed("15251a69-e3a6-459b-bb0c-217f9f3dc3a4"),
+    runtime_support.identity_seed.FixValueSeed("15251a69-e3a6-459b-bb0c-217f9f3dc3a4"),
 );
 
 const BookingRouteDelegate = appKit.NSComboBoxDelegate.Protocol(FlightBookContext).Derive(
@@ -205,32 +206,28 @@ const BookingRouteDelegate = appKit.NSComboBoxDelegate.Protocol(FlightBookContex
             .comboBoxSelectionDidChange = FlightBookContext.handleSelectionDidChange,
         },
     },
-    runtime.identity_seed.FixValueSeed("3ac8f383-a4a6-4c91-9f16-798a2d437854"),
+    runtime_support.identity_seed.FixValueSeed("3ac8f383-a4a6-4c91-9f16-798a2d437854"),
 );
 
-const BookingDateDelegate = appKit.NSTextFieldDelegate.Protocol(FlightBookContext).Derive(
-    .{
-        .handler_control_text_editing_delegate = .{
-            .controlTextDidChange = FlightBookContext.handleBookingDateChanged,
-        },
+const BookingDateDelegate = appKit.NSTextFieldDelegate.Protocol(FlightBookContext).Derive(.{
+    .handler_control_text_editing_delegate = .{
+        .controlTextDidChange = FlightBookContext.handleBookingDateChanged,
     },
-    runtime.identity_seed.FixValueSeed("a28800a4-1be9-4c3b-9f58-bec30166f480")
-);
+}, runtime_support.identity_seed.FixValueSeed("a28800a4-1be9-4c3b-9f58-bec30166f480"));
 
 const AppRootContext = struct {
     fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
         var allocator = app_context.arena.allocator();
 
         var center: foundation.NSPoint =
-            if (appKit.NSScreen.mainScreen()) |screen| origin: {
-                var desktop_rect = screen.visibleFrame();
+            if (appKit.NSScreen.mainScreen()) |screen|
+        origin: {
+            var desktop_rect = screen.visibleFrame();
 
-                break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-            } 
-            else origin: {
-                break :origin .{ .x = 50, .y = 50 };
-            }
-        ;
+            break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+        } else origin: {
+            break :origin .{ .x = 50, .y = 50 };
+        };
         const window_size: foundation.NSSize = .{ .width = 300, .height = 120 };
 
         var rect = foundation.NSRect{
@@ -250,6 +247,7 @@ const AppRootContext = struct {
         w.setTitle(s);
 
         var context_values = FlightBookContext.Values{
+            .main_window = w,
             .booking_route = undefined,
             .book_button = undefined,
             .departure_date = undefined,
@@ -259,9 +257,7 @@ const AppRootContext = struct {
         if (w.contentView()) |root| {
             var v = appKit.NSView.of(appKit.NSView).initWithFrame(.{ .origin = .{ .x = 8, .y = 4 }, .size = .{ .width = window_size.width - 16, .height = window_size.height - 8 } });
             {
-                var dropdown = appKit.NSControl.of(appKit.NSComboBox).initWithFrame(
-                    .{ .origin = .{ .x = 4, .y = 88 }, .size = .{ .width = 120, .height = 24 }}
-                );
+                var dropdown = appKit.NSControl.of(appKit.NSComboBox).initWithFrame(.{ .origin = .{ .x = 4, .y = 88 }, .size = .{ .width = 120, .height = 24 } });
                 {
                     dropdown.as(appKit.NSTextField).setEditable(false);
                     context_values.booking_route = dropdown;
@@ -271,9 +267,7 @@ const AppRootContext = struct {
                 var ini_date = try std.fmt.allocPrintZ(allocator, "{YYYY-MM-DD}", .{time.DateTime.now()});
                 var ini_date_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(ini_date).?;
 
-                var departure_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(
-                    .{ .origin = .{ .x = 4, .y = 60 }, .size = .{ .width = 120, .height = 24 }}
-                );
+                var departure_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(.{ .origin = .{ .x = 4, .y = 60 }, .size = .{ .width = 120, .height = 24 } });
 
                 {
                     departure_date.as(appKit.NSControl).setStringValue(ini_date_str);
@@ -281,9 +275,7 @@ const AppRootContext = struct {
                 }
                 v.addSubview(departure_date.as(appKit.NSView));
 
-                var arrival_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(
-                    .{ .origin = .{ .x = 4, .y = 32 }, .size = .{ .width = 120, .height = 24 }}
-                );
+                var arrival_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(.{ .origin = .{ .x = 4, .y = 32 }, .size = .{ .width = 120, .height = 24 } });
 
                 {
                     arrival_date.as(appKit.NSControl).setStringValue(ini_date_str);
@@ -294,9 +286,7 @@ const AppRootContext = struct {
                 var button_title = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Book").?;
                 var button = appKit.NSButton.of(appKit.NSButton).buttonWithTitleTargetAction(button_title, null, null);
                 {
-                    button.as(appKit.NSView).setFrame(
-                        .{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 120, .height = 24 }}
-                    );
+                    button.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 120, .height = 24 } });
                     context_values.book_button = button;
                 }
                 v.addSubview(button.as(appKit.NSView));

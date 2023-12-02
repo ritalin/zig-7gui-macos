@@ -116,7 +116,7 @@ pub fn ObjectUpperCast(comptime ObjectType: type, comptime ConstructorType: fn (
     return struct {
         pub inline fn as(self: ObjectType, comptime DesiredType: type) DesiredType {
             comptime constraint: {
-                if (ObjectType.Support.inheritFrom(DesiredType)) {
+                if (ObjectType.TypeSupport.inheritFrom(DesiredType)) {
                     break :constraint;
                 }
                 if (ObjectType.Support.protocolFrom(DesiredType)) {
@@ -133,7 +133,7 @@ pub fn ObjectUpperCast(comptime ObjectType: type, comptime ConstructorType: fn (
 
         pub inline fn of(comptime DesiredType: type) type {
             comptime constraint: {
-                if (DesiredType.Support.inheritFrom(ObjectType)) {
+                if (DesiredType.TypeSupport.inheritFrom(ObjectType)) {
                     break :constraint;
                 }
                 @compileError("Unsupported associated type: " ++ @typeName(DesiredType));
@@ -147,7 +147,7 @@ pub fn CategoryUpperCast(comptime CategoryType: type, comptime ConstructorType: 
     return struct {
         pub inline fn of(comptime DesiredType: type) type {
             comptime constraint: {
-                if (DesiredType.Support.inheritFrom(CategoryType.Self)) {
+                if (DesiredType.TypeSupport.inheritFrom(CategoryType.Self)) {
                     break :constraint;
                 }
                 @compileError("Unsupported associated type: " ++ @typeName(DesiredType));

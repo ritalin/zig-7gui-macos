@@ -109,7 +109,7 @@ pub const NSTextViewDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerTextViewDoCommandBySelector(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerTextViewDoCommandBySelector(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "textView:doCommandBySelector:", runtime_support.wrapDelegateHandler(_handler), "c32@0:8@16:24");
     }
 };

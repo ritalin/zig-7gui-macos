@@ -288,7 +288,7 @@ pub const NSControlTextEditingDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerControlTextDidChange(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerControlTextDidChange(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "controlTextDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

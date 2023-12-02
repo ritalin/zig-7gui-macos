@@ -35,7 +35,7 @@ pub const NSNotification = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSNotificationMessages.getClass();
         }
@@ -78,7 +78,7 @@ pub const NSNotificationCenter = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSNotificationCenterMessages.getClass();
         }

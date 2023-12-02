@@ -116,13 +116,13 @@ pub const NSControl = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithFrame(_frameRect: NSRect) DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSControlMessages.initWithFrame(_class, runtime_support.pass(NSRect, _frameRect)));
             }
         };
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSControlMessages.getClass();
         }

@@ -28,13 +28,13 @@ pub const NSObject = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn init() DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSObjectMessages.init(_class));
             }
         };
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSObjectMessages.getClass();
         }

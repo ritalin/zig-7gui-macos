@@ -107,43 +107,43 @@ pub const NSStandardKeyBindingRespondingMessages = struct {
         return class.?;
     }
 
-    pub fn registerInsertTab(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertTab(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertTab:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertBacktab(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertBacktab(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertBacktab:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertNewline(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertNewline(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertNewline:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertParagraphSeparator(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertParagraphSeparator(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertParagraphSeparator:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertNewlineIgnoringFieldEditor(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertNewlineIgnoringFieldEditor(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertNewlineIgnoringFieldEditor:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertTabIgnoringFieldEditor(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertTabIgnoringFieldEditor(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertTabIgnoringFieldEditor:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertLineBreak(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertLineBreak(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertLineBreak:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertContainerBreak(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertContainerBreak(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertContainerBreak:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertSingleQuoteIgnoringSubstitution(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertSingleQuoteIgnoringSubstitution(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertSingleQuoteIgnoringSubstitution:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 
-    pub fn registerInsertDoubleQuoteIgnoringSubstitution(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerInsertDoubleQuoteIgnoringSubstitution(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "insertDoubleQuoteIgnoringSubstitution:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };

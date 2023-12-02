@@ -54,7 +54,39 @@ pub const NSAlert = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub fn BlockSupport(comptime UserContextType: type) type {
+        return struct {
+            pub fn BeginSheetModalForWindowBlock(comptime _handler: Handlers.BeginSheetModalForWindowHandler) type {
+                return struct {
+                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
+                        NSModalResponse,
+                    }, void);
+
+                    pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSModalResponse) void) {
+                        var block = try Block.init(.{
+                            .context = user_context,
+                        }, &dispatchBeginSheetModalForWindow);
+                        return .{
+                            .context = block.context,
+                        };
+                    }
+
+                    fn dispatchBeginSheetModalForWindow(block_context: *const Block.Context, _modal_response: NSModalResponse) callconv(.C) void {
+                        defer std.heap.c_allocator.destroy(block_context);
+                        return _handler(block_context.context, _modal_response) catch {
+                            unreachable;
+                        };
+                    }
+                };
+            }
+
+            pub const Handlers = struct {
+                pub const BeginSheetModalForWindowHandler = *const fn (_context: *UserContextType, _: NSModalResponse) anyerror!void;
+            };
+        };
+    }
+
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSAlertMessages.getClass();
         }

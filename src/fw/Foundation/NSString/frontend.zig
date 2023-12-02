@@ -68,7 +68,7 @@ pub const NSSimpleCString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSSimpleCStringMessages.getClass();
         }
@@ -122,7 +122,7 @@ pub const NSString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSStringMessages.getClass();
         }
@@ -167,7 +167,7 @@ pub const NSConstantString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSConstantStringMessages.getClass();
         }
@@ -210,7 +210,7 @@ pub const NSMutableString = struct {
         return struct {};
     }
 
-    pub const Support = struct {
+    pub const TypeSupport = struct {
         pub inline fn getClass() objc.Class {
             return backend.NSMutableStringMessages.getClass();
         }
@@ -294,7 +294,7 @@ const NSStringExtensionMethodsForNSString = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithUTF8String(_nullTerminatedCString: [*c]const u8) ?DesiredType {
-                var _class = DesiredType.Support.getClass();
+                var _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(?DesiredType, backend.NSStringExtensionMethodsForNSStringMessages.initWithUTF8String(_class, _nullTerminatedCString));
             }
         };

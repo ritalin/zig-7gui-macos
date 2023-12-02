@@ -180,19 +180,19 @@ pub const NSComboBoxDataSourceMessages = struct {
         return class.?;
     }
 
-    pub fn registerNumberOfItemsInComboBox(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerNumberOfItemsInComboBox(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "numberOfItemsInComboBox:", runtime_support.wrapDelegateHandler(_handler), "q24@0:8@16");
     }
 
-    pub fn registerComboBoxObjectValueForItemAtIndex(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerComboBoxObjectValueForItemAtIndex(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:objectValueForItemAtIndex:", runtime_support.wrapDelegateHandler(_handler), "@32@0:8@16q24");
     }
 
-    pub fn registerComboBoxIndexOfItemWithStringValue(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerComboBoxIndexOfItemWithStringValue(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:indexOfItemWithStringValue:", runtime_support.wrapDelegateHandler(_handler), "Q32@0:8@16@24");
     }
 
-    pub fn registerComboBoxCompletedString(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerComboBoxCompletedString(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:completedString:", runtime_support.wrapDelegateHandler(_handler), "@32@0:8@16@24");
     }
 };
@@ -221,7 +221,7 @@ pub const NSComboBoxDelegateMessages = struct {
         return class.?;
     }
 
-    pub fn registerComboBoxSelectionDidChange(_class: objc.Class, _handler: *runtime_support.DelegateHandler) void {
+    pub fn registerComboBoxSelectionDidChange(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBoxSelectionDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
 };
