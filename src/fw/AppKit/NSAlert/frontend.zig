@@ -72,7 +72,6 @@ pub const NSAlert = struct {
                     }
 
                     fn dispatchBeginSheetModalForWindow(block_context: *const Block.Context, _modal_response: NSModalResponse) callconv(.C) void {
-                        defer std.heap.c_allocator.destroy(block_context);
                         return _handler(block_context.context, _modal_response) catch {
                             unreachable;
                         };
