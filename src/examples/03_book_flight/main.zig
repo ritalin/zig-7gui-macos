@@ -119,8 +119,7 @@ const FlightBookContext = struct {
             alert.setMessageText(foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(msg).?);
             // _ = alert.runModal();
 
-            var block: runtime_support.ApiBlock(fn (appKit.NSModalResponse) void) =
-                try appKit.NSAlert.BlockSupport(FlightBookContext).BeginSheetModalForWindowBlock(&handleRecordBookFinished).init(ctx);
+            var block = try appKit.NSAlert.BlockSupport(FlightBookContext).BeginSheetModalForWindowBlock(&handleRecordBookFinished).init(ctx);
 
             alert.beginSheetModalForWindowCompletionHandler(ctx.values.main_window, block);
         }
