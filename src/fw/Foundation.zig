@@ -1,17 +1,20 @@
-const Foundation_NSNotification = @import("./Foundation/NSNotification/frontend.zig");
-pub const NSNotification = Foundation_NSNotification.NSNotification;
-
-const Foundation_NSGeometry = @import("./Foundation/NSGeometry/frontend.zig");
-pub const NSPoint = Foundation_NSGeometry.NSPoint;
-pub const NSSize = Foundation_NSGeometry.NSSize;
-pub const NSRect = Foundation_NSGeometry.NSRect;
-
-const Foundation_NSString = @import("./Foundation/NSString/frontend.zig");
-pub const NSString = Foundation_NSString.NSString;
-
-const Foundation_NSAttributedString = @import("./Foundation/NSAttributedString/frontend.zig");
-pub const NSAttributedString = Foundation_NSAttributedString.NSAttributedString;
-pub const NSMutableAttributedString = Foundation_NSAttributedString.NSMutableAttributedString;
-
-const Foundation_NSObjCRuntime = @import("./Foundation/NSObjCRuntime/frontend.zig");
-pub const NSNotFound = Foundation_NSObjCRuntime.NSNotFound;
+// NSAttributedString
+pub usingnamespace @import("./Foundation/NSAttributedString/frontend.zig");
+pub usingnamespace @import("./Foundation/NSAttributedString/selector.zig");
+// NSDate
+pub usingnamespace @import("./Foundation/NSDate/frontend.zig");
+pub usingnamespace @import("./Foundation/NSDate/selector.zig");
+// NSGeometry
+pub usingnamespace @import("./Foundation/NSGeometry/frontend.zig");
+pub usingnamespace @import("./Foundation/NSGeometry/selector.zig");
+// NSNotification
+pub usingnamespace @import("./Foundation/NSNotification/frontend.zig");
+pub usingnamespace @import("./Foundation/NSNotification/selector.zig");
+// NSObjCRuntime
+pub usingnamespace @import("./Foundation/NSObjCRuntime/frontend.zig");
+// NSObject
+pub usingnamespace @import("./Foundation/NSObject/frontend.zig");
+pub usingnamespace @import("./Foundation/NSObject/selector.zig");
+// NSString
+pub usingnamespace @import("./Foundation/NSString/frontend.zig");
+pub usingnamespace @import("./Foundation/NSString/selector.zig");

@@ -1,68 +1,10 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 const NSInteger = runtime.NSInteger;
-
-pub const NSApplicationSelectors = struct {
-    var _sel_sharedApplication: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_activateIgnoringOtherApps: ?objc.Sel = null;
-    var _sel_run: ?objc.Sel = null;
-    var _sel_activationPolicy: ?objc.Sel = null;
-    var _sel_setActivationPolicy: ?objc.Sel = null;
-
-    pub fn sharedApplication() objc.Sel {
-        if (_sel_sharedApplication == null) {
-            _sel_sharedApplication = objc.Sel.registerName("sharedApplication");
-        }
-        return _sel_sharedApplication.?;
-    }
-
-    pub fn delegate() objc.Sel {
-        if (_sel_delegate == null) {
-            _sel_delegate = objc.Sel.registerName("delegate");
-        }
-        return _sel_delegate.?;
-    }
-
-    pub fn setDelegate() objc.Sel {
-        if (_sel_setDelegate == null) {
-            _sel_setDelegate = objc.Sel.registerName("setDelegate:");
-        }
-        return _sel_setDelegate.?;
-    }
-
-    pub fn activateIgnoringOtherApps() objc.Sel {
-        if (_sel_activateIgnoringOtherApps == null) {
-            _sel_activateIgnoringOtherApps = objc.Sel.registerName("activateIgnoringOtherApps:");
-        }
-        return _sel_activateIgnoringOtherApps.?;
-    }
-
-    pub fn run() objc.Sel {
-        if (_sel_run == null) {
-            _sel_run = objc.Sel.registerName("run");
-        }
-        return _sel_run.?;
-    }
-
-    pub fn activationPolicy() objc.Sel {
-        if (_sel_activationPolicy == null) {
-            _sel_activationPolicy = objc.Sel.registerName("activationPolicy");
-        }
-        return _sel_activationPolicy.?;
-    }
-
-    pub fn setActivationPolicy() objc.Sel {
-        if (_sel_setActivationPolicy == null) {
-            _sel_setActivationPolicy = objc.Sel.registerName("setActivationPolicy:");
-        }
-        return _sel_setActivationPolicy.?;
-    }
-};
 
 pub const NSApplicationMessages = struct {
     pub fn getClass() objc.Class {
@@ -70,56 +12,37 @@ pub const NSApplicationMessages = struct {
     }
 
     pub fn sharedApplication() objc.Object {
-        return getClass().msgSend(objc.Object, NSApplicationSelectors.sharedApplication(), .{});
+        return getClass().msgSend(objc.Object, selector.NSApplicationSelectors.sharedApplication(), .{});
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSApplicationSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSApplicationSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
-        return self.msgSend(void, NSApplicationSelectors.setDelegate(), .{
+        return self.msgSend(void, selector.NSApplicationSelectors.setDelegate(), .{
             runtime_support.unwrapOptionalObject(_delegate),
         });
     }
 
     pub fn activateIgnoringOtherApps(self: objc.Object, _flag: objc.c.BOOL) void {
-        return self.msgSend(void, NSApplicationSelectors.activateIgnoringOtherApps(), .{
+        return self.msgSend(void, selector.NSApplicationSelectors.activateIgnoringOtherApps(), .{
             _flag,
         });
     }
 
     pub fn run(self: objc.Object) void {
-        return self.msgSend(void, NSApplicationSelectors.run(), .{});
+        return self.msgSend(void, selector.NSApplicationSelectors.run(), .{});
     }
 
     pub fn activationPolicy(self: objc.Object) NSInteger {
-        return self.msgSend(NSInteger, NSApplicationSelectors.activationPolicy(), .{});
+        return self.msgSend(NSInteger, selector.NSApplicationSelectors.activationPolicy(), .{});
     }
 
     pub fn setActivationPolicy(self: objc.Object, _activationPolicy: NSInteger) objc.c.BOOL {
-        return self.msgSend(objc.c.BOOL, NSApplicationSelectors.setActivationPolicy(), .{
+        return self.msgSend(objc.c.BOOL, selector.NSApplicationSelectors.setActivationPolicy(), .{
             _activationPolicy,
         });
-    }
-};
-
-pub const NSApplicationDelegateSelectors = struct {
-    var _sel_applicationWillFinishLaunching: ?objc.Sel = null;
-    var _sel_applicationDidFinishLaunching: ?objc.Sel = null;
-
-    pub fn applicationWillFinishLaunching() objc.Sel {
-        if (_sel_applicationWillFinishLaunching == null) {
-            _sel_applicationWillFinishLaunching = objc.Sel.registerName("applicationWillFinishLaunching:");
-        }
-        return _sel_applicationWillFinishLaunching.?;
-    }
-
-    pub fn applicationDidFinishLaunching() objc.Sel {
-        if (_sel_applicationDidFinishLaunching == null) {
-            _sel_applicationDidFinishLaunching = objc.Sel.registerName("applicationDidFinishLaunching:");
-        }
-        return _sel_applicationDidFinishLaunching.?;
     }
 };
 

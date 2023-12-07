@@ -1,11 +1,10 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 const NSAnimationProgress = f32;
-
-pub const NSAnimatablePropertyContainerSelectors = struct {};
 
 pub const NSAnimatablePropertyContainerMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;

@@ -1,9 +1,8 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
-
-pub const NSAccessibilityNavigableStaticTextSelectors = struct {};
 
 pub const NSAccessibilityNavigableStaticTextMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
@@ -19,8 +18,6 @@ pub const NSAccessibilityNavigableStaticTextMessages = struct {
     }
 };
 
-pub const NSAccessibilityElementSelectors = struct {};
-
 pub const NSAccessibilityElementMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
     pub const dealloc = runtime_support.backend_support.destroyInstance;
@@ -34,8 +31,6 @@ pub const NSAccessibilityElementMessages = struct {
         return class.?;
     }
 };
-
-pub const NSAccessibilityStaticTextSelectors = struct {};
 
 pub const NSAccessibilityStaticTextMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;

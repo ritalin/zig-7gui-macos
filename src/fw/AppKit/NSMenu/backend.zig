@@ -1,17 +1,14 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
-
-pub const NSMenuSelectors = struct {};
 
 pub const NSMenuMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSMenu").?;
     }
 };
-
-pub const NSMenuItemValidationSelectors = struct {};
 
 pub const NSMenuItemValidationMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;

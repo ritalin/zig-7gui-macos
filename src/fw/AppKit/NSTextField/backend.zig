@@ -1,58 +1,8 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
-
-pub const NSTextFieldSelectors = struct {
-    var _sel_backgroundColor: ?objc.Sel = null;
-    var _sel_setBackgroundColor: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-
-    pub fn backgroundColor() objc.Sel {
-        if (_sel_backgroundColor == null) {
-            _sel_backgroundColor = objc.Sel.registerName("backgroundColor");
-        }
-        return _sel_backgroundColor.?;
-    }
-
-    pub fn setBackgroundColor() objc.Sel {
-        if (_sel_setBackgroundColor == null) {
-            _sel_setBackgroundColor = objc.Sel.registerName("setBackgroundColor:");
-        }
-        return _sel_setBackgroundColor.?;
-    }
-
-    pub fn isEditable() objc.Sel {
-        if (_sel_isEditable == null) {
-            _sel_isEditable = objc.Sel.registerName("isEditable");
-        }
-        return _sel_isEditable.?;
-    }
-
-    pub fn setEditable() objc.Sel {
-        if (_sel_setEditable == null) {
-            _sel_setEditable = objc.Sel.registerName("setEditable:");
-        }
-        return _sel_setEditable.?;
-    }
-
-    pub fn delegate() objc.Sel {
-        if (_sel_delegate == null) {
-            _sel_delegate = objc.Sel.registerName("delegate");
-        }
-        return _sel_delegate.?;
-    }
-
-    pub fn setDelegate() objc.Sel {
-        if (_sel_setDelegate == null) {
-            _sel_setDelegate = objc.Sel.registerName("setDelegate:");
-        }
-        return _sel_setDelegate.?;
-    }
-};
 
 pub const NSTextFieldMessages = struct {
     pub fn getClass() objc.Class {
@@ -60,60 +10,33 @@ pub const NSTextFieldMessages = struct {
     }
 
     pub fn backgroundColor(self: objc.Object) ?objc.Object {
-        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.backgroundColor(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSTextFieldSelectors.backgroundColor(), .{}));
     }
 
     pub fn setBackgroundColor(self: objc.Object, _backgroundColor: ?objc.Object) void {
-        return self.msgSend(void, NSTextFieldSelectors.setBackgroundColor(), .{
+        return self.msgSend(void, selector.NSTextFieldSelectors.setBackgroundColor(), .{
             runtime_support.unwrapOptionalObject(_backgroundColor),
         });
     }
 
     pub fn isEditable(self: objc.Object) objc.c.BOOL {
-        return self.msgSend(objc.c.BOOL, NSTextFieldSelectors.isEditable(), .{});
+        return self.msgSend(objc.c.BOOL, selector.NSTextFieldSelectors.isEditable(), .{});
     }
 
     pub fn setEditable(self: objc.Object, _editable: objc.c.BOOL) void {
-        return self.msgSend(void, NSTextFieldSelectors.setEditable(), .{
+        return self.msgSend(void, selector.NSTextFieldSelectors.setEditable(), .{
             _editable,
         });
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextFieldSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSTextFieldSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
-        return self.msgSend(void, NSTextFieldSelectors.setDelegate(), .{
+        return self.msgSend(void, selector.NSTextFieldSelectors.setDelegate(), .{
             runtime_support.unwrapOptionalObject(_delegate),
         });
-    }
-};
-
-pub const NSTextFieldConvenienceForNSTextFieldSelectors = struct {
-    var _sel_labelWithString: ?objc.Sel = null;
-    var _sel_wrappingLabelWithString: ?objc.Sel = null;
-    var _sel_textFieldWithString: ?objc.Sel = null;
-
-    pub fn labelWithString() objc.Sel {
-        if (_sel_labelWithString == null) {
-            _sel_labelWithString = objc.Sel.registerName("labelWithString:");
-        }
-        return _sel_labelWithString.?;
-    }
-
-    pub fn wrappingLabelWithString() objc.Sel {
-        if (_sel_wrappingLabelWithString == null) {
-            _sel_wrappingLabelWithString = objc.Sel.registerName("wrappingLabelWithString:");
-        }
-        return _sel_wrappingLabelWithString.?;
-    }
-
-    pub fn textFieldWithString() objc.Sel {
-        if (_sel_textFieldWithString == null) {
-            _sel_textFieldWithString = objc.Sel.registerName("textFieldWithString:");
-        }
-        return _sel_textFieldWithString.?;
     }
 };
 
@@ -123,25 +46,23 @@ pub const NSTextFieldConvenienceForNSTextFieldMessages = struct {
     }
 
     pub fn labelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
-        return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.labelWithString(), .{
+        return _class.msgSend(objc.Object, selector.NSTextFieldConvenienceForNSTextFieldSelectors.labelWithString(), .{
             runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn wrappingLabelWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
-        return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.wrappingLabelWithString(), .{
+        return _class.msgSend(objc.Object, selector.NSTextFieldConvenienceForNSTextFieldSelectors.wrappingLabelWithString(), .{
             runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 
     pub fn textFieldWithString(_class: objc.Class, _stringValue: objc.Object) objc.Object {
-        return _class.msgSend(objc.Object, NSTextFieldConvenienceForNSTextFieldSelectors.textFieldWithString(), .{
+        return _class.msgSend(objc.Object, selector.NSTextFieldConvenienceForNSTextFieldSelectors.textFieldWithString(), .{
             runtime_support.unwrapOptionalObject(_stringValue),
         });
     }
 };
-
-pub const NSTextFieldDelegateSelectors = struct {};
 
 pub const NSTextFieldDelegateMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;

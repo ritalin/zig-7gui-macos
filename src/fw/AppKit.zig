@@ -1,62 +1,95 @@
-const AppKit_NSApplication = @import("./AppKit/NSApplication/frontend.zig");
-pub const NSApplication = AppKit_NSApplication.NSApplication;
-pub const NSApplicationDelegate = AppKit_NSApplication.NSApplicationDelegate;
-pub const NSModalResponse = AppKit_NSApplication.NSModalResponse;
-
-const AppKit_NSRunningApplication = @import("./AppKit/NSRunningApplication/frontend.zig");
-pub const NSApplicationActivationPolicy = AppKit_NSRunningApplication.NSApplicationActivationPolicy;
-
-const AppKit_NSWindow = @import("./AppKit/NSWindow/frontend.zig");
-pub const NSWindowStyleMask = AppKit_NSWindow.NSWindowStyleMask;
-pub const NSWindow = AppKit_NSWindow.NSWindow;
-pub const NSWindowDelegate = AppKit_NSWindow.NSWindowDelegate;
-
-const AppKit_NSGraphics = @import("./AppKit/NSGraphics/frontend.zig");
-pub const NSBackingStoreType = AppKit_NSGraphics.NSBackingStoreType;
-
-const AppKit_NSScreen = @import("./AppKit/NSScreen/frontend.zig");
-pub const NSScreen = AppKit_NSScreen.NSScreen;
-
-const AppKit_NSColor = @import("./AppKit/NSColor/frontend.zig");
-pub const NSColor = AppKit_NSColor.NSColor;
-pub const NSColorSystemEffect = AppKit_NSColor.NSColorSystemEffect;
-
-const AppKit_NSResponder = @import("./AppKit/NSResponder/frontend.zig");
-pub const NSResponder = AppKit_NSResponder.NSResponder;
-const AppKit_NSResponder_Backend = @import("./AppKit/NSResponder/backend.zig");
-pub const NSStandardKeyBindingRespondingSelectors = AppKit_NSResponder_Backend.NSStandardKeyBindingRespondingSelectors;
-
-const AppKit_NSControl = @import("./AppKit/NSControl/frontend.zig");
-pub const NSControl = AppKit_NSControl.NSControl;
-pub const NSControlTextEditingDelegate = AppKit_NSControl.NSControlTextEditingDelegate;
-
-const AppKit_NSView = @import("./AppKit/NSView/frontend.zig");
-pub const NSView = AppKit_NSView.NSView;
-
-const AppKit_NSTextField = @import("./AppKit/NSTextField/frontend.zig");
-pub const NSTextField = AppKit_NSTextField.NSTextField;
-pub const NSTextFieldDelegate = AppKit_NSTextField.NSTextFieldDelegate;
-
-const AppKit_NSTextStorage = @import("./AppKit/NSTextStorage/frontend.zig");
-pub const NSTextStorage = AppKit_NSTextStorage.NSTextStorage;
-
-const AppKit_NSText = @import("./AppKit/NSText/frontend.zig");
-pub const NSTextAlignment = AppKit_NSText.NSTextAlignment;
-pub const NSText = AppKit_NSText.NSText;
-pub const NSTextDelegate = AppKit_NSText.NSTextDelegate;
-
-const AppKit_NSTextView = @import("./AppKit/NSTextView/frontend.zig");
-pub const NSTextView = AppKit_NSTextView.NSTextView;
-pub const NSTextViewDelegate = AppKit_NSTextView.NSTextViewDelegate;
-
-const AppKit_NSButton = @import("./AppKit/NSButton/frontend.zig");
-pub const NSButton = AppKit_NSButton.NSButton;
-
-const AppKit_NSComboBox = @import("./AppKit/NSComboBox/frontend.zig");
-pub const NSComboBox = AppKit_NSComboBox.NSComboBox;
-pub const NSComboBoxDelegate = AppKit_NSComboBox.NSComboBoxDelegate;
-pub const NSComboBoxDataSource = AppKit_NSComboBox.NSComboBoxDataSource;
-
-const AppKit_NSAlert = @import("./AppKit/NSAlert/frontend.zig");
-pub const NSAlert = AppKit_NSAlert.NSAlert;
-pub const NSAlertSelectors = @import("./AppKit/NSAlert/backend.zig").NSAlertSelectors;
+// NSAccessibilityProtocols
+pub usingnamespace @import("./AppKit/NSAccessibilityProtocols/frontend.zig");
+pub usingnamespace @import("./AppKit/NSAccessibilityProtocols/selector.zig");
+// NSAlert
+pub usingnamespace @import("./AppKit/NSAlert/frontend.zig");
+pub usingnamespace @import("./AppKit/NSAlert/selector.zig");
+// NSAnimation
+pub usingnamespace @import("./AppKit/NSAnimation/frontend.zig");
+pub usingnamespace @import("./AppKit/NSAnimation/selector.zig");
+// NSAppearance
+pub usingnamespace @import("./AppKit/NSAppearance/frontend.zig");
+pub usingnamespace @import("./AppKit/NSAppearance/selector.zig");
+// NSApplication
+pub usingnamespace @import("./AppKit/NSApplication/frontend.zig");
+pub usingnamespace @import("./AppKit/NSApplication/selector.zig");
+// NSButton
+pub usingnamespace @import("./AppKit/NSButton/frontend.zig");
+pub usingnamespace @import("./AppKit/NSButton/selector.zig");
+// NSCandidateListTouchBarItem
+pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/frontend.zig");
+pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/selector.zig");
+// NSColor
+pub usingnamespace @import("./AppKit/NSColor/frontend.zig");
+pub usingnamespace @import("./AppKit/NSColor/selector.zig");
+// NSColorPanel
+pub usingnamespace @import("./AppKit/NSColorPanel/frontend.zig");
+pub usingnamespace @import("./AppKit/NSColorPanel/selector.zig");
+// NSComboBox
+pub usingnamespace @import("./AppKit/NSComboBox/frontend.zig");
+pub usingnamespace @import("./AppKit/NSComboBox/selector.zig");
+// NSControl
+pub usingnamespace @import("./AppKit/NSControl/frontend.zig");
+pub usingnamespace @import("./AppKit/NSControl/selector.zig");
+// NSDragging
+pub usingnamespace @import("./AppKit/NSDragging/frontend.zig");
+pub usingnamespace @import("./AppKit/NSDragging/selector.zig");
+// NSGraphics
+pub usingnamespace @import("./AppKit/NSGraphics/frontend.zig");
+// NSInputManager
+pub usingnamespace @import("./AppKit/NSInputManager/frontend.zig");
+pub usingnamespace @import("./AppKit/NSInputManager/selector.zig");
+// NSLayoutManager
+pub usingnamespace @import("./AppKit/NSLayoutManager/frontend.zig");
+pub usingnamespace @import("./AppKit/NSLayoutManager/selector.zig");
+// NSMenu
+pub usingnamespace @import("./AppKit/NSMenu/frontend.zig");
+pub usingnamespace @import("./AppKit/NSMenu/selector.zig");
+// NSPasteboard
+pub usingnamespace @import("./AppKit/NSPasteboard/frontend.zig");
+pub usingnamespace @import("./AppKit/NSPasteboard/selector.zig");
+// NSResponder
+pub usingnamespace @import("./AppKit/NSResponder/frontend.zig");
+pub usingnamespace @import("./AppKit/NSResponder/selector.zig");
+// NSRunningApplication
+pub usingnamespace @import("./AppKit/NSRunningApplication/frontend.zig");
+pub usingnamespace @import("./AppKit/NSRunningApplication/selector.zig");
+// NSScreen
+pub usingnamespace @import("./AppKit/NSScreen/frontend.zig");
+pub usingnamespace @import("./AppKit/NSScreen/selector.zig");
+// NSSpellProtocol
+pub usingnamespace @import("./AppKit/NSSpellProtocol/frontend.zig");
+pub usingnamespace @import("./AppKit/NSSpellProtocol/selector.zig");
+// NSText
+pub usingnamespace @import("./AppKit/NSText/frontend.zig");
+pub usingnamespace @import("./AppKit/NSText/selector.zig");
+// NSTextContent
+pub usingnamespace @import("./AppKit/NSTextContent/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextContent/selector.zig");
+// NSTextField
+pub usingnamespace @import("./AppKit/NSTextField/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextField/selector.zig");
+// NSTextInputClient
+pub usingnamespace @import("./AppKit/NSTextInputClient/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextInputClient/selector.zig");
+// NSTextStorage
+pub usingnamespace @import("./AppKit/NSTextStorage/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextStorage/selector.zig");
+// NSTextView
+pub usingnamespace @import("./AppKit/NSTextView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextView/selector.zig");
+// NSUserInterfaceCompression
+pub usingnamespace @import("./AppKit/NSUserInterfaceCompression/frontend.zig");
+pub usingnamespace @import("./AppKit/NSUserInterfaceCompression/selector.zig");
+// NSUserInterfaceItemIdentification
+pub usingnamespace @import("./AppKit/NSUserInterfaceItemIdentification/frontend.zig");
+pub usingnamespace @import("./AppKit/NSUserInterfaceItemIdentification/selector.zig");
+// NSUserInterfaceValidation
+pub usingnamespace @import("./AppKit/NSUserInterfaceValidation/frontend.zig");
+pub usingnamespace @import("./AppKit/NSUserInterfaceValidation/selector.zig");
+// NSView
+pub usingnamespace @import("./AppKit/NSView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSView/selector.zig");
+// NSWindow
+pub usingnamespace @import("./AppKit/NSWindow/frontend.zig");
+pub usingnamespace @import("./AppKit/NSWindow/selector.zig");

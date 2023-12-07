@@ -1,58 +1,8 @@
 const std = @import("std");
 const objc = @import("objc");
+const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
-
-pub const NSTextSelectors = struct {
-    var _sel_string: ?objc.Sel = null;
-    var _sel_setString: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-
-    pub fn string() objc.Sel {
-        if (_sel_string == null) {
-            _sel_string = objc.Sel.registerName("string");
-        }
-        return _sel_string.?;
-    }
-
-    pub fn setString() objc.Sel {
-        if (_sel_setString == null) {
-            _sel_setString = objc.Sel.registerName("setString:");
-        }
-        return _sel_setString.?;
-    }
-
-    pub fn delegate() objc.Sel {
-        if (_sel_delegate == null) {
-            _sel_delegate = objc.Sel.registerName("delegate");
-        }
-        return _sel_delegate.?;
-    }
-
-    pub fn setDelegate() objc.Sel {
-        if (_sel_setDelegate == null) {
-            _sel_setDelegate = objc.Sel.registerName("setDelegate:");
-        }
-        return _sel_setDelegate.?;
-    }
-
-    pub fn isEditable() objc.Sel {
-        if (_sel_isEditable == null) {
-            _sel_isEditable = objc.Sel.registerName("isEditable");
-        }
-        return _sel_isEditable.?;
-    }
-
-    pub fn setEditable() objc.Sel {
-        if (_sel_setEditable == null) {
-            _sel_setEditable = objc.Sel.registerName("setEditable:");
-        }
-        return _sel_setEditable.?;
-    }
-};
 
 pub const NSTextMessages = struct {
     pub fn getClass() objc.Class {
@@ -60,44 +10,33 @@ pub const NSTextMessages = struct {
     }
 
     pub fn string(self: objc.Object) objc.Object {
-        return self.msgSend(objc.Object, NSTextSelectors.string(), .{});
+        return self.msgSend(objc.Object, selector.NSTextSelectors.string(), .{});
     }
 
     pub fn setString(self: objc.Object, _string: objc.Object) void {
-        return self.msgSend(void, NSTextSelectors.setString(), .{
+        return self.msgSend(void, selector.NSTextSelectors.setString(), .{
             runtime_support.unwrapOptionalObject(_string),
         });
     }
 
     pub fn delegate(self: objc.Object) ?objc.Object {
-        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, NSTextSelectors.delegate(), .{}));
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSTextSelectors.delegate(), .{}));
     }
 
     pub fn setDelegate(self: objc.Object, _delegate: ?objc.Object) void {
-        return self.msgSend(void, NSTextSelectors.setDelegate(), .{
+        return self.msgSend(void, selector.NSTextSelectors.setDelegate(), .{
             runtime_support.unwrapOptionalObject(_delegate),
         });
     }
 
     pub fn isEditable(self: objc.Object) objc.c.BOOL {
-        return self.msgSend(objc.c.BOOL, NSTextSelectors.isEditable(), .{});
+        return self.msgSend(objc.c.BOOL, selector.NSTextSelectors.isEditable(), .{});
     }
 
     pub fn setEditable(self: objc.Object, _editable: objc.c.BOOL) void {
-        return self.msgSend(void, NSTextSelectors.setEditable(), .{
+        return self.msgSend(void, selector.NSTextSelectors.setEditable(), .{
             _editable,
         });
-    }
-};
-
-pub const NSTextDelegateSelectors = struct {
-    var _sel_textDidChange: ?objc.Sel = null;
-
-    pub fn textDidChange() objc.Sel {
-        if (_sel_textDidChange == null) {
-            _sel_textDidChange = objc.Sel.registerName("textDidChange:");
-        }
-        return _sel_textDidChange.?;
     }
 };
 
