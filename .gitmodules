@@ -1,3 +1,6 @@
 [submodule "vendor/zig-objc"]
 	path = vendor/zig-objc
 	url = https://github.com/mitchellh/zig-objc.git
+[submodule "vendor/zig-example-step"]
+	path = vendor/zig-example-step
+	url = https://github.com/ritalin/zig-example-step.git
