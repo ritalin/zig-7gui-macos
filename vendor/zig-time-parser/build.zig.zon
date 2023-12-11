@@ -7,8 +7,8 @@
         "build.zig.zon",        
     },
     .dependencies = .{
-        .time = .{
-            .path = "../zig-time"
+        .time_formatter = .{
+            .path = "../zig-time-formatter"
         },
     }
 }

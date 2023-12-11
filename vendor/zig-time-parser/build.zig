@@ -4,18 +4,15 @@ pub fn build(b: *std.build.Builder) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const dep_time = b.dependency("time", .{
-        .target = target,
-        .optimize = optimize,
-    });
-    const mod_time = dep_time.module("time");
+    const dep_time_formatter = b.dependency("time_formatter", .{});
+    const mod_time_formatter = dep_time_formatter.module("time-formatter");
 
     const mod_time_parser = b.addModule(
         "time-parser",
         .{
             .source_file = .{ .path = "src/main.zig" },
             .dependencies = &.{
-                .{ .name = "time", .module = mod_time },
+                .{ .name = "time-formatter", .module = mod_time_formatter },
             },
         },
     );
@@ -29,7 +26,7 @@ pub fn build(b: *std.build.Builder) void {
         .optimize = optimize,
     });
     exe.addModule("time-parser", mod_time_parser);
-    exe.addModule("time", mod_time);
+    exe.addModule("time-formatter", mod_time_formatter);
 
     b.installArtifact(exe);
     const run_cmd = b.addRunArtifact(exe);
@@ -42,7 +39,7 @@ pub fn build(b: *std.build.Builder) void {
         .optimize = optimize,
     });
     unit_tests.addModule("time-parser", mod_time_parser);
-    unit_tests.addModule("time", mod_time);
+    unit_tests.addModule("time-formatter", mod_time_formatter);
 
     const run_unit_tests = b.addRunArtifact(unit_tests);
     const test_step = b.step("test", "Run unit tests");
