@@ -4,15 +4,7 @@ const std = @import("std");
 // declaratively construct a build graph that will be executed by an external
 // runner.
 pub fn build(b: *std.Build) !void {
-    // Standard target options allows the person running `zig build` to choose
-    // what target to build for. Here we do not override the defaults, which
-    // means any target is allowed, and the default is native. Other options
-    // for restricting supported target set are available.
     const target = b.standardTargetOptions(.{});
-
-    // Standard optimization options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. Here we do not
-    // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
     // ObjC Runtime
@@ -94,33 +86,31 @@ pub fn build(b: *std.Build) !void {
         .{ .name = "Runtime-Support", .module = mod_runtime_support },
     } });
 
-    const dep_time = b.dependency("time", .{
-        .target = target,
-        .optimize = optimize,
+    const dep_time_formatter = b.dependency("time_formatter", .{
+        // .target = target,
+        // .optimize = optimize,
     });
-    const mod_time = dep_time.module("time");
-
-    const dep_time_parser = b.dependency("time_parser", .{
-        .target = target,
-        .optimize = optimize,
-    });
+    const mod_time_formatter = dep_time_formatter.module("time-formatter");
+    
+    const dep_time_parser = b.dependency("time_parser", .{});
     const mod_time_parser = dep_time_parser.module("time-parser");
 
-    const examples = std.ComptimeStringMap([]const u8, .{
+    const examples = &[_](struct {[]const u8, []const u8}){
         .{ "counter", "src/examples/01_counter/main.zig" },
         .{ "temp_conv", "src/examples/02_temp_conv/main.zig" },
         .{ "book_flight", "src/examples/03_book_flight/main.zig" },
-    });
+        .{ "timer", "src/examples/04_timer/main.zig" },
+    };
 
     // create example step
     const example_cmd = try @import("example_step").RunExample.create(b);
 
-    for (examples.kvs) |kv| {
+    for (examples) |kv| {
         const exe = b.addExecutable(.{
-            .name = kv.key,
+            .name = kv[0],
             // In this case the main source file is merely a path, however, in more
             // complicated build scripts, this could be a generated file.
-            .root_source_file = .{ .path = kv.value },
+            .root_source_file = .{ .path = kv[1] },
             .target = target,
             .optimize = optimize,
         });
@@ -133,8 +123,9 @@ pub fn build(b: *std.Build) !void {
         exe.addModule("Runtime-Support", mod_runtime_support);
         exe.addModule("AppKit-Support", mod_appKit_support);
 
-        exe.addModule("time", mod_time);
+        // exe.addModule("time", mod_time);
         exe.addModule("time-parser", mod_time_parser);
+        exe.addModule("time-formatter", mod_time_formatter);
 
         exe.addSystemIncludePath(.{ .path = "/usr/include" });
         exe.addFrameworkPath(.{ .path = "/System/Library/Frameworks" });

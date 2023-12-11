@@ -10,11 +10,11 @@
         .objc = .{
             .path = "vendor/zig-objc"
         },
-        .time = .{
-            .path = "vendor/zig-time"
-        },
         .time_parser = .{
             .path = "vendor/zig-time-parser"
+        },
+        .time_formatter = .{
+            .path = "vendor/zig-time-formatter"
         },
         .example_step = .{
             .path = "vendor/zig-example-step",
