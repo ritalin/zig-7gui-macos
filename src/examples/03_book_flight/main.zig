@@ -6,7 +6,7 @@ const foundation = @import("Foundation");
 const runtime_support = @import("Runtime-Support");
 const appKit_support = @import("AppKit-Support");
 
-const time = @import("time");
+const time_formatter = @import("time-formatter");
 const time_parser = @import("time-parser");
 
 const NSInteger = runtime.NSInteger;
@@ -66,13 +66,15 @@ const FlightBookContext = struct {
         context.refreshView();
     }
 
-    fn parseDate(text_field: appKit.NSTextField) ?time.DateTime {
+    fn parseDate(text_field: appKit.NSTextField) ?time_formatter.FormattableTime.Utc {
         var s = text_field.as(appKit.NSControl).stringValue();
         var date_str = s.as(foundation.NSString.ExtensionMethods).utf8String();
 
-        return time_parser.fromISO8601(std.mem.sliceTo(date_str, 0)) catch {
+        const offset_date = time_parser.fromISO8601(std.mem.sliceTo(date_str, 0)) catch {
             return null;
         };
+
+        return .{ .timestamp_ms = offset_date.timestamp_ms };
     }
 
     fn refreshView(context: *FlightBookContext) void {
@@ -100,8 +102,8 @@ const FlightBookContext = struct {
         }
     }
 
-    fn compareDate(date: time.DateTime, other: time.DateTime) std.math.Order {
-        return std.math.order(date.toUnixMilli(), other.toUnixMilli());
+    fn compareDate(date: time_formatter.FormattableTime.Utc, other: time_formatter.FormattableTime.Utc) std.math.Order {
+        return std.math.order(date.timestamp_ms, other.timestamp_ms);
     }
 
     fn handleRecordBook(context: ?*FlightBookContext, _: appKit.NSButton) !void {
@@ -110,7 +112,13 @@ const FlightBookContext = struct {
             var dep_date = parseDate(ctx.values.departure_date).?;
             var arr_date = parseDate(ctx.values.arrival_date).?;
 
-            var msg = try std.fmt.allocPrintZ(ctx.allocator, "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-DD}\n\tarrival: {YYYY-MM-DD}", .{ route, dep_date, arr_date });
+            var msg = try std.fmt.allocPrintZ(ctx.allocator, 
+                "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-DD}\n\tarrival: {YYYY-MM-DD}", .{ 
+                    route, 
+                    time_formatter.FormattableTime{ .utc = dep_date }, 
+                    time_formatter.FormattableTime{ .utc = arr_date },
+                }
+            );
             defer ctx.allocator.free(msg);
 
             std.debug.print("{s}\n", .{msg});
@@ -263,7 +271,9 @@ const AppRootContext = struct {
                 }
                 v.addSubview(dropdown.as(appKit.NSView));
 
-                var ini_date = try std.fmt.allocPrintZ(allocator, "{YYYY-MM-DD}", .{time.DateTime.now()});
+                var ini_date = try std.fmt.allocPrintZ(allocator, "{YYYY-MM-DD}", .{
+                    time_formatter.FormattableTime{ .utc = .{.timestamp_ms = std.time.milliTimestamp()} }
+                });
                 var ini_date_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(ini_date).?;
 
                 var departure_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(.{ .origin = .{ .x = 4, .y = 60 }, .size = .{ .width = 120, .height = 24 } });
