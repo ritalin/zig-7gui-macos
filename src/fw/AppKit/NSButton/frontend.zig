@@ -11,6 +11,8 @@ const NSAccessibilityButton = appKit.NSAccessibilityButton;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
 const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSBezelStyle = appKit.NSBezelStyle;
+const NSButtonType = appKit.NSButtonType;
 const NSControl = appKit.NSControl;
 const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSResponder = appKit.NSResponder;
@@ -22,6 +24,7 @@ const NSCoding = foundation.NSCoding;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;
 
 pub const NSButton = struct {
     pub const Self = @This();
@@ -38,6 +41,26 @@ pub const NSButton = struct {
 
     pub inline fn of(comptime DesiredType: type) type {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+    }
+
+    pub fn setButtonType(self: Self, _type: NSButtonType) void {
+        return backend.NSButtonMessages.setButtonType(runtime_support.objectId(NSButton, self), runtime_support.unwrapEnum(NSButtonType, NSUInteger, _type));
+    }
+
+    pub fn title(self: Self) NSString {
+        return runtime_support.wrapObject(NSString, backend.NSButtonMessages.title(runtime_support.objectId(NSButton, self)));
+    }
+
+    pub fn setTitle(self: Self, _title: NSString) void {
+        return backend.NSButtonMessages.setTitle(runtime_support.objectId(NSButton, self), runtime_support.objectId(NSString, _title));
+    }
+
+    pub fn bezelStyle(self: Self) NSBezelStyle {
+        return runtime_support.toEnum(NSBezelStyle, backend.NSButtonMessages.bezelStyle(runtime_support.objectId(NSButton, self)));
+    }
+
+    pub fn setBezelStyle(self: Self, _bezelStyle: NSBezelStyle) void {
+        return backend.NSButtonMessages.setBezelStyle(runtime_support.objectId(NSButton, self), runtime_support.unwrapEnum(NSBezelStyle, NSUInteger, _bezelStyle));
     }
 
     fn Constructor(comptime DesiredType: type) type {

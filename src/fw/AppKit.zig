@@ -16,6 +16,7 @@ pub usingnamespace @import("./AppKit/NSApplication/selector.zig");
 // NSButton
 pub usingnamespace @import("./AppKit/NSButton/frontend.zig");
 pub usingnamespace @import("./AppKit/NSButton/selector.zig");
+pub usingnamespace @import("./AppKit/NSButtonCell/frontend.zig");
 // NSCandidateListTouchBarItem
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/frontend.zig");
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/selector.zig");
@@ -93,3 +94,6 @@ pub usingnamespace @import("./AppKit/NSView/selector.zig");
 // NSWindow
 pub usingnamespace @import("./AppKit/NSWindow/frontend.zig");
 pub usingnamespace @import("./AppKit/NSWindow/selector.zig");
+
+pub usingnamespace @import("./AppKit/NSProgressIndicator/frontend.zig");
+pub usingnamespace @import("./AppKit/NSSlider/frontend.zig");

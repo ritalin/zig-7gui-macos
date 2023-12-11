@@ -59,6 +59,10 @@ pub const RuntimeTypeConverter = struct {
         return .{ ._value = v };
     }
 
+    pub inline fn wrapObjectId(id: objc.c.id) objc.Object {
+        return objc.Object.fromId(id);
+    }
+
     pub inline fn unwrapEnum(comptime EnumType: type, comptime UnderlyingType: type, v: EnumType) UnderlyingType {
         return v._value;
     }
@@ -72,7 +76,7 @@ pub const RuntimeTypeConverter = struct {
     }
 
     pub inline fn wrapOptionalObjectId(id: ?objc.c.id) ?objc.Object {
-        return if (id) |x| .{ .value = x } else null;
+        return if (id) |x| objc.Object.fromId(x) else null;
     }
 
     pub inline fn wrapOptionalObject(comptime ObjectType: type, id: ?objc.Object) ?ObjectType {

@@ -18,3 +18,5 @@ pub usingnamespace @import("./Foundation/NSObject/selector.zig");
 // NSString
 pub usingnamespace @import("./Foundation/NSString/frontend.zig");
 pub usingnamespace @import("./Foundation/NSString/selector.zig");
+
+pub usingnamespace @import("./Foundation/NSTimer/frontend.zig");
