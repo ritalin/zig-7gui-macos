@@ -30,9 +30,3 @@ pub const ExtensionsForNSScreenMessages = struct {
         return objc.getClass("NSScreen").?;
     }
 };
-
-pub const NSDeprecatedForNSScreenMessages = struct {
-    pub fn getClass() objc.Class {
-        return objc.getClass("NSScreen").?;
-    }
-};

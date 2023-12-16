@@ -93,7 +93,6 @@ pub const NSWindowNumberListOptions = std.enums.EnumSet(enum(NSUInteger) {
 pub const NSWindow = struct {
     pub const Self = @This();
     pub const CursorRect = NSCursorRectForNSWindow;
-    pub const Deprecated = NSDeprecatedForNSWindow;
     pub const CarbonExtensions = NSCarbonExtensionsForNSWindow;
     pub const Event = NSEventForNSWindow;
     pub const Drag = NSDragForNSWindow;
@@ -211,22 +210,6 @@ pub const NSWindow = struct {
 };
 
 const NSCursorRectForNSWindow = struct {
-    const Category = @This();
-    pub const Self = NSWindow;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSDeprecatedForNSWindow = struct {
     const Category = @This();
     pub const Self = NSWindow;
 

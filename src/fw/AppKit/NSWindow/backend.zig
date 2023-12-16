@@ -108,12 +108,6 @@ pub const NSCursorRectForNSWindowMessages = struct {
     }
 };
 
-pub const NSDeprecatedForNSWindowMessages = struct {
-    pub fn getClass() objc.Class {
-        return objc.getClass("NSWindow").?;
-    }
-};
-
 pub const NSCarbonExtensionsForNSWindowMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSWindow").?;
@@ -140,7 +134,7 @@ pub const NSWindowDelegateMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "NSWindowDelegate");
         }
         return class.?;
     }

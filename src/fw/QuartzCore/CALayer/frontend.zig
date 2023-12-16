@@ -8,6 +8,7 @@ const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 const CGColorRef = coreGraphics.CGColorRef;
+const CGFloat = coreGraphics.CGFloat;
 const NSCoding = foundation.NSCoding;
 const NSSecureCoding = foundation.NSSecureCoding;
 const CAMediaTiming = quartzCore.CAMediaTiming;
@@ -55,12 +56,44 @@ pub const CALayer = struct {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn masksToBounds(self: Self) bool {
+        return runtime_support.fromBOOL(backend.CALayerMessages.masksToBounds(runtime_support.objectId(CALayer, self)));
+    }
+
+    pub fn setMasksToBounds(self: Self, _masksToBounds: bool) void {
+        return backend.CALayerMessages.setMasksToBounds(runtime_support.objectId(CALayer, self), runtime_support.toBOOL(_masksToBounds));
+    }
+
     pub fn backgroundColor(self: Self) ?CGColorRef {
         return backend.CALayerMessages.backgroundColor(runtime_support.objectId(CALayer, self));
     }
 
     pub fn setBackgroundColor(self: Self, _backgroundColor: ?CGColorRef) void {
         return backend.CALayerMessages.setBackgroundColor(runtime_support.objectId(CALayer, self), runtime_support.pass(?CGColorRef, _backgroundColor));
+    }
+
+    pub fn cornerRadius(self: Self) CGFloat {
+        return backend.CALayerMessages.cornerRadius(runtime_support.objectId(CALayer, self));
+    }
+
+    pub fn setCornerRadius(self: Self, _cornerRadius: CGFloat) void {
+        return backend.CALayerMessages.setCornerRadius(runtime_support.objectId(CALayer, self), runtime_support.pass(CGFloat, _cornerRadius));
+    }
+
+    pub fn borderWidth(self: Self) CGFloat {
+        return backend.CALayerMessages.borderWidth(runtime_support.objectId(CALayer, self));
+    }
+
+    pub fn setBorderWidth(self: Self, _borderWidth: CGFloat) void {
+        return backend.CALayerMessages.setBorderWidth(runtime_support.objectId(CALayer, self), runtime_support.pass(CGFloat, _borderWidth));
+    }
+
+    pub fn borderColor(self: Self) ?CGColorRef {
+        return backend.CALayerMessages.borderColor(runtime_support.objectId(CALayer, self));
+    }
+
+    pub fn setBorderColor(self: Self, _borderColor: ?CGColorRef) void {
+        return backend.CALayerMessages.setBorderColor(runtime_support.objectId(CALayer, self), runtime_support.pass(?CGColorRef, _borderColor));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -88,10 +121,4 @@ pub const CALayer = struct {
             });
         }
     };
-};
-
-pub const _CALayerIvars = extern struct {
-    refcount: i32,
-    magic: u32,
-    layer: *anyopaque,
 };

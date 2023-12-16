@@ -44,8 +44,6 @@ pub const ObjectRegistry = struct {
         std.debug.assert(c != null);
 
         var p = objc.c.objc_getProtocol(protocolName);
-        std.debug.assert((protocolName.len == 0) or (p != null));
-
         var res = objc.c.class_addProtocol(c, p);
         std.debug.assert(res == BOOL_YES);
 
@@ -105,9 +103,8 @@ pub fn isSameId(lhs: ?objc.Object, rhs: ?objc.Object) bool {
     return lhs.?.value == rhs.?.value;
 }
 
-
 pub const ObjectProxy = struct {
-    object: objc.Object, 
+    object: objc.Object,
 
     pub fn init(object: objc.Object) ObjectProxy {
         return .{ .object = object };
@@ -134,19 +131,19 @@ pub const ObjectProxy = struct {
 
         pub fn asPointer(self: FieldProxy, comptime ReturnType: type) ?ReturnType {
             std.debug.assert(@typeInfo(ReturnType) == .Pointer);
-            
+
             var out_value: ?*anyopaque = undefined;
             _ = objc.c.object_getInstanceVariable(self.owner.object.value, self.field_name, &out_value);
-            
+
             if (out_value == null) return null;
-            
+
             return @as(ReturnType, @ptrCast(@alignCast(out_value)));
         }
 
         pub fn setAsPointer(self: FieldProxy, comptime ReturnType: type, value: ReturnType) void {
             std.debug.assert(@typeInfo(ReturnType) == .Pointer);
             std.debug.assert(@TypeOf(value) == ReturnType);
-            
+
             _ = objc.c.object_setInstanceVariable(self.owner.object.value, self.field_name, @constCast(value));
         }
     };

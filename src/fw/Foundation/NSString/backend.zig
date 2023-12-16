@@ -80,9 +80,3 @@ pub const NSItemProviderForNSStringMessages = struct {
         return objc.getClass("NSString").?;
     }
 };
-
-pub const NSStringDeprecatedForNSStringMessages = struct {
-    pub fn getClass() objc.Class {
-        return objc.getClass("NSString").?;
-    }
-};

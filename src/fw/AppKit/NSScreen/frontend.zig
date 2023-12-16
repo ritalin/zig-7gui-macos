@@ -13,7 +13,6 @@ const NSObjectProtocol = runtime.NSObjectProtocol;
 pub const NSScreen = struct {
     pub const Self = @This();
     pub const Extensions = ExtensionsForNSScreen;
-    pub const Deprecated = NSDeprecatedForNSScreen;
 
     _id: objc.Object,
 
@@ -65,22 +64,6 @@ pub const NSScreen = struct {
 };
 
 const ExtensionsForNSScreen = struct {
-    const Category = @This();
-    pub const Self = NSScreen;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSDeprecatedForNSScreen = struct {
     const Category = @This();
     pub const Self = NSScreen;
 

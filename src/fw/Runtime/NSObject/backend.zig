@@ -16,6 +16,12 @@ pub const NSObjectMessages = struct {
     pub fn dealloc(self: objc.Object) void {
         return self.msgSend(void, selector.NSObjectSelectors.dealloc(), .{});
     }
+
+    pub fn conformsToProtocol(_protocol: objc.Protocol) objc.c.BOOL {
+        return getClass().msgSend(objc.c.BOOL, selector.NSObjectSelectors.conformsToProtocol(), .{
+            runtime_support.unwrapOptionalProtocol(_protocol),
+        });
+    }
 };
 
 pub const NSObjectProtocolMessages = struct {
@@ -26,7 +32,7 @@ pub const NSObjectProtocolMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "NSObject");
         }
         return class.?;
     }

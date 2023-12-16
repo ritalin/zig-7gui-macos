@@ -135,8 +135,6 @@ pub const NSWindowSelectors = struct {
 
 pub const NSCursorRectForNSWindowSelectors = struct {};
 
-pub const NSDeprecatedForNSWindowSelectors = struct {};
-
 pub const NSCarbonExtensionsForNSWindowSelectors = struct {};
 
 pub const NSEventForNSWindowSelectors = struct {};

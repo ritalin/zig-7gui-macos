@@ -66,7 +66,7 @@ pub const NSComboBoxDataSourceMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "NSComboBoxDataSource");
         }
         return class.?;
     }
@@ -96,7 +96,7 @@ pub const NSComboBoxDelegateMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
-            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "");
+            class = runtime_support.backend_support.ObjectRegistry.newDelegateClass(_class_name, "NSComboBoxDelegate");
         }
         return class.?;
     }

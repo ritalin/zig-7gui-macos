@@ -30,5 +30,3 @@ pub const NSScreenSelectors = struct {
 };
 
 pub const ExtensionsForNSScreenSelectors = struct {};
-
-pub const NSDeprecatedForNSScreenSelectors = struct {};

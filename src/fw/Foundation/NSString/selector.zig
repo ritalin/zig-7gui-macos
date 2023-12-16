@@ -53,5 +53,3 @@ pub const NSStringExtensionMethodsForNSStringSelectors = struct {
 };
 
 pub const NSItemProviderForNSStringSelectors = struct {};
-
-pub const NSStringDeprecatedForNSStringSelectors = struct {};

@@ -27,7 +27,7 @@ pub const NSPasteboardContentsOptions = std.enums.EnumSet(enum(NSUInteger) {
     CurrentHostOnly = 1 << 0,
 });
 
-pub const NSPasteboardReading = struct {
+pub const NSPasteboardWriting = struct {
     pub const Self = @This();
 
     _id: objc.Object,
@@ -40,20 +40,20 @@ pub const NSPasteboardReading = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSPasteboardReading", SuffixIdSeed.generateIdentifier());
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSPasteboardWriting", SuffixIdSeed.generateIdentifier());
                     var _class: ?objc.Class = null;
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSPasteboardReadingMessages.initClass(_class_name);
+                            var class = backend.NSPasteboardWritingMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
-                            NSPasteboardReading.Protocol(ContextType).Dispatch(_delegate_handlers.handler_pasteboard_reading).initClass(class);
+                            NSPasteboardWriting.Protocol(ContextType).Dispatch(_delegate_handlers.handler_pasteboard_writing).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSPasteboardReadingMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSPasteboardReading, _id);
+                        var _id = backend.NSPasteboardWritingMessages.init(_class.?);
+                        var _instance = runtime_support.wrapObject(NSPasteboardWriting, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -70,7 +70,7 @@ pub const NSPasteboardReading = struct {
             }
 
             pub const HandlerSet = struct {
-                handler_pasteboard_reading: NSPasteboardReading.Protocol(ContextType).Handler = .{},
+                handler_pasteboard_writing: NSPasteboardWriting.Protocol(ContextType).Handler = .{},
                 handler_object_protocol: NSObjectProtocol.Protocol(ContextType).Handler = .{},
             };
 

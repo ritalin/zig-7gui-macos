@@ -21,3 +21,5 @@ pub usingnamespace @import("./Foundation/NSString/selector.zig");
 // NSTimer
 pub usingnamespace @import("./Foundation/NSTimer/frontend.zig");
 pub usingnamespace @import("./Foundation/NSTimer/selector.zig");
+
+pub usingnamespace @import("./Foundation/NSIndexSet/frontend.zig");

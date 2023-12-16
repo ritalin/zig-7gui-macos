@@ -93,7 +93,6 @@ pub const NSString = struct {
     pub const EncodingDetection = NSStringEncodingDetectionForNSString;
     pub const ExtensionMethods = NSStringExtensionMethodsForNSString;
     pub const ItemProvider = NSItemProviderForNSString;
-    pub const Deprecated = NSStringDeprecatedForNSString;
 
     _id: objc.Object,
 
@@ -302,22 +301,6 @@ const NSStringExtensionMethodsForNSString = struct {
 };
 
 const NSItemProviderForNSString = struct {
-    const Category = @This();
-    pub const Self = NSString;
-
-    _id: objc.Object,
-
-    pub inline fn of(comptime DesiredType: type) type {
-        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
-    }
-
-    fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
-    }
-};
-
-const NSStringDeprecatedForNSString = struct {
     const Category = @This();
     pub const Self = NSString;
 

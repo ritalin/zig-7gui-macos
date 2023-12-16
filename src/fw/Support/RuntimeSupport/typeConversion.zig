@@ -101,6 +101,10 @@ pub const RuntimeTypeConverter = struct {
         return if (sel) |x| x.value else null;
     }
 
+    pub inline fn unwrapOptionalProtocol(protocol: ?objc.Protocol) objc.c.Protocol {
+        return if (protocol) |x| x.value else null;
+    }
+
     pub inline fn wrapDelegateHandler(handler: anytype) objc.c.IMP {
         return @ptrCast(handler);
     }

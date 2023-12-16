@@ -25,6 +25,10 @@ pub const NSObject = struct {
         return backend.NSObjectMessages.dealloc(runtime_support.objectId(NSObject, self));
     }
 
+    pub fn conformsToProtocol(_protocol: objc.Protocol) bool {
+        return runtime_support.fromBOOL(backend.NSObjectMessages.conformsToProtocol(_protocol));
+    }
+
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn init() DesiredType {

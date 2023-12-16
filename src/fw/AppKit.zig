@@ -101,3 +101,13 @@ pub usingnamespace @import("./AppKit/NSView/selector.zig");
 // NSWindow
 pub usingnamespace @import("./AppKit/NSWindow/frontend.zig");
 pub usingnamespace @import("./AppKit/NSWindow/selector.zig");
+
+pub usingnamespace @import("./AppKit/NSTableView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableHeaderView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableRowView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableColumn/frontend.zig");
+pub usingnamespace @import("./AppKit/NSScrollView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextFinder/frontend.zig");
+pub usingnamespace @import("./AppKit/NSPasteboard/frontend.zig");
+pub usingnamespace @import("./AppKit/NSDraggingSession/frontend.zig");
+pub usingnamespace @import("./AppKit/NSClipView/frontend.zig");
