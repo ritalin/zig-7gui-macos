@@ -175,7 +175,7 @@ const CrudContext = struct {
             {
                 const unhidden_set = unhidden_rows.toSet();
                 if (unhidden_set.count() > 0) {
-                    context.values.entries_list.unhideRowsAtIndexesWithAnimation(unhidden_set, appKit.NSTableViewAnimationOptions.init(.{ .SlideDown = true }));
+                    // context.values.entries_list.unhideRowsAtIndexesWithAnimation(unhidden_set, appKit.NSTableViewAnimationOptions.init(.{ .SlideDown = true }));
                     context.values.entries_list.noteHeightOfRowsWithIndexesChanged(unhidden_set);
                 }
             }
@@ -184,7 +184,7 @@ const CrudContext = struct {
             {
                 const hidden_set = hidden_rows.toSet();
                 if (hidden_set.count() > 0) {
-                    context.values.entries_list.hideRowsAtIndexesWithAnimation(hidden_set, appKit.NSTableViewAnimationOptions.init(.{ .SlideUp = true }));
+                    // context.values.entries_list.hideRowsAtIndexesWithAnimation(hidden_set, appKit.NSTableViewAnimationOptions.init(.{ .SlideUp = true }));
                     context.values.entries_list.noteHeightOfRowsWithIndexesChanged(hidden_set);
                 }
             }
