@@ -100,6 +100,7 @@ pub fn build(b: *std.Build) !void {
         .{ "temp_conv", "src/examples/02_temp_conv/main.zig" },
         .{ "book_flight", "src/examples/03_book_flight/main.zig" },
         .{ "timer", "src/examples/04_timer/main.zig" },
+        .{ "crud", "src/examples/05_crud/main.zig" },
     };
 
     // create example step
