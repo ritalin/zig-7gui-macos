@@ -7,6 +7,9 @@ pub usingnamespace @import("./Foundation/NSDate/selector.zig");
 // NSGeometry
 pub usingnamespace @import("./Foundation/NSGeometry/frontend.zig");
 pub usingnamespace @import("./Foundation/NSGeometry/selector.zig");
+// NSIndexSet
+pub usingnamespace @import("./Foundation/NSIndexSet/frontend.zig");
+pub usingnamespace @import("./Foundation/NSIndexSet/selector.zig");
 // NSNotification
 pub usingnamespace @import("./Foundation/NSNotification/frontend.zig");
 pub usingnamespace @import("./Foundation/NSNotification/selector.zig");
@@ -21,5 +24,3 @@ pub usingnamespace @import("./Foundation/NSString/selector.zig");
 // NSTimer
 pub usingnamespace @import("./Foundation/NSTimer/frontend.zig");
 pub usingnamespace @import("./Foundation/NSTimer/selector.zig");
-
-pub usingnamespace @import("./Foundation/NSIndexSet/frontend.zig");

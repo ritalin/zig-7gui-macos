@@ -21,6 +21,9 @@ pub usingnamespace @import("./AppKit/NSButtonCell/frontend.zig");
 // NSCandidateListTouchBarItem
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/frontend.zig");
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/selector.zig");
+// NSClipView
+pub usingnamespace @import("./AppKit/NSClipView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSClipView/selector.zig");
 // NSColor
 pub usingnamespace @import("./AppKit/NSColor/frontend.zig");
 pub usingnamespace @import("./AppKit/NSColor/selector.zig");
@@ -36,6 +39,9 @@ pub usingnamespace @import("./AppKit/NSControl/selector.zig");
 // NSDragging
 pub usingnamespace @import("./AppKit/NSDragging/frontend.zig");
 pub usingnamespace @import("./AppKit/NSDragging/selector.zig");
+// NSDraggingSession
+pub usingnamespace @import("./AppKit/NSDraggingSession/frontend.zig");
+pub usingnamespace @import("./AppKit/NSDraggingSession/selector.zig");
 // NSGraphics
 pub usingnamespace @import("./AppKit/NSGraphics/frontend.zig");
 // NSInputManager
@@ -62,12 +68,27 @@ pub usingnamespace @import("./AppKit/NSRunningApplication/selector.zig");
 // NSScreen
 pub usingnamespace @import("./AppKit/NSScreen/frontend.zig");
 pub usingnamespace @import("./AppKit/NSScreen/selector.zig");
+// NSScrollView
+pub usingnamespace @import("./AppKit/NSScrollView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSScrollView/selector.zig");
 // NSSlider
 pub usingnamespace @import("./AppKit/NSSlider/frontend.zig");
 pub usingnamespace @import("./AppKit/NSSlider/selector.zig");
 // NSSpellProtocol
 pub usingnamespace @import("./AppKit/NSSpellProtocol/frontend.zig");
 pub usingnamespace @import("./AppKit/NSSpellProtocol/selector.zig");
+// NSTableColumn
+pub usingnamespace @import("./AppKit/NSTableColumn/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableColumn/selector.zig");
+// NSTableHeaderView
+pub usingnamespace @import("./AppKit/NSTableHeaderView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableHeaderView/selector.zig");
+// NSTableRowView
+pub usingnamespace @import("./AppKit/NSTableRowView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableRowView/selector.zig");
+// NSTableView
+pub usingnamespace @import("./AppKit/NSTableView/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTableView/selector.zig");
 // NSText
 pub usingnamespace @import("./AppKit/NSText/frontend.zig");
 pub usingnamespace @import("./AppKit/NSText/selector.zig");
@@ -77,6 +98,9 @@ pub usingnamespace @import("./AppKit/NSTextContent/selector.zig");
 // NSTextField
 pub usingnamespace @import("./AppKit/NSTextField/frontend.zig");
 pub usingnamespace @import("./AppKit/NSTextField/selector.zig");
+// NSTextFinder
+pub usingnamespace @import("./AppKit/NSTextFinder/frontend.zig");
+pub usingnamespace @import("./AppKit/NSTextFinder/selector.zig");
 // NSTextInputClient
 pub usingnamespace @import("./AppKit/NSTextInputClient/frontend.zig");
 pub usingnamespace @import("./AppKit/NSTextInputClient/selector.zig");
@@ -101,13 +125,3 @@ pub usingnamespace @import("./AppKit/NSView/selector.zig");
 // NSWindow
 pub usingnamespace @import("./AppKit/NSWindow/frontend.zig");
 pub usingnamespace @import("./AppKit/NSWindow/selector.zig");
-
-pub usingnamespace @import("./AppKit/NSTableView/frontend.zig");
-pub usingnamespace @import("./AppKit/NSTableHeaderView/frontend.zig");
-pub usingnamespace @import("./AppKit/NSTableRowView/frontend.zig");
-pub usingnamespace @import("./AppKit/NSTableColumn/frontend.zig");
-pub usingnamespace @import("./AppKit/NSScrollView/frontend.zig");
-pub usingnamespace @import("./AppKit/NSTextFinder/frontend.zig");
-pub usingnamespace @import("./AppKit/NSPasteboard/frontend.zig");
-pub usingnamespace @import("./AppKit/NSDraggingSession/frontend.zig");
-pub usingnamespace @import("./AppKit/NSClipView/frontend.zig");
