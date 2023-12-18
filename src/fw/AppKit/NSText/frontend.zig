@@ -200,15 +200,15 @@ pub const NSTextDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTextDelegateMessages.initClass(_class_name);
+                            const class = backend.NSTextDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTextDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTextDelegate, _id);
+                        const _id = backend.NSTextDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTextDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -219,8 +219,8 @@ pub const NSTextDelegate = struct {
                 return struct {
                     fn dispatchTextDidChange(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.textDidChange) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };

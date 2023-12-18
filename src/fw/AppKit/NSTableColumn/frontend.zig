@@ -72,7 +72,7 @@ pub const NSTableColumn = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithIdentifier(_identifier: NSUserInterfaceItemIdentifier) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTableColumnMessages.initWithIdentifier(_class, runtime_support.pass(NSUserInterfaceItemIdentifier, _identifier)));
             }
         };

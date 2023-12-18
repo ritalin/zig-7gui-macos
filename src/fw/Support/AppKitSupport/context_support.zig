@@ -17,7 +17,7 @@ pub fn ApplicationContext(comptime ApplicationState: type) type {
         pub fn deinit(self: *Context) void {
             var allocator = self.arena.child_allocator;
 
-            if (comptime std.meta.trait.hasFn("deinit")(Context.State)) {
+            if (comptime std.meta.hasFn(Context.State, "deinit")) {
                 if (self.state) |x| {
                     x.deinit();
                 }
@@ -37,7 +37,7 @@ pub fn ApplicationContextFactory(comptime Context: type) type {
             arena.* = std.heap.ArenaAllocator.init(gpa);
             
             var allocator = arena.allocator();
-            var self = try allocator.create(Context);
+            const self = try allocator.create(Context);
 
             self.* = Context{
                 .arena = arena,

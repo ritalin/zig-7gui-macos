@@ -170,12 +170,12 @@ pub const NSWindow = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithContentRectStyleMaskBacking(_contentRect: NSRect, _style: NSWindowStyleMask, _backingStoreType: NSBackingStoreType, _flag: bool, _screen: ?NSScreen) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSWindowMessages.initWithContentRectStyleMaskBacking(_class, runtime_support.pass(NSRect, _contentRect), runtime_support.packOptions(NSWindowStyleMask, _style), runtime_support.unwrapEnum(NSBackingStoreType, NSUInteger, _backingStoreType), runtime_support.toBOOL(_flag), runtime_support.objectId(?NSScreen, _screen)));
             }
 
             pub fn initialFirstResponder() ?*DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(?*DesiredType, backend.NSWindowMessages.initialFirstResponder(_class));
             }
         };
@@ -438,15 +438,15 @@ pub const NSWindowDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSWindowDelegateMessages.initClass(_class_name);
+                            const class = backend.NSWindowDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSWindowDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_window_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSWindowDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSWindowDelegate, _id);
+                        const _id = backend.NSWindowDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSWindowDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -457,8 +457,8 @@ pub const NSWindowDelegate = struct {
                 return struct {
                     fn dispatchWindowWillClose(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.windowWillClose) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };

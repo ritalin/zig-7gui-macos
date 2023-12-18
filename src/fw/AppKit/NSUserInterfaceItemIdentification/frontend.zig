@@ -27,14 +27,14 @@ pub const NSUserInterfaceItemIdentification = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSUserInterfaceItemIdentificationMessages.initClass(_class_name);
+                            const class = backend.NSUserInterfaceItemIdentificationMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSUserInterfaceItemIdentification.Protocol(ContextType).Dispatch(_delegate_handlers.handler_user_interface_item_identification).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSUserInterfaceItemIdentificationMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSUserInterfaceItemIdentification, _id);
+                        const _id = backend.NSUserInterfaceItemIdentificationMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSUserInterfaceItemIdentification, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

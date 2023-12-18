@@ -106,7 +106,7 @@ pub const NSControl = struct {
     }
 
     pub fn alignment(self: Self) NSTextAlignment {
-        return runtime_support.toEnum(NSTextAlignment, backend.NSControlMessages.alignment(runtime_support.objectId(NSControl, self)));
+        return runtime_support.wrapEnum(NSTextAlignment, NSInteger, backend.NSControlMessages.alignment(runtime_support.objectId(NSControl, self)));
     }
 
     pub fn setAlignment(self: Self, _alignment: NSTextAlignment) void {
@@ -116,7 +116,7 @@ pub const NSControl = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithFrame(_frameRect: NSRect) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSControlMessages.initWithFrame(_class, runtime_support.pass(NSRect, _frameRect)));
             }
         };
@@ -160,15 +160,15 @@ pub const NSControlTextEditingDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSControlTextEditingDelegateMessages.initClass(_class_name);
+                            const class = backend.NSControlTextEditingDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSControlTextEditingDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSControlTextEditingDelegate, _id);
+                        const _id = backend.NSControlTextEditingDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSControlTextEditingDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -179,8 +179,8 @@ pub const NSControlTextEditingDelegate = struct {
                 return struct {
                     fn dispatchControlTextDidChange(_id: objc.c.id, _: objc.c.SEL, _obj: objc.c.id) void {
                         if (_delegate_handler.controlTextDidChange) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var obj = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_obj));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const obj = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_obj));
                             return handler(context, obj) catch {
                                 unreachable;
                             };

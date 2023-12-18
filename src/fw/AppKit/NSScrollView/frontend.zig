@@ -58,7 +58,7 @@ pub const NSScrollView = struct {
     }
 
     pub fn borderType(self: Self) NSBorderType {
-        return runtime_support.toEnum(NSBorderType, backend.NSScrollViewMessages.borderType(runtime_support.objectId(NSScrollView, self)));
+        return runtime_support.wrapEnum(NSBorderType, NSUInteger, backend.NSScrollViewMessages.borderType(runtime_support.objectId(NSScrollView, self)));
     }
 
     pub fn setBorderType(self: Self, _borderType: NSBorderType) void {

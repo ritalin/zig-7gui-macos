@@ -3,8 +3,13 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const CALayerSelectors = struct {
-    var _sel_masksToBounds: ?objc.Sel = null;
-    var _sel_setMasksToBounds: ?objc.Sel = null;
+    var _sel_layer: ?objc.Sel = null;
+    var _sel_init: ?objc.Sel = null;
+    var _sel_bounds: ?objc.Sel = null;
+    var _sel_setBounds: ?objc.Sel = null;
+    var _sel_position: ?objc.Sel = null;
+    var _sel_setPosition: ?objc.Sel = null;
+    var _sel_addSublayer: ?objc.Sel = null;
     var _sel_backgroundColor: ?objc.Sel = null;
     var _sel_setBackgroundColor: ?objc.Sel = null;
     var _sel_cornerRadius: ?objc.Sel = null;
@@ -14,18 +19,53 @@ pub const CALayerSelectors = struct {
     var _sel_borderColor: ?objc.Sel = null;
     var _sel_setBorderColor: ?objc.Sel = null;
 
-    pub fn masksToBounds() objc.Sel {
-        if (_sel_masksToBounds == null) {
-            _sel_masksToBounds = objc.Sel.registerName("masksToBounds");
+    pub fn layer() objc.Sel {
+        if (_sel_layer == null) {
+            _sel_layer = objc.Sel.registerName("layer");
         }
-        return _sel_masksToBounds.?;
+        return _sel_layer.?;
     }
 
-    pub fn setMasksToBounds() objc.Sel {
-        if (_sel_setMasksToBounds == null) {
-            _sel_setMasksToBounds = objc.Sel.registerName("setMasksToBounds:");
+    pub fn init() objc.Sel {
+        if (_sel_init == null) {
+            _sel_init = objc.Sel.registerName("init");
         }
-        return _sel_setMasksToBounds.?;
+        return _sel_init.?;
+    }
+
+    pub fn bounds() objc.Sel {
+        if (_sel_bounds == null) {
+            _sel_bounds = objc.Sel.registerName("bounds");
+        }
+        return _sel_bounds.?;
+    }
+
+    pub fn setBounds() objc.Sel {
+        if (_sel_setBounds == null) {
+            _sel_setBounds = objc.Sel.registerName("setBounds:");
+        }
+        return _sel_setBounds.?;
+    }
+
+    pub fn position() objc.Sel {
+        if (_sel_position == null) {
+            _sel_position = objc.Sel.registerName("position");
+        }
+        return _sel_position.?;
+    }
+
+    pub fn setPosition() objc.Sel {
+        if (_sel_setPosition == null) {
+            _sel_setPosition = objc.Sel.registerName("setPosition:");
+        }
+        return _sel_setPosition.?;
+    }
+
+    pub fn addSublayer() objc.Sel {
+        if (_sel_addSublayer == null) {
+            _sel_addSublayer = objc.Sel.registerName("addSublayer:");
+        }
+        return _sel_addSublayer.?;
     }
 
     pub fn backgroundColor() objc.Sel {

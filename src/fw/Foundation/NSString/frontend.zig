@@ -293,7 +293,7 @@ const NSStringExtensionMethodsForNSString = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithUTF8String(_nullTerminatedCString: [*c]const u8) ?DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(?DesiredType, backend.NSStringExtensionMethodsForNSStringMessages.initWithUTF8String(_class, _nullTerminatedCString));
             }
         };

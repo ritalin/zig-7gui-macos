@@ -60,7 +60,7 @@ pub const NSTimer = struct {
                     }, void);
 
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSTimer) void) {
-                        var block = try Block.init(.{
+                        const block = try Block.init(.{
                             .context = user_context,
                         }, &dispatchTimerWithTimeInterval);
                         return .{
@@ -69,7 +69,7 @@ pub const NSTimer = struct {
                     }
 
                     fn dispatchTimerWithTimeInterval(block_context: *const Block.Context, _timer: objc.c.id) callconv(.C) void {
-                        var timer = runtime_support.wrapObject(NSTimer, runtime_support.wrapObjectId(_timer));
+                        const timer = runtime_support.wrapObject(NSTimer, runtime_support.wrapObjectId(_timer));
                         return _handler(block_context.context, timer) catch {
                             unreachable;
                         };
@@ -84,7 +84,7 @@ pub const NSTimer = struct {
                     }, void);
 
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSTimer) void) {
-                        var block = try Block.init(.{
+                        const block = try Block.init(.{
                             .context = user_context,
                         }, &dispatchScheduledTimerWithTimeInterval);
                         return .{
@@ -93,7 +93,7 @@ pub const NSTimer = struct {
                     }
 
                     fn dispatchScheduledTimerWithTimeInterval(block_context: *const Block.Context, _timer: objc.c.id) callconv(.C) void {
-                        var timer = runtime_support.wrapObject(NSTimer, runtime_support.wrapObjectId(_timer));
+                        const timer = runtime_support.wrapObject(NSTimer, runtime_support.wrapObjectId(_timer));
                         return _handler(block_context.context, timer) catch {
                             unreachable;
                         };

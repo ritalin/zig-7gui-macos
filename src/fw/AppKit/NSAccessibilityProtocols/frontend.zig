@@ -25,7 +25,7 @@ pub const NSAccessibilityNavigableStaticText = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSAccessibilityNavigableStaticTextMessages.initClass(_class_name);
+                            const class = backend.NSAccessibilityNavigableStaticTextMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSAccessibilityNavigableStaticText.Protocol(ContextType).Dispatch(_delegate_handlers.handler_accessibility_navigable_static_text).initClass(class);
                             NSAccessibilityStaticText.Protocol(ContextType).Dispatch(_delegate_handlers.handler_accessibility_static_text).initClass(class);
@@ -34,8 +34,8 @@ pub const NSAccessibilityNavigableStaticText = struct {
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSAccessibilityNavigableStaticTextMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSAccessibilityNavigableStaticText, _id);
+                        const _id = backend.NSAccessibilityNavigableStaticTextMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSAccessibilityNavigableStaticText, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -81,15 +81,15 @@ pub const NSAccessibilityElement = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSAccessibilityElementMessages.initClass(_class_name);
+                            const class = backend.NSAccessibilityElementMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSAccessibilityElement.Protocol(ContextType).Dispatch(_delegate_handlers.handler_accessibility_element).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSAccessibilityElementMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSAccessibilityElement, _id);
+                        const _id = backend.NSAccessibilityElementMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSAccessibilityElement, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -133,7 +133,7 @@ pub const NSAccessibilityStaticText = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSAccessibilityStaticTextMessages.initClass(_class_name);
+                            const class = backend.NSAccessibilityStaticTextMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSAccessibilityStaticText.Protocol(ContextType).Dispatch(_delegate_handlers.handler_accessibility_static_text).initClass(class);
                             NSAccessibilityElement.Protocol(ContextType).Dispatch(_delegate_handlers.handler_accessibility_element).initClass(class);
@@ -141,8 +141,8 @@ pub const NSAccessibilityStaticText = struct {
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSAccessibilityStaticTextMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSAccessibilityStaticText, _id);
+                        const _id = backend.NSAccessibilityStaticTextMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSAccessibilityStaticText, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

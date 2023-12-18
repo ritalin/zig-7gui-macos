@@ -82,6 +82,8 @@ pub fn build(b: *std.Build) !void {
     const mod_appKit_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" }, .dependencies = &.{
         .{ .name = "objc", .module = mod_objc },
         .{ .name = "Runtime", .module = mod_runtime },
+        .{ .name = "CoreGraphics", .module = mod_coreGraphics },
+        .{ .name = "Foundation", .module = mod_foundation },
         .{ .name = "AppKit", .module = mod_appKit },
         .{ .name = "Runtime-Support", .module = mod_runtime_support },
     } });
@@ -91,7 +93,7 @@ pub fn build(b: *std.Build) !void {
         // .optimize = optimize,
     });
     const mod_time_formatter = dep_time_formatter.module("time-formatter");
-    
+
     const dep_time_parser = b.dependency("time_parser", .{});
     const mod_time_parser = dep_time_parser.module("time-parser");
 
@@ -119,6 +121,7 @@ pub fn build(b: *std.Build) !void {
         exe.addModule("objc", mod_objc);
         exe.addModule("Runtime", mod_runtime);
         exe.addModule("CoreGraphics", mod_coreGraphics);
+        exe.addModule("QuartzCore", mod_quartz);
         exe.addModule("Foundation", mod_foundation);
         exe.addModule("AppKit", mod_appKit);
         exe.addModule("Runtime-Support", mod_runtime_support);

@@ -86,12 +86,12 @@ pub const NSIndexSet = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn indexSet() DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSIndexSetMessages.indexSet(_class));
             }
 
             pub fn indexSetWithIndex(_value: NSUInteger) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSIndexSetMessages.indexSetWithIndex(_class, runtime_support.pass(NSUInteger, _value)));
             }
         };

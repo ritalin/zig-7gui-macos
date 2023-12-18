@@ -9,6 +9,8 @@ const runtime_support = @import("Runtime-Support");
 
 const CGColorRef = coreGraphics.CGColorRef;
 const CGFloat = coreGraphics.CGFloat;
+const CGPoint = coreGraphics.CGPoint;
+const CGRect = coreGraphics.CGRect;
 const NSCoding = foundation.NSCoding;
 const NSSecureCoding = foundation.NSSecureCoding;
 const CAMediaTiming = quartzCore.CAMediaTiming;
@@ -56,12 +58,24 @@ pub const CALayer = struct {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
-    pub fn masksToBounds(self: Self) bool {
-        return runtime_support.fromBOOL(backend.CALayerMessages.masksToBounds(runtime_support.objectId(CALayer, self)));
+    pub fn bounds(self: Self) CGRect {
+        return backend.CALayerMessages.bounds(runtime_support.objectId(CALayer, self));
     }
 
-    pub fn setMasksToBounds(self: Self, _masksToBounds: bool) void {
-        return backend.CALayerMessages.setMasksToBounds(runtime_support.objectId(CALayer, self), runtime_support.toBOOL(_masksToBounds));
+    pub fn setBounds(self: Self, _bounds: CGRect) void {
+        return backend.CALayerMessages.setBounds(runtime_support.objectId(CALayer, self), runtime_support.pass(CGRect, _bounds));
+    }
+
+    pub fn position(self: Self) CGPoint {
+        return backend.CALayerMessages.position(runtime_support.objectId(CALayer, self));
+    }
+
+    pub fn setPosition(self: Self, _position: CGPoint) void {
+        return backend.CALayerMessages.setPosition(runtime_support.objectId(CALayer, self), runtime_support.pass(CGPoint, _position));
+    }
+
+    pub fn addSublayer(self: Self, _layer: CALayer) void {
+        return backend.CALayerMessages.addSublayer(runtime_support.objectId(CALayer, self), runtime_support.objectId(CALayer, _layer));
     }
 
     pub fn backgroundColor(self: Self) ?CGColorRef {
@@ -97,8 +111,17 @@ pub const CALayer = struct {
     }
 
     fn Constructor(comptime DesiredType: type) type {
-        _ = DesiredType;
-        return struct {};
+        return struct {
+            pub fn layer() DesiredType {
+                const _class = DesiredType.TypeSupport.getClass();
+                return runtime_support.wrapObject(DesiredType, backend.CALayerMessages.layer(_class));
+            }
+
+            pub fn init() DesiredType {
+                const _class = DesiredType.TypeSupport.getClass();
+                return runtime_support.wrapObject(DesiredType, backend.CALayerMessages.init(_class));
+            }
+        };
     }
 
     pub const TypeSupport = struct {

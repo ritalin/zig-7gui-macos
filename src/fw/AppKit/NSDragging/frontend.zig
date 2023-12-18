@@ -95,15 +95,15 @@ pub const NSDraggingSource = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSDraggingSourceMessages.initClass(_class_name);
+                            const class = backend.NSDraggingSourceMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSDraggingSource.Protocol(ContextType).Dispatch(_delegate_handlers.handler_dragging_source).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSDraggingSourceMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSDraggingSource, _id);
+                        const _id = backend.NSDraggingSourceMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSDraggingSource, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -147,15 +147,15 @@ pub const NSDraggingInfo = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSDraggingInfoMessages.initClass(_class_name);
+                            const class = backend.NSDraggingInfoMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSDraggingInfo.Protocol(ContextType).Dispatch(_delegate_handlers.handler_dragging_info).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSDraggingInfoMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSDraggingInfo, _id);
+                        const _id = backend.NSDraggingInfoMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSDraggingInfo, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

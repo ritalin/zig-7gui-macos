@@ -228,7 +228,7 @@ pub const NSTextViewDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTextViewDelegateMessages.initClass(_class_name);
+                            const class = backend.NSTextViewDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextViewDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_view_delegate).initClass(class);
                             NSTextDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_delegate).initClass(class);
@@ -236,8 +236,8 @@ pub const NSTextViewDelegate = struct {
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTextViewDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTextViewDelegate, _id);
+                        const _id = backend.NSTextViewDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTextViewDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -248,9 +248,9 @@ pub const NSTextViewDelegate = struct {
                 return struct {
                     fn dispatchTextViewDoCommandBySelector(_id: objc.c.id, _: objc.c.SEL, _textView: objc.c.id, _commandSelector: objc.c.SEL) objc.c.BOOL {
                         if (_delegate_handler.textViewDoCommandBySelector) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var textView = runtime_support.wrapObject(NSTextView, objc.Object.fromId(_textView));
-                            var commandSelector = runtime_support.wrapSelector(_commandSelector);
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const textView = runtime_support.wrapObject(NSTextView, objc.Object.fromId(_textView));
+                            const commandSelector = runtime_support.wrapSelector(_commandSelector);
                             return runtime_support.toBOOL(handler(context, textView, commandSelector) catch {
                                 unreachable;
                             });

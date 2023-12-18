@@ -11,7 +11,7 @@ pub fn fromISO8601(date_string: []const u8) TimeParseError!time_formatter.Format
     };
 
     if (split_result.get(.date_part)) |date_part| {
-        var split_year_result = try splitYear(date_part);
+        const split_year_result = try splitYear(date_part);
 
         yd.year = split_year_result.years;
         parsed_kind.year_part = true;
@@ -209,7 +209,7 @@ fn splitYear(date_string: []const u8) !(struct { years: u16, rest: ?[]const u8 }
     }
 
     if (std.mem.indexOfScalar(u8, s, '-')) |y| {
-        var years = std.fmt.parseInt(u16, s[0..y], 10) catch |err| switch (err) {
+        const years = std.fmt.parseInt(u16, s[0..y], 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidYearPart,
             else => return error.Unexpected,
         };
@@ -217,7 +217,7 @@ fn splitYear(date_string: []const u8) !(struct { years: u16, rest: ?[]const u8 }
     } 
     else {
         // year only
-        var years = std.fmt.parseInt(u16, s, 10) catch |err| switch (err) {
+        const years = std.fmt.parseInt(u16, s, 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidYearPart,
             else => return error.Unexpected,
         };
@@ -230,19 +230,19 @@ fn splitMonth(years: u16, date_string: []const u8) TimeParseError!DateParseResul
 
     if (std.mem.indexOfScalar(u8, date_string, '-')) |i| {
         // month and day
-        var months = std.fmt.parseInt(u16, date_string[0..i], 10) catch |err| switch (err) {
+        const months = std.fmt.parseInt(u16, date_string[0..i], 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidMonthPart,
             else => return error.Unexpected,
         };
         try validateDateTimeRange(.month_part, months);
 
-        var days = std.fmt.parseInt(u16, date_string[i+1..], 10) catch |err| switch (err) {
+        const days = std.fmt.parseInt(u16, date_string[i+1..], 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidDayPart,
             else => return error.Unexpected,
         };
         try validateDateTimeRange(.day_part, days);
 
-        var days_in_month = std.time.epoch.getDaysInMonth(
+        const days_in_month = std.time.epoch.getDaysInMonth(
             if (std.time.epoch.isLeapYear(years)) .leap else .not_leap, 
             @enumFromInt(months)
         );
@@ -256,7 +256,7 @@ fn splitMonth(years: u16, date_string: []const u8) TimeParseError!DateParseResul
     } 
     else {
         // month or day
-        var part = std.fmt.parseInt(u16, date_string, 10) catch |err| switch (err) {
+        const part = std.fmt.parseInt(u16, date_string, 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidMonthDay,
             else => return error.Unexpected,
         };
@@ -281,16 +281,16 @@ fn splitTime(time_string: []const u8) !DateParseResult {
     var result = DateParseResult{};
 
     var iter = std.mem.splitScalar(u8, time_string, ':');
-    var hour_part = iter.next();
-    var minute_part = iter.next();
-    var second_part = iter.next();
+    const hour_part = iter.next();
+    const minute_part = iter.next();
+    const second_part = iter.next();
 
     if ((hour_part == null) or (minute_part == null) or (second_part == null)) {
         return error.InvalidTime;
     }
 
     if (hour_part) |part| {
-        var hours = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
+        const hours = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidHourPart,
             else => return error.Unexpected,
         };
@@ -299,7 +299,7 @@ fn splitTime(time_string: []const u8) !DateParseResult {
     }
 
     if (minute_part) |part| {
-        var minutes = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
+        const minutes = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
             error.InvalidCharacter => return error.InvalidMinutePart,
             else => return error.Unexpected,
         };
@@ -310,14 +310,14 @@ fn splitTime(time_string: []const u8) !DateParseResult {
     if (second_part) |part| {
         if (std.mem.indexOfScalar(u8, part, '.')) |i| {
             // sec + ms
-            var seconds = std.fmt.parseInt(u16, part[0..i], 10) catch |err| switch (err) {
+            const seconds = std.fmt.parseInt(u16, part[0..i], 10) catch |err| switch (err) {
                 error.InvalidCharacter => return error.InvalidSecondPart,
                 else => return error.Unexpected,
             };
             try validateDateTimeRange(.second_part, seconds);
             result.put(.second_part, seconds);
 
-            var ms = std.fmt.parseInt(u16, part[i+1..], 10) catch |err| switch (err) {
+            const ms = std.fmt.parseInt(u16, part[i+1..], 10) catch |err| switch (err) {
                 error.InvalidCharacter => return error.InvalidMiliSecondPart,
                 else => return error.Unexpected,
             };
@@ -326,7 +326,7 @@ fn splitTime(time_string: []const u8) !DateParseResult {
         }
         else {
             // sec only
-            var seconds = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
+            const seconds = std.fmt.parseInt(u16, part, 10) catch |err| switch (err) {
                 error.InvalidCharacter => return error.InvalidSecondPart,
                 else => return error.Unexpected,
             };

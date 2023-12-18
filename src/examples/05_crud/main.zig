@@ -39,7 +39,7 @@ const CrudContext = struct {
     };
 
     pub fn init(allocator: std.mem.Allocator, values: CrudContext.Values) !*CrudContext {
-        var self = try allocator.create(CrudContext);
+        const self = try allocator.create(CrudContext);
         self.* = .{
             .allocator = allocator,
             .values = values,
@@ -101,6 +101,9 @@ const CrudContext = struct {
 
                 const row = foundation.NSIndexSet.of(foundation.NSIndexSet).indexSetWithIndex(i); // zero-base index
                 ctx.values.entries_list.removeRowsAtIndexesWithAnimation(row, appKit.NSTableViewAnimationOptions.init(.{ .SlideRight = true }));
+
+                ctx.values.state_context.hidden_rows.deinit();
+                ctx.values.state_context.hidden_rows = try ctx.values.state_context.getUnmatchedIndexes(ctx.values.filter_field.as(appKit.NSControl).stringValue());
             }
         }
     }
@@ -149,7 +152,7 @@ const CrudContext = struct {
             timer.invalidate();
         }
 
-        var timer_block = try foundation.NSTimer.BlockSupport(CrudContext).TimerWithTimeIntervalBlock(&CrudContext.handleDebounceTimer).init(context);
+        const timer_block = try foundation.NSTimer.BlockSupport(CrudContext).TimerWithTimeIntervalBlock(&CrudContext.handleDebounceTimer).init(context);
         context.values.debounce_timer = foundation.NSTimer.scheduledTimerWithTimeIntervalRepeatsBlock(0.5, false, timer_block); // one shot
     }
 
@@ -203,7 +206,7 @@ const CrudCacheContext = struct {
         arena.* = std.heap.ArenaAllocator.init(allocator);
 
         var managed_allocator = arena.allocator();
-        var self = try managed_allocator.create(CrudCacheContext);
+        const self = try managed_allocator.create(CrudCacheContext);
         self.* = .{
             .arena = arena,
             .allocator = managed_allocator,
@@ -302,11 +305,11 @@ const FilterListDelegate = appKit.NSTextFieldDelegate.Protocol(CrudContext).Deri
 
 const AppRootContext = struct {
     fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
-        var allocator = app_context.arena.allocator();
+        const allocator = app_context.arena.allocator();
 
-        var center: foundation.NSPoint = origin: {
+        const center: foundation.NSPoint = origin: {
             if (appKit.NSScreen.mainScreen()) |screen| {
-                var desktop_rect = screen.visibleFrame();
+                const desktop_rect = screen.visibleFrame();
 
                 break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
             } else {
@@ -315,19 +318,19 @@ const AppRootContext = struct {
         };
         const window_size: foundation.NSSize = .{ .width = 360, .height = 200 };
 
-        var rect = foundation.NSRect{
+        const rect = foundation.NSRect{
             .origin = .{ .x = center.x - window_size.width / 2, .y = center.y - window_size.height / 2 },
             .size = window_size,
         };
-        var mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
-        var backing = appKit.NSBackingStoreType.Buffered;
+        const mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
+        const backing = appKit.NSBackingStoreType.Buffered;
 
-        var screen = appKit.NSScreen.mainScreen();
+        const screen = appKit.NSScreen.mainScreen();
 
         var w = appKit.NSWindow.of(appKit.NSWindow).initWithContentRectStyleMaskBacking(rect, mask, backing, false, screen.?);
 
-        var window_title: [:0]const u8 = "CRUD App - 7GUIs#5";
-        var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
+        const window_title: [:0]const u8 = "CRUD App - 7GUIs#5";
+        const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
 
         w.setTitle(s);
 
@@ -342,7 +345,7 @@ const AppRootContext = struct {
             .state_context = try CrudCacheContext.init(allocator),
         };
 
-        var entry_allocator = context_values.state_context.arena.allocator();
+        const entry_allocator = context_values.state_context.arena.allocator();
 
         const inital_entries = &[_]CrudCacheContext.ItemEntry{
             try CrudCacheContext.ItemEntry.init(entry_allocator, "Emil", "Hans"),
@@ -372,7 +375,7 @@ const AppRootContext = struct {
 
                 // filter (label)
                 const filter_label = label: {
-                    var label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Filter Prefix:").?;
+                    const label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Filter Prefix:").?;
                     var label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(label_str);
                     label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 8, .y = filter_bottom - 4 }, .size = .{ .width = 80, .height = 24 } });
                     break :label label;
@@ -380,8 +383,8 @@ const AppRootContext = struct {
                 v.addSubview(filter_label.as(appKit.NSView));
                 // filter
                 context_values.filter_field = edit: {
-                    var text_rect = .{ .origin = .{ .x = 90, .y = filter_bottom }, .size = .{ .width = 60, .height = filter_height } };
-                    var edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
+                    const text_rect = .{ .origin = .{ .x = 90, .y = filter_bottom }, .size = .{ .width = 60, .height = filter_height } };
+                    const edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
                     break :edit edit;
                 };
                 v.addSubview(context_values.filter_field.as(appKit.NSView));
@@ -394,7 +397,7 @@ const AppRootContext = struct {
 
                     list.setHeaderView(null);
 
-                    var col_title = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("FullName").?;
+                    const col_title = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("FullName").?;
                     var col = appKit.NSTableColumn.of(appKit.NSTableColumn).initWithIdentifier(col_title);
                     col.setMinWidth(listbox_width);
 
@@ -424,7 +427,7 @@ const AppRootContext = struct {
 
                 // name entry (label)
                 const name_label = label: {
-                    var label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Name:").?;
+                    const label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Name:").?;
                     var label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(label_str);
                     label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 160, .y = 124 }, .size = .{ .width = 70, .height = 24 } });
                     break :label label;
@@ -432,15 +435,15 @@ const AppRootContext = struct {
                 v.addSubview(name_label.as(appKit.NSView));
                 // name entry
                 context_values.name_field = edit: {
-                    var text_rect = .{ .origin = .{ .x = 228, .y = 128 }, .size = .{ .width = 100, .height = 24 } };
-                    var edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
+                    const text_rect = .{ .origin = .{ .x = 228, .y = 128 }, .size = .{ .width = 100, .height = 24 } };
+                    const edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
                     break :edit edit;
                 };
                 v.addSubview(context_values.name_field.as(appKit.NSView));
 
                 // surname entry (label)
                 const surname_label = label: {
-                    var label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Surname:").?;
+                    const label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Surname:").?;
                     var label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(label_str);
                     label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 160, .y = 94 }, .size = .{ .width = 70, .height = 24 } });
                     break :label label;
@@ -448,8 +451,8 @@ const AppRootContext = struct {
                 v.addSubview(surname_label.as(appKit.NSView));
                 // sirname entry
                 context_values.surname_field = edit: {
-                    var text_rect = .{ .origin = .{ .x = 228, .y = 98 }, .size = .{ .width = 100, .height = 24 } };
-                    var edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
+                    const text_rect = .{ .origin = .{ .x = 228, .y = 98 }, .size = .{ .width = 100, .height = 24 } };
+                    const edit = appKit.NSView.of(appKit.NSTextField).initWithFrame(text_rect);
                     break :edit edit;
                 };
                 v.addSubview(context_values.surname_field.as(appKit.NSView));
@@ -498,15 +501,15 @@ const AppRootContext = struct {
         context.values.entries_list.setDataSource(CrudListDataSource.initWithContext(context_values.state_context));
         context.values.entries_list.setDelegate(CrudListDelegate.initWithContext(context));
 
-        var create_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleNewEntry);
+        const create_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleNewEntry);
         create_button.as(appKit.NSControl).setAction(create_button_event.action);
         create_button.as(appKit.NSControl).setTarget(create_button_event.target);
 
-        var update_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleUpdateEntry);
+        const update_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleUpdateEntry);
         context.values.update_button.as(appKit.NSControl).setAction(update_button_event.action);
         context.values.update_button.as(appKit.NSControl).setTarget(update_button_event.target);
 
-        var delete_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleDeleteEntry);
+        const delete_button_event = appKit_support.Handlers(CrudContext).Action(appKit.NSButton).init(context, &CrudContext.handleDeleteEntry);
         context.values.delete_button.as(appKit.NSControl).setAction(delete_button_event.action);
         context.values.delete_button.as(appKit.NSControl).setTarget(delete_button_event.target);
 
@@ -525,7 +528,7 @@ pub fn main() !void {
     var app = appKit.NSApplication.sharedApplication();
     _ = app.setActivationPolicy(appKit.NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.initWithContext(app_context);
+    const d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

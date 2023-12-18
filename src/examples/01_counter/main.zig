@@ -34,7 +34,7 @@ const CounterContext = struct {
     };
 
     pub fn init(allocator: std.mem.Allocator, values: CounterContext.Values) !*CounterContext {
-        var self = try allocator.create(CounterContext);
+        const self = try allocator.create(CounterContext);
         self.* = .{
             .allocator = allocator,
             .values = values,
@@ -49,7 +49,7 @@ const CounterContext = struct {
         std.debug.print("[Action] handleIncrement invoked. {?any}\n", .{ctx});
 
         if (ctx) |c| {
-            var val = c.values.text_field.as(appKit.NSControl).integerValue();
+            const val = c.values.text_field.as(appKit.NSControl).integerValue();
             c.values.text_field.as(appKit.NSControl).setIntegerValue(val + 1);
         }
     }
@@ -58,26 +58,28 @@ const CounterContext = struct {
 fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotification) !void {
     std.debug.print("[DEBUG] handleApplicationWillFinishLaunching invoked\n", .{});
 
-    var center: foundation.NSPoint =
-        if (appKit.NSScreen.mainScreen()) |screen|
-    center: {
-        var desktop_rect = screen.visibleFrame();
-        std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
-
-        break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-    } else .{ .x = 50, .y = 50 };
+    const center: foundation.NSPoint = center: {
+        if (appKit.NSScreen.mainScreen()) |screen| {
+            const desktop_rect = screen.visibleFrame();
+            std.debug.print("desktop-area: ( rect: {} )\n", .{desktop_rect});
+            break :center .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+        } 
+        else {
+            break :center .{ .x = 50, .y = 50 };
+        }
+    };
     const window_size: foundation.NSSize = .{ .width = 300, .height = 48 };
 
-    var rect = foundation.NSRect{
+    const rect = foundation.NSRect{
         .origin = .{ .x = center.x - window_size.width / 2, .y = center.y - window_size.height / 2 },
         .size = window_size,
     };
-    var mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
-    var backing = appKit.NSBackingStoreType.Buffered;
+    const mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
+    const backing = appKit.NSBackingStoreType.Buffered;
 
     std.debug.print("window_args: ( rect: {}, mask: {}, backing: {} )\n", .{ rect, mask, backing });
 
-    var screen = appKit.NSScreen.mainScreen();
+    const screen = appKit.NSScreen.mainScreen();
 
     std.debug.print("Main Screen: {any}\n", .{screen});
     std.debug.print("\n\n", .{});
@@ -87,7 +89,7 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotificat
 
     w.setBackgroundColor(appKit.NSColor.grayColor());
 
-    var window_title: [:0]const u8 = "Counter App - 7GUIs#1";
+    const window_title: [:0]const u8 = "Counter App - 7GUIs#1";
     var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
     std.debug.print("[window-title] {s}\n", .{s.as(foundation.NSString.ExtensionMethods).utf8String()});
 
@@ -103,18 +105,18 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotificat
 
         v.layer().setBackgroundColor(appKit.NSColor.whiteColor().cgColor());
         {
-            var text_field_value = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("0").?;
+            const text_field_value = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("0").?;
 
-            var text_field_rect = foundation.NSRect{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 100, .height = 24 } };
-            var text_field = appKit.NSControl.of(appKit.NSTextField).initWithFrame(text_field_rect);
+            const text_field_rect = foundation.NSRect{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 100, .height = 24 } };
+            const text_field = appKit.NSControl.of(appKit.NSTextField).initWithFrame(text_field_rect);
             text_field.as(appKit.NSControl).setStringValue(text_field_value);
             text_field.as(appKit.NSControl).setAlignment(appKit.NSTextAlignment.Right);
             text_field.setEditable(false);
 
             v.addSubview(text_field.as(appKit.NSView));
 
-            var ctx = try CounterContext.init(app_context.arena.allocator(), .{ .text_field = text_field });
-            var handler = appKit_support.Handlers(CounterContext).Action(appKit.NSButton).init(ctx, CounterContext.handleIncrement);
+            const ctx = try CounterContext.init(app_context.arena.allocator(), .{ .text_field = text_field });
+            const handler = appKit_support.Handlers(CounterContext).Action(appKit.NSButton).init(ctx, CounterContext.handleIncrement);
             var button_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Count").?;
             std.debug.print("[button-caption] {s}\n", .{button_text.as(foundation.NSString.ExtensionMethods).utf8String()});
 
@@ -127,7 +129,7 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: NSNotificat
         root.addSubview(v);
     }
 
-    var d = WindowDelegate.initWithContext(app_context);
+    const d = WindowDelegate.initWithContext(app_context);
 
     _ = w.setDelegate(d);
 
@@ -152,7 +154,7 @@ pub fn main() !void {
 
     _ = app.setActivationPolicy(NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.initWithContext(app_context);
+    const d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

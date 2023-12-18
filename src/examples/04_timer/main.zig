@@ -29,7 +29,7 @@ const TimerContext = struct {
     values: Values,
 
     pub fn init(allocator: std.mem.Allocator, values: TimerContext.Values) !*TimerContext {
-        var self = try allocator.create(TimerContext);
+        const self = try allocator.create(TimerContext);
         self.* = .{
             .allocator = allocator,
             .values = values,
@@ -53,7 +53,7 @@ const TimerContext = struct {
             const max_time = try Helpers.formatTime(ctx.allocator, .{ .utc = .{.timestamp_ms = ctx.values.timer_state.duration_ms }});
             defer ctx.allocator.free(max_time);
 
-            var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(max_time.ptr).?;
+            const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(max_time.ptr).?;
             ctx.values.maxtime_label.as(appKit.NSControl).setStringValue(s);
 
             ctx.values.guage.setMaxValue(@floatFromInt(ctx.values.timer_state.duration_ms));
@@ -71,7 +71,7 @@ const TimerContext = struct {
             const elapsed_time = try Helpers.formatTime(context.allocator, .{ .utc = .{.timestamp_ms = context.values.timer_state.last_elapsed_ms} });
             defer context.allocator.free(elapsed_time);
             
-            var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(elapsed_time.ptr).?;
+            const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(elapsed_time.ptr).?;
             context.values.elapsed_label.as(appKit.NSControl).setStringValue(s);
 
             context.values.guage.setDoubleValue(@floatFromInt(context.values.timer_state.last_elapsed_ms));
@@ -108,9 +108,9 @@ const AppRootContext = struct {
     fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
         var allocator = app_context.arena.allocator();
 
-        var center: foundation.NSPoint = origin: {
+        const center: foundation.NSPoint = origin: {
             if (appKit.NSScreen.mainScreen()) |screen| {
-                var desktop_rect = screen.visibleFrame();
+                const desktop_rect = screen.visibleFrame();
 
                 break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
             } 
@@ -120,19 +120,19 @@ const AppRootContext = struct {
         };
         const window_size: foundation.NSSize = .{ .width = 300, .height = 120 };
 
-        var rect = foundation.NSRect{
+        const rect = foundation.NSRect{
             .origin = .{ .x = center.x - window_size.width / 2, .y = center.y - window_size.height / 2 },
             .size = window_size,
         };
-        var mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
-        var backing = appKit.NSBackingStoreType.Buffered;
+        const mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
+        const backing = appKit.NSBackingStoreType.Buffered;
 
-        var screen = appKit.NSScreen.mainScreen();
+        const screen = appKit.NSScreen.mainScreen();
 
         var w = appKit.NSWindow.of(appKit.NSWindow).initWithContentRectStyleMaskBacking(rect, mask, backing, false, screen.?);
 
-        var window_title: [:0]const u8 = "Timer App - 7GUIs#4";
-        var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
+        const window_title: [:0]const u8 = "Timer App - 7GUIs#4";
+        const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
 
         w.setTitle(s);
 
@@ -166,14 +166,14 @@ const AppRootContext = struct {
                 }
                 // elapsed time label
                 {
-                    var elapsed_label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("00:00:00.00").?;
+                    const elapsed_label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("00:00:00.00").?;
                     var elapsed_label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(elapsed_label_str);
                     elapsed_label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 4, .y = 68 }, .size = .{ .width = 80, .height = 24 } });
                     context_values.elapsed_label = elapsed_label;
                     v.addSubview(elapsed_label.as(appKit.NSView));
                 }
                 {
-                    var label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(" / ").?;
+                    const label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(" / ").?;
                     var label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(label_str);
                     label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 80, .y = 68 }, .size = .{ .width = 10, .height = 24 } });
                     v.addSubview(label.as(appKit.NSView));
@@ -183,7 +183,7 @@ const AppRootContext = struct {
                     const max_time = try Helpers.formatTime(allocator, .{ .utc = .{.timestamp_ms = @intCast(context_values.timer_state.duration_ms) }});
                     defer allocator.free(max_time);
 
-                    var label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(max_time).?;
+                    const label_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(max_time).?;
                     var label = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(label_str);
                     label.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 92, .y = 68 }, .size = .{ .width = 80, .height = 24 } });
                     context_values.maxtime_label = label;
@@ -207,7 +207,7 @@ const AppRootContext = struct {
                     );
                     button.setBezelStyle(appKit.NSBezelStyle.Rounded);
 
-                    var label = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Reset").?;
+                    const label = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Reset").?;
                     button.setTitle(label);
 
                     v.addSubview(button.as(appKit.NSView));
@@ -218,15 +218,15 @@ const AppRootContext = struct {
 
         var context = try TimerContext.init(allocator, context_values);
 
-        var timer_block = try foundation.NSTimer.BlockSupport(TimerContext).TimerWithTimeIntervalBlock(&TimerContext.handleTimer).init(context);
+        const timer_block = try foundation.NSTimer.BlockSupport(TimerContext).TimerWithTimeIntervalBlock(&TimerContext.handleTimer).init(context);
         context.values.timer = foundation.NSTimer.scheduledTimerWithTimeIntervalRepeatsBlock(0.05, true, timer_block);
         context.values.timer.setTolerance(0.005);
         
-        var slider_event = appKit_support.Handlers(TimerContext).Action(appKit.NSSlider).init(context, &TimerContext.handleSlider);
+        const slider_event = appKit_support.Handlers(TimerContext).Action(appKit.NSSlider).init(context, &TimerContext.handleSlider);
         slider.as(appKit.NSControl).setAction(slider_event.action);
         slider.as(appKit.NSControl).setTarget(slider_event.target);
 
-        var button_event = appKit_support.Handlers(TimerContext).Action(appKit.NSButton).init(context, &TimerContext.handleTimerReset);
+        const button_event = appKit_support.Handlers(TimerContext).Action(appKit.NSButton).init(context, &TimerContext.handleTimerReset);
         button.as(appKit.NSControl).setAction(button_event.action);
         button.as(appKit.NSControl).setTarget(button_event.target);
 
@@ -245,7 +245,7 @@ pub fn main() !void {
     var app = appKit.NSApplication.sharedApplication();
     _ = app.setActivationPolicy(appKit.NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.initWithContext(app_context);
+    const d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

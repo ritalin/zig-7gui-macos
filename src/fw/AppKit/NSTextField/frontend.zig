@@ -114,17 +114,17 @@ const NSTextFieldConvenienceForNSTextField = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn labelWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.labelWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
 
             pub fn wrappingLabelWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.wrappingLabelWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
 
             pub fn textFieldWithString(_stringValue: NSString) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSTextFieldConvenienceForNSTextFieldMessages.textFieldWithString(_class, runtime_support.objectId(NSString, _stringValue)));
             }
         };
@@ -149,7 +149,7 @@ pub const NSTextFieldDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
+                            const class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextFieldDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_field_delegate).initClass(class);
                             NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
@@ -157,8 +157,8 @@ pub const NSTextFieldDelegate = struct {
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTextFieldDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTextFieldDelegate, _id);
+                        const _id = backend.NSTextFieldDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTextFieldDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

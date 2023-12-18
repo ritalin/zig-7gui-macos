@@ -28,9 +28,9 @@ pub fn Handlers(comptime ContextType: type) type {
 
                 pub fn init(ctx: *ContextType, handler: HandlerType) Self {
                     if (_class == null) {
-                        var base = objc.getClass("NSObject").?;
+                        const base = objc.getClass("NSObject").?;
                         const type_name = @typeName(@This());
-                        var class = objc.allocateClassPair(base, type_name).?;
+                        const class = objc.allocateClassPair(base, type_name).?;
 
                         // register raw handler
                         {
@@ -49,7 +49,7 @@ pub fn Handlers(comptime ContextType: type) type {
                         _class = class;
                     }
 
-                    var target = runtime_support.backend_support.allocInstance(_class.?);
+                    const target = runtime_support.backend_support.allocInstance(_class.?);
 
                     var proxy = runtime_support.backend_support.ObjectProxy.init(target);
                     proxy.field("context").setAsPointer(*ContextType, ctx);
@@ -63,8 +63,8 @@ pub fn Handlers(comptime ContextType: type) type {
 
                 fn perform_action(self: objc.c.id, _: objc.c.SEL, sender: objc.c.id) callconv(.C) void {
                     var proxy = runtime_support.backend_support.ObjectProxy.init(objc.Object.fromId(self));
-                    var ctx = proxy.field("context").asPointer(*ContextType);
-                    var handler = proxy.field("action").asPointer(HandlerType);
+                    const ctx = proxy.field("context").asPointer(*ContextType);
+                    const handler = proxy.field("action").asPointer(HandlerType);
 
                     if (handler) |h| {
                         h(ctx, runtime_support.wrapObject(SenderObject, objc.Object.fromId(sender))) catch @panic("Unhandled error.");

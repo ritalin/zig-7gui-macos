@@ -100,7 +100,7 @@ pub const NSView = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithFrame(_frameRect: NSRect) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSViewMessages.initWithFrame(_class, runtime_support.pass(NSRect, _frameRect)));
             }
         };

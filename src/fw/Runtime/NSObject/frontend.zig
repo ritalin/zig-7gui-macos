@@ -32,7 +32,7 @@ pub const NSObject = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn init() DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSObjectMessages.init(_class));
             }
         };
@@ -75,14 +75,14 @@ pub const NSObjectProtocol = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSObjectProtocolMessages.initClass(_class_name);
+                            const class = backend.NSObjectProtocolMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSObjectProtocolMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSObjectProtocol, _id);
+                        const _id = backend.NSObjectProtocolMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSObjectProtocol, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

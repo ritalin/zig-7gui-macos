@@ -24,14 +24,14 @@ pub const NSUserInterfaceValidations = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSUserInterfaceValidationsMessages.initClass(_class_name);
+                            const class = backend.NSUserInterfaceValidationsMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSUserInterfaceValidations.Protocol(ContextType).Dispatch(_delegate_handlers.handler_user_interface_validations).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSUserInterfaceValidationsMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSUserInterfaceValidations, _id);
+                        const _id = backend.NSUserInterfaceValidationsMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSUserInterfaceValidations, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -74,14 +74,14 @@ pub const NSValidatedUserInterfaceItem = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSValidatedUserInterfaceItemMessages.initClass(_class_name);
+                            const class = backend.NSValidatedUserInterfaceItemMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSValidatedUserInterfaceItem.Protocol(ContextType).Dispatch(_delegate_handlers.handler_validated_user_interface_item).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSValidatedUserInterfaceItemMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSValidatedUserInterfaceItem, _id);
+                        const _id = backend.NSValidatedUserInterfaceItemMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSValidatedUserInterfaceItem, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

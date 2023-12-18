@@ -324,15 +324,15 @@ pub const NSTableViewDataSource = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTableViewDataSourceMessages.initClass(_class_name);
+                            const class = backend.NSTableViewDataSourceMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTableViewDataSource.Protocol(ContextType).Dispatch(_delegate_handlers.handler_table_view_data_source).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTableViewDataSourceMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTableViewDataSource, _id);
+                        const _id = backend.NSTableViewDataSourceMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTableViewDataSource, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -343,8 +343,8 @@ pub const NSTableViewDataSource = struct {
                 return struct {
                     fn dispatchNumberOfRowsInTableView(_id: objc.c.id, _: objc.c.SEL, _tableView: objc.c.id) NSInteger {
                         if (_delegate_handler.numberOfRowsInTableView) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
                             return handler(context, tableView) catch {
                                 unreachable;
                             };
@@ -354,9 +354,9 @@ pub const NSTableViewDataSource = struct {
 
                     fn dispatchTableViewObjectValueForTableColumnRow(_id: objc.c.id, _: objc.c.SEL, _tableView: objc.c.id, _tableColumn: objc.c.id, _row: NSInteger) objc.c.id {
                         if (_delegate_handler.tableViewObjectValueForTableColumnRow) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
-                            var tableColumn = runtime_support.wrapObject(?NSTableColumn, objc.Object.fromId(_tableColumn));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
+                            const tableColumn = runtime_support.wrapObject(?NSTableColumn, objc.Object.fromId(_tableColumn));
                             return runtime_support.unwrapOptionalObject(handler(context, tableView, tableColumn, _row) catch {
                                 unreachable;
                             });
@@ -406,7 +406,7 @@ pub const NSTableViewDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTableViewDelegateMessages.initClass(_class_name);
+                            const class = backend.NSTableViewDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTableViewDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_table_view_delegate).initClass(class);
                             NSControlTextEditingDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_control_text_editing_delegate).initClass(class);
@@ -414,8 +414,8 @@ pub const NSTableViewDelegate = struct {
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTableViewDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTableViewDelegate, _id);
+                        const _id = backend.NSTableViewDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTableViewDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -426,9 +426,9 @@ pub const NSTableViewDelegate = struct {
                 return struct {
                     fn dispatchTableViewDidRemoveRowViewForRow(_id: objc.c.id, _: objc.c.SEL, _tableView: objc.c.id, _rowView: objc.c.id, _row: NSInteger) void {
                         if (_delegate_handler.tableViewDidRemoveRowViewForRow) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
-                            var rowView = runtime_support.wrapObject(NSTableRowView, objc.Object.fromId(_rowView));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
+                            const rowView = runtime_support.wrapObject(NSTableRowView, objc.Object.fromId(_rowView));
                             return handler(context, tableView, rowView, _row) catch {
                                 unreachable;
                             };
@@ -438,8 +438,8 @@ pub const NSTableViewDelegate = struct {
 
                     fn dispatchTableViewHeightOfRow(_id: objc.c.id, _: objc.c.SEL, _tableView: objc.c.id, _row: NSInteger) CGFloat {
                         if (_delegate_handler.tableViewHeightOfRow) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const tableView = runtime_support.wrapObject(NSTableView, objc.Object.fromId(_tableView));
                             return handler(context, tableView, _row) catch {
                                 unreachable;
                             };
@@ -449,8 +449,8 @@ pub const NSTableViewDelegate = struct {
 
                     fn dispatchTableViewSelectionDidChange(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.tableViewSelectionDidChange) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };

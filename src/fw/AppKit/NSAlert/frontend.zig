@@ -63,7 +63,7 @@ pub const NSAlert = struct {
                     }, void);
 
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSModalResponse) void) {
-                        var block = try Block.init(.{
+                        const block = try Block.init(.{
                             .context = user_context,
                         }, &dispatchBeginSheetModalForWindow);
                         return .{

@@ -30,7 +30,7 @@ const FlightBookContext = struct {
     route_context: *FlightRouteContext,
 
     pub fn init(allocator: std.mem.Allocator, route_context: *FlightRouteContext, values: FlightBookContext.Values) !*FlightBookContext {
-        var self = try allocator.create(FlightBookContext);
+        const self = try allocator.create(FlightBookContext);
         self.* = .{
             .allocator = allocator,
             .values = values,
@@ -41,7 +41,7 @@ const FlightBookContext = struct {
     }
 
     fn handleSelectionDidChange(context: *FlightBookContext, _: foundation.NSNotification) !void {
-        var index = context.values.booking_route.indexOfSelectedItem();
+        const index = context.values.booking_route.indexOfSelectedItem();
 
         if (context.route_context.isReturnRoute(index)) {
             context.values.arrival_date.as(appKit.NSControl).setEnabled(true);
@@ -52,13 +52,13 @@ const FlightBookContext = struct {
     }
 
     fn selectedRouteName(context: *FlightBookContext) []const u8 {
-        var index = context.values.booking_route.indexOfSelectedItem();
+        const index = context.values.booking_route.indexOfSelectedItem();
 
         return context.route_context.findKeyAtIndex(index);
     }
 
     fn syncBookingDate(context: *FlightBookContext) void {
-        var date_str = context.values.departure_date.as(appKit.NSControl).stringValue();
+        const date_str = context.values.departure_date.as(appKit.NSControl).stringValue();
         context.values.arrival_date.as(appKit.NSControl).setStringValue(date_str);
     }
 
@@ -68,7 +68,7 @@ const FlightBookContext = struct {
 
     fn parseDate(text_field: appKit.NSTextField) ?time_formatter.FormattableTime.Utc {
         var s = text_field.as(appKit.NSControl).stringValue();
-        var date_str = s.as(foundation.NSString.ExtensionMethods).utf8String();
+        const date_str = s.as(foundation.NSString.ExtensionMethods).utf8String();
 
         const offset_date = time_parser.fromISO8601(std.mem.sliceTo(date_str, 0)) catch {
             return null;
@@ -78,8 +78,8 @@ const FlightBookContext = struct {
     }
 
     fn refreshView(context: *FlightBookContext) void {
-        var departure_date = parseDate(context.values.departure_date);
-        var arrival_date = parseDate(context.values.arrival_date);
+        const departure_date = parseDate(context.values.departure_date);
+        const arrival_date = parseDate(context.values.arrival_date);
 
         var status = RefreshStatus{
             .accept_dep_date = departure_date != null,
@@ -93,7 +93,7 @@ const FlightBookContext = struct {
             status.accept_record_book = compareDate(departure_date.?, arrival_date.?).compare(.lte);
         }
 
-        var index = context.values.booking_route.indexOfSelectedItem();
+        const index = context.values.booking_route.indexOfSelectedItem();
 
         if (context.route_context.isReturnRoute(index)) {
             context.values.book_button.as(appKit.NSControl).setEnabled(RefreshStatusSet.init(status).eql(RefreshStatusSet.initFull()));
@@ -108,12 +108,12 @@ const FlightBookContext = struct {
 
     fn handleRecordBook(context: ?*FlightBookContext, _: appKit.NSButton) !void {
         if (context) |ctx| {
-            var route = ctx.selectedRouteName();
-            var dep_date = parseDate(ctx.values.departure_date).?;
-            var arr_date = parseDate(ctx.values.arrival_date).?;
+            const route = ctx.selectedRouteName();
+            const dep_date = parseDate(ctx.values.departure_date).?;
+            const arr_date = parseDate(ctx.values.arrival_date).?;
 
-            var msg = try std.fmt.allocPrintZ(ctx.allocator, 
-                "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-DD}\n\tarrival: {YYYY-MM-DD}", .{ 
+            const msg = try std.fmt.allocPrintZ(ctx.allocator, 
+                "Book recorded: \n\troute: {s}\n\tdeparture: {YYYY-MM-dd}\n\tarrival: {YYYY-MM-dd}", .{ 
                     route, 
                     time_formatter.FormattableTime{ .utc = dep_date }, 
                     time_formatter.FormattableTime{ .utc = arr_date },
@@ -127,7 +127,7 @@ const FlightBookContext = struct {
             alert.setMessageText(foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(msg).?);
             // _ = alert.runModal();
 
-            var block = try appKit.NSAlert.BlockSupport(FlightBookContext).BeginSheetModalForWindowBlock(&handleRecordBookFinished).init(ctx);
+            const block = try appKit.NSAlert.BlockSupport(FlightBookContext).BeginSheetModalForWindowBlock(&handleRecordBookFinished).init(ctx);
 
             alert.beginSheetModalForWindowCompletionHandler(ctx.values.main_window, block);
         }
@@ -158,7 +158,7 @@ const FlightRouteContext = struct {
     allocator: std.mem.Allocator,
 
     pub fn init(allocator: std.mem.Allocator) !*FlightRouteContext {
-        var self = try allocator.create(FlightRouteContext);
+        const self = try allocator.create(FlightRouteContext);
         self.* = .{
             .allocator = allocator,
         };
@@ -175,10 +175,10 @@ const FlightRouteContext = struct {
     }
 
     fn handleObjectValueForItemAtIndex(context: *FlightRouteContext, _: appKit.NSComboBox, _index: NSInteger) !?objc.Object {
-        var value = try context.allocator.dupeZ(u8, context.findKeyAtIndex(_index));
+        const value = try context.allocator.dupeZ(u8, context.findKeyAtIndex(_index));
         defer context.allocator.free(value);
 
-        var item_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(value).?;
+        const item_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(value).?;
         return item_text._id;
     }
 
@@ -191,7 +191,7 @@ const FlightRouteContext = struct {
     }
 
     fn handleIndexOfItemWithStringValue(_: *FlightRouteContext, _: appKit.NSComboBox, _string: foundation.NSString) !NSUInteger {
-        var raw_value = _string.as(foundation.NSString.ExtensionMethods).utf8String();
+        const raw_value = _string.as(foundation.NSString.ExtensionMethods).utf8String();
         return routes.get(std.mem.sliceTo(raw_value, 0)) orelse foundation.NSNotFound;
     }
 };
@@ -224,32 +224,32 @@ const BookingDateDelegate = appKit.NSTextFieldDelegate.Protocol(FlightBookContex
 
 const AppRootContext = struct {
     fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
-        var allocator = app_context.arena.allocator();
+        const allocator = app_context.arena.allocator();
 
-        var center: foundation.NSPoint =
-            if (appKit.NSScreen.mainScreen()) |screen|
-        origin: {
-            var desktop_rect = screen.visibleFrame();
-
-            break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
-        } else origin: {
-            break :origin .{ .x = 50, .y = 50 };
+        const center: foundation.NSPoint = origin: {
+            if (appKit.NSScreen.mainScreen()) |screen| {
+                const desktop_rect = screen.visibleFrame();
+                break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
+            } 
+            else {
+                break :origin .{ .x = 50, .y = 50 };
+            }
         };
         const window_size: foundation.NSSize = .{ .width = 300, .height = 120 };
 
-        var rect = foundation.NSRect{
+        const rect = foundation.NSRect{
             .origin = .{ .x = center.x - window_size.width / 2, .y = center.y - window_size.height / 2 },
             .size = window_size,
         };
-        var mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
-        var backing = appKit.NSBackingStoreType.Buffered;
+        const mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
+        const backing = appKit.NSBackingStoreType.Buffered;
 
-        var screen = appKit.NSScreen.mainScreen();
+        const screen = appKit.NSScreen.mainScreen();
 
         var w = appKit.NSWindow.of(appKit.NSWindow).initWithContentRectStyleMaskBacking(rect, mask, backing, false, screen.?);
 
-        var window_title: [:0]const u8 = "Book Flight App - 7GUIs#3";
-        var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
+        const window_title: [:0]const u8 = "Book Flight App - 7GUIs#3";
+        const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
 
         w.setTitle(s);
 
@@ -271,10 +271,10 @@ const AppRootContext = struct {
                 }
                 v.addSubview(dropdown.as(appKit.NSView));
 
-                var ini_date = try std.fmt.allocPrintZ(allocator, "{YYYY-MM-DD}", .{
+                const ini_date = try std.fmt.allocPrintZ(allocator, "{YYYY-MM-dd}", .{
                     time_formatter.FormattableTime{ .utc = .{.timestamp_ms = std.time.milliTimestamp()} }
                 });
-                var ini_date_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(ini_date).?;
+                const ini_date_str = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(ini_date).?;
 
                 var departure_date = appKit.NSControl.of(appKit.NSTextField).initWithFrame(.{ .origin = .{ .x = 4, .y = 60 }, .size = .{ .width = 120, .height = 24 } });
 
@@ -292,7 +292,7 @@ const AppRootContext = struct {
                 }
                 v.addSubview(arrival_date.as(appKit.NSView));
 
-                var button_title = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Book").?;
+                const button_title = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Book").?;
                 var button = appKit.NSButton.of(appKit.NSButton).buttonWithTitleTargetAction(button_title, null, null);
                 {
                     button.as(appKit.NSView).setFrame(.{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 120, .height = 24 } });
@@ -303,7 +303,7 @@ const AppRootContext = struct {
             root.addSubview(v);
         }
 
-        var route_context = try FlightRouteContext.init(allocator);
+        const route_context = try FlightRouteContext.init(allocator);
         var context = try FlightBookContext.init(allocator, route_context, context_values);
         app_context.state = context;
 
@@ -314,7 +314,7 @@ const AppRootContext = struct {
         context.values.departure_date.setDelegate(BookingDateDelegate.initWithContext(context));
         context.values.arrival_date.setDelegate(BookingDateDelegate.initWithContext(context));
 
-        var book_click = appKit_support.Handlers(FlightBookContext).Action(appKit.NSButton).init(context, FlightBookContext.handleRecordBook);
+        const book_click = appKit_support.Handlers(FlightBookContext).Action(appKit.NSButton).init(context, FlightBookContext.handleRecordBook);
         context.values.book_button.as(appKit.NSControl).setTarget(book_click.target);
         context.values.book_button.as(appKit.NSControl).setAction(book_click.action);
 
@@ -337,7 +337,7 @@ pub fn main() !void {
     var app = appKit.NSApplication.sharedApplication();
     _ = app.setActivationPolicy(appKit.NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.initWithContext(app_context);
+    const d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

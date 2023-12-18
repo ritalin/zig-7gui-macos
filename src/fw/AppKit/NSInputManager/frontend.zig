@@ -24,14 +24,14 @@ pub const NSTextInput = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTextInputMessages.initClass(_class_name);
+                            const class = backend.NSTextInputMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextInput.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_input).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTextInputMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTextInput, _id);
+                        const _id = backend.NSTextInputMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTextInput, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

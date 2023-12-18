@@ -32,7 +32,7 @@ const TempConvContext = struct {
     values: Values,
 
     pub fn init(allocator: std.mem.Allocator, values: TempConvContext.Values) !*TempConvContext {
-        var self = try allocator.create(TempConvContext);
+        const self = try allocator.create(TempConvContext);
         self.* = .{
             .allocator = allocator,
             .values = values,
@@ -47,7 +47,7 @@ const TempConvContext = struct {
 
     fn handleDidFinishLaunching(context: *AppContext, _: foundation.NSNotification) !void {
         if (context.state) |state| {
-            var err = state.values.window.makeFirstResponder(state.values.text_celcius.as(appKit.NSResponder));
+            const err = state.values.window.makeFirstResponder(state.values.text_celcius.as(appKit.NSResponder));
             std.debug.print("Fiest Responder => {}\n", .{err});
         }
     }
@@ -58,7 +58,7 @@ const TempConvContext = struct {
         var rc = objc.AutoreleasePool.init();
         defer rc.deinit();
 
-        var temp_from = readTemperature(context.values.text_celcius) catch |err| switch (err) {
+        const temp_from = readTemperature(context.values.text_celcius) catch |err| switch (err) {
             error.InvalidValue => {
                 std.debug.print("Debug: Celcius temp > need to be integer value.\n", .{});
                 return;
@@ -69,13 +69,14 @@ const TempConvContext = struct {
             },
         };
 
-        var temp_to =
-            if (temp_from) |value|
-        temp: {
-            var new_value = value * (9.0 / 5.0) + 32.0;
-            break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
-        } else temp: {
-            break :temp try context.allocator.dupeZ(u8, "");
+        const temp_to = temp: {
+            if (temp_from) |value| {
+                const new_value = value * (9.0 / 5.0) + 32.0;
+                break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
+            } 
+            else {
+                break :temp try context.allocator.dupeZ(u8, "");
+            }
         };
         defer context.allocator.free(temp_to);
 
@@ -88,7 +89,7 @@ const TempConvContext = struct {
         var rc = objc.AutoreleasePool.init();
         defer rc.deinit();
 
-        var temp_from = readTemperature(context.values.text_fahrenheit) catch |err| switch (err) {
+        const temp_from = readTemperature(context.values.text_fahrenheit) catch |err| switch (err) {
             error.InvalidValue => {
                 std.debug.print("Debug: Fahrenheit temp > need to be integer value.\n", .{});
                 return;
@@ -99,10 +100,10 @@ const TempConvContext = struct {
             },
         };
 
-        var temp_to =
+        const temp_to =
             if (temp_from) |value|
         temp: {
-            var new_value = (value - 32.0) * (5.0 / 9.0);
+            const new_value = (value - 32.0) * (5.0 / 9.0);
             break :temp try std.fmt.allocPrintZ(context.allocator, "{d:3.2}", .{new_value});
         } else temp: {
             break :temp try context.allocator.dupeZ(u8, "");
@@ -116,13 +117,13 @@ const TempConvContext = struct {
 
     fn readTemperature(text_view: appKit.NSTextView) (std.fmt.ParseIntError || TemperatureError)!?f32 {
         if (text_view.textStorage()) |storage| {
-            var s0 = storage
+            const s0 = storage
                 .as(foundation.NSAttributedString).string()
                 .as(foundation.NSString.ExtensionMethods).utf8String();
             if (s0 == null) return null;
 
             if (s0) |x| {
-                var input = std.mem.sliceTo(x, 0);
+                const input = std.mem.sliceTo(x, 0);
                 if (input.len == 0) return null;
 
                 return std.fmt.parseFloat(f32, input) catch |err| switch (err) {
@@ -137,8 +138,8 @@ const TempConvContext = struct {
 
     fn updateTemperature(text_view: appKit.NSTextView, value: [:0]const u8) void {
         if (text_view.textStorage()) |storage| {
-            var s1 = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(value).?;
-            var s2 = foundation.NSAttributedString.ExtendedAttributedString.of(foundation.NSAttributedString).initWithString(s1);
+            const s1 = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(value).?;
+            const s2 = foundation.NSAttributedString.ExtendedAttributedString.of(foundation.NSAttributedString).initWithString(s1);
 
             storage.as(foundation.NSMutableAttributedString.ExtendedMutableAttributedString).setAttributedString(s2);
         }
@@ -193,10 +194,10 @@ const ToCelciusDelegate =
 );
 
 fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.NSNotification) !void {
-    var center: foundation.NSPoint =
+    const center: foundation.NSPoint =
         if (appKit.NSScreen.mainScreen()) |screen|
     origin: {
-        var desktop_rect = screen.visibleFrame();
+        const desktop_rect = screen.visibleFrame();
 
         break :origin .{ .x = (desktop_rect.size.width - desktop_rect.origin.x) / 2, .y = (desktop_rect.size.height - desktop_rect.origin.y) / 2 };
     } else origin: {
@@ -204,19 +205,19 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.
     };
     const window_size: foundation.NSSize = .{ .width = 300, .height = 48 };
 
-    var rect = foundation.NSRect{
+    const rect = foundation.NSRect{
         .origin = .{ .x = center.x - window_size.width / 2, .y = center.y - window_size.height / 2 },
         .size = window_size,
     };
-    var mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
-    var backing = appKit.NSBackingStoreType.Buffered;
+    const mask = appKit.NSWindowStyleMask.init(.{ .Titled = true, .Closable = true, .Miniaturizable = true, .Resizable = true });
+    const backing = appKit.NSBackingStoreType.Buffered;
 
-    var screen = appKit.NSScreen.mainScreen();
+    const screen = appKit.NSScreen.mainScreen();
 
     var w = appKit.NSWindow.of(appKit.NSWindow).initWithContentRectStyleMaskBacking(rect, mask, backing, false, screen.?);
 
-    var window_title: [:0]const u8 = "TempConv App - 7GUIs#2";
-    var s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
+    const window_title: [:0]const u8 = "TempConv App - 7GUIs#2";
+    const s = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String(window_title).?;
 
     w.setTitle(s);
 
@@ -230,15 +231,15 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.
         var v = appKit.NSView.of(appKit.NSView).initWithFrame(.{ .origin = .{ .x = 8, .y = 8 }, .size = .{ .width = window_size.width - 16, .height = 32 } });
         {
             context_values.text_celcius = edit: {
-                var text_rect = .{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 64, .height = 18 } };
-                var edit = appKit.NSView.of(appKit.NSTextView).initWithFrame(text_rect);
+                const text_rect = .{ .origin = .{ .x = 4, .y = 4 }, .size = .{ .width = 64, .height = 18 } };
+                const edit = appKit.NSView.of(appKit.NSTextView).initWithFrame(text_rect);
                 // edit.as(appKit.NSControl).setAlignment(appKit.NSTextAlignment.Right);
                 break :edit edit;
             };
             v.addSubview(context_values.text_celcius.as(appKit.NSView));
 
             var c_caption = caption: {
-                var caption_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Celsius = ").?;
+                const caption_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Celsius = ").?;
                 var caption = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(caption_text);
                 caption.as(appKit.NSView).setFrameOrigin(.{ .x = 74, .y = 4 });
                 break :caption caption;
@@ -246,15 +247,15 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.
             v.addSubview(c_caption.as(appKit.NSView));
 
             context_values.text_fahrenheit = edit: {
-                var text_rect = .{ .origin = .{ .x = 136, .y = 4 }, .size = .{ .width = 64, .height = 18 } };
-                var edit = appKit.NSView.of(appKit.NSTextView).initWithFrame(text_rect);
+                const text_rect = .{ .origin = .{ .x = 136, .y = 4 }, .size = .{ .width = 64, .height = 18 } };
+                const edit = appKit.NSView.of(appKit.NSTextView).initWithFrame(text_rect);
                 // edit.as(appKit.NSControl).setAlignment(appKit.NSTextAlignment.Right);
                 break :edit edit;
             };
             v.addSubview(context_values.text_fahrenheit.as(appKit.NSView));
 
             var f_caption = caption: {
-                var caption_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Fahrenheit").?;
+                const caption_text = foundation.NSString.ExtensionMethods.of(foundation.NSString).initWithUTF8String("Fahrenheit").?;
                 var caption = appKit.NSTextField.Convenience.of(appKit.NSTextField).labelWithString(caption_text);
                 caption.as(appKit.NSView).setFrameOrigin(.{ .x = 204, .y = 4 });
                 break :caption caption;
@@ -265,13 +266,13 @@ fn handleApplicationWillFinishLaunching(app_context: *AppContext, _: foundation.
     }
 
     // init context
-    var context = try TempConvContext.init(app_context.arena.allocator(), context_values);
+    const context = try TempConvContext.init(app_context.arena.allocator(), context_values);
     app_context.state = context;
 
-    var c_edit_changed = ToFahrenheitDelegate.initWithContext(context);
+    const c_edit_changed = ToFahrenheitDelegate.initWithContext(context);
     context_values.text_celcius.as(appKit.NSTextView.Sharing).setDelegate(c_edit_changed);
 
-    var f_edit_changed = ToCelciusDelegate.initWithContext(context);
+    const f_edit_changed = ToCelciusDelegate.initWithContext(context);
     context_values.text_fahrenheit.as(appKit.NSTextView.Sharing).setDelegate(f_edit_changed);
 
     w.makeKeyAndOrderFront(null);
@@ -286,7 +287,7 @@ pub fn main() !void {
     var app = appKit.NSApplication.sharedApplication();
     _ = app.setActivationPolicy(appKit.NSApplicationActivationPolicy.Regular);
 
-    var d = AppDelegate.initWithContext(app_context);
+    const d = AppDelegate.initWithContext(app_context);
 
     app.setDelegate(d);
     app.run();

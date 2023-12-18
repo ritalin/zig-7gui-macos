@@ -45,15 +45,15 @@ pub const NSPasteboardWriting = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSPasteboardWritingMessages.initClass(_class_name);
+                            const class = backend.NSPasteboardWritingMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSPasteboardWriting.Protocol(ContextType).Dispatch(_delegate_handlers.handler_pasteboard_writing).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSPasteboardWritingMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSPasteboardWriting, _id);
+                        const _id = backend.NSPasteboardWritingMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSPasteboardWriting, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

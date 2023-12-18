@@ -56,7 +56,7 @@ pub const NSButton = struct {
     }
 
     pub fn bezelStyle(self: Self) NSBezelStyle {
-        return runtime_support.toEnum(NSBezelStyle, backend.NSButtonMessages.bezelStyle(runtime_support.objectId(NSButton, self)));
+        return runtime_support.wrapEnum(NSBezelStyle, NSUInteger, backend.NSButtonMessages.bezelStyle(runtime_support.objectId(NSButton, self)));
     }
 
     pub fn setBezelStyle(self: Self, _bezelStyle: NSBezelStyle) void {
@@ -66,7 +66,7 @@ pub const NSButton = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn buttonWithTitleTargetAction(_title: NSString, _target: ?objc.Object, _action: ?objc.Sel) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSButtonMessages.buttonWithTitleTargetAction(_class, runtime_support.objectId(NSString, _title), runtime_support.pass(?objc.Object, _target), runtime_support.pass(?objc.Sel, _action)));
             }
         };

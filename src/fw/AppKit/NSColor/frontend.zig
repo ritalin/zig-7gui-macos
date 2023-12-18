@@ -39,7 +39,7 @@ pub const NSColor = struct {
     }
 
     pub fn @"type"(self: Self) NSColorType {
-        return runtime_support.toEnum(NSColorType, backend.NSColorMessages.type(runtime_support.objectId(NSColor, self)));
+        return runtime_support.wrapEnum(NSColorType, NSInteger, backend.NSColorMessages.type(runtime_support.objectId(NSColor, self)));
     }
 
     pub fn blackColor() NSColor {

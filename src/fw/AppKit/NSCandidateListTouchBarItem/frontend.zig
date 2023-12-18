@@ -25,15 +25,15 @@ pub const NSCandidateListTouchBarItemDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSCandidateListTouchBarItemDelegateMessages.initClass(_class_name);
+                            const class = backend.NSCandidateListTouchBarItemDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSCandidateListTouchBarItemDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_candidate_list_touch_bar_item_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSCandidateListTouchBarItemDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSCandidateListTouchBarItemDelegate, _id);
+                        const _id = backend.NSCandidateListTouchBarItemDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSCandidateListTouchBarItemDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

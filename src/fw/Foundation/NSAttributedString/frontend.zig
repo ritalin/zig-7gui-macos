@@ -125,7 +125,7 @@ const NSExtendedAttributedStringForNSAttributedString = struct {
     fn Constructor(comptime DesiredType: type) type {
         return struct {
             pub fn initWithString(_str: NSString) DesiredType {
-                var _class = DesiredType.TypeSupport.getClass();
+                const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSExtendedAttributedStringForNSAttributedStringMessages.initWithString(_class, runtime_support.objectId(NSString, _str)));
             }
         };

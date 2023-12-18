@@ -24,14 +24,14 @@ pub const NSChangeSpelling = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSChangeSpellingMessages.initClass(_class_name);
+                            const class = backend.NSChangeSpellingMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSChangeSpelling.Protocol(ContextType).Dispatch(_delegate_handlers.handler_change_spelling).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSChangeSpellingMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSChangeSpelling, _id);
+                        const _id = backend.NSChangeSpellingMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSChangeSpelling, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }

@@ -37,24 +37,24 @@ pub const ObjectRegistry = struct {
     const BOOL_YES: objc.c.BOOL = 1;
 
     pub fn newDelegateClass(className: [:0]const u8, protocolName: [:0]const u8) Class {
-        var base = objc.getClass("NSObject");
+        const base = objc.getClass("NSObject");
         std.debug.assert(base != null);
 
-        var c = objc.c.objc_allocateClassPair(base.?.value, className, 0);
+        const c = objc.c.objc_allocateClassPair(base.?.value, className, 0);
         std.debug.assert(c != null);
 
-        var p = objc.c.objc_getProtocol(protocolName);
-        var res = objc.c.class_addProtocol(c, p);
+        const p = objc.c.objc_getProtocol(protocolName);
+        const res = objc.c.class_addProtocol(c, p);
         std.debug.assert(res == BOOL_YES);
 
         return Class{ .value = c };
     }
 
     pub fn registerMessage(class: Class, name: [:0]const u8, method: objc.c.IMP, typeEncoding: [:0]const u8) void {
-        var selector = objc.Sel.registerName(name);
+        const selector = objc.Sel.registerName(name);
         std.debug.assert(selector.value != null);
 
-        var ret = objc.c.class_replaceMethod(class.value, selector.value, method, typeEncoding);
+        const ret = objc.c.class_replaceMethod(class.value, selector.value, method, typeEncoding);
         _ = ret;
     }
 
@@ -68,7 +68,7 @@ pub const ObjectRegistry = struct {
         // std.debug.assert(ret == BOOL_YES);
     }
     pub fn registerFieldInternal(class: Class, field_name: [:0]const u8, type_size: usize, alignmemnt: u8, encoding: [:0]const u8) void {
-        var ret = objc.c.class_addIvar(class.value, field_name, type_size, alignmemnt, encoding);
+        const ret = objc.c.class_addIvar(class.value, field_name, type_size, alignmemnt, encoding);
         std.debug.assert(ret == BOOL_YES);
     }
 

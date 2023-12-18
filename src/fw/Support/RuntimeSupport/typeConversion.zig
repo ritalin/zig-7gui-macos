@@ -127,7 +127,7 @@ pub fn ObjectUpperCast(comptime ObjectType: type, comptime ConstructorType: fn (
                 if (ObjectType.TypeSupport.inheritFrom(DesiredType)) {
                     break :constraint;
                 }
-                if (ObjectType.Support.protocolFrom(DesiredType)) {
+                if (ObjectType.TypeSupport.protocolFrom(DesiredType)) {
                     break :constraint;
                 }
                 @compileError("Unsupported associated type: " ++ @typeName(DesiredType));

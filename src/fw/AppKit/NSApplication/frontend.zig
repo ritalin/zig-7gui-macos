@@ -148,7 +148,7 @@ pub const NSApplication = struct {
     }
 
     pub fn activationPolicy(self: Self) NSApplicationActivationPolicy {
-        return runtime_support.toEnum(NSApplicationActivationPolicy, backend.NSApplicationMessages.activationPolicy(runtime_support.objectId(NSApplication, self)));
+        return runtime_support.wrapEnum(NSApplicationActivationPolicy, NSInteger, backend.NSApplicationMessages.activationPolicy(runtime_support.objectId(NSApplication, self)));
     }
 
     pub fn setActivationPolicy(self: Self, _activationPolicy: NSApplicationActivationPolicy) bool {
@@ -259,15 +259,15 @@ pub const NSApplicationDelegate = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSApplicationDelegateMessages.initClass(_class_name);
+                            const class = backend.NSApplicationDelegateMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSApplicationDelegate.Protocol(ContextType).Dispatch(_delegate_handlers.handler_application_delegate).initClass(class);
                             NSObjectProtocol.Protocol(ContextType).Dispatch(_delegate_handlers.handler_object_protocol).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSApplicationDelegateMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSApplicationDelegate, _id);
+                        const _id = backend.NSApplicationDelegateMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSApplicationDelegate, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
@@ -278,8 +278,8 @@ pub const NSApplicationDelegate = struct {
                 return struct {
                     fn dispatchApplicationWillFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationWillFinishLaunching) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };
@@ -289,8 +289,8 @@ pub const NSApplicationDelegate = struct {
 
                     fn dispatchApplicationDidFinishLaunching(_id: objc.c.id, _: objc.c.SEL, _notification: objc.c.id) void {
                         if (_delegate_handler.applicationDidFinishLaunching) |handler| {
-                            var context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
-                            var notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
+                            const context = runtime_support.ContextReg(ContextType).context(objc.Object.fromId(_id)).?;
+                            const notification = runtime_support.wrapObject(NSNotification, objc.Object.fromId(_notification));
                             return handler(context, notification) catch {
                                 unreachable;
                             };

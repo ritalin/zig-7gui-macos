@@ -11,7 +11,7 @@ pub const FormattableTime = union(enum) {
     duration: std.time.Timer,
 
     pub fn format(self: FormattableTime, comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
-        var timestamp_ms = switch (self) {
+        const timestamp_ms = switch (self) {
             .utc => |t| @as(u64, @intCast(t.timestamp_ms)),
             .with_offset => |t| @as(u64, @intCast(t.timestamp_ms)) + t.offset,
             .duration => |d| d.started.since(d.previous) / 1000_000,
@@ -43,7 +43,7 @@ pub const ZoneOffset = u64;
 
 pub const helpers = struct {
     pub fn loadZoneInfo(allocator: std.mem.Allocator, zone_id: []const u8) !std.json.Parsed(std.Tz) {
-        var path = try std.fs.path.join(allocator, &[_][]const u8{ "/usr/share/zoneinfo/", zone_id});
+        const path = try std.fs.path.join(allocator, &[_][]const u8{ "/usr/share/zoneinfo/", zone_id});
         defer allocator.free(path);
 
         var file = try std.fs.openFileAbsolute(path, .{});
@@ -52,7 +52,7 @@ pub const helpers = struct {
         var arena = try allocator.create(std.heap.ArenaAllocator);
         arena.* = std.heap.ArenaAllocator.init(allocator);
 
-        var tz = try std.Tz.parse(arena.allocator(), file.reader());
+        const tz = try std.Tz.parse(arena.allocator(), file.reader());
 
         return .{
             .arena = arena,

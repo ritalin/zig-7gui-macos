@@ -80,14 +80,14 @@ pub const NSTextLayoutOrientationProvider = struct {
 
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
-                            var class = backend.NSTextLayoutOrientationProviderMessages.initClass(_class_name);
+                            const class = backend.NSTextLayoutOrientationProviderMessages.initClass(_class_name);
                             runtime_support.backend_support.ObjectRegistry.registerField(class, *anyopaque, "context");
                             NSTextLayoutOrientationProvider.Protocol(ContextType).Dispatch(_delegate_handlers.handler_text_layout_orientation_provider).initClass(class);
                             runtime_support.backend_support.ObjectRegistry.registerClass(class);
                             _class = class;
                         }
-                        var _id = backend.NSTextLayoutOrientationProviderMessages.init(_class.?);
-                        var _instance = runtime_support.wrapObject(NSTextLayoutOrientationProvider, _id);
+                        const _id = backend.NSTextLayoutOrientationProviderMessages.init(_class.?);
+                        const _instance = runtime_support.wrapObject(NSTextLayoutOrientationProvider, _id);
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
