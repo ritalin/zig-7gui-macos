@@ -64,7 +64,8 @@ const CrudContext = struct {
                 ctx.values.entries_list.beginUpdates();
                 defer ctx.values.entries_list.endUpdates();
                 {
-                    ctx.values.entries_list.insertRowsAtIndexesWithAnimation(row, appKit.NSTableViewAnimationOptions.init(.{ .SlideLeft = true }));
+                    // SlideLeft = SlideUp | SlideDown
+                    ctx.values.entries_list.insertRowsAtIndexesWithAnimation(row, appKit.NSTableViewAnimationOptions.init(.{ .SlideUp = true, .SlideDown = true }));
                 }
             }
         }
