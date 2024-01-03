@@ -14,6 +14,9 @@ pub fn build(b: *std.Build) !void {
     });
     const mod_objc = dep_objc.module("objc");
 
+    const dep_sparse_enumset = b.dependency("sparse_enumset", .{});
+    const mod_sparse_enumset = dep_sparse_enumset.module("sparse_enumset");
+
     // Core modules (NSObject, etc...)
     const mod_runtime = b.createModule(.{ .source_file = .{ .path = "src/fw/Runtime.zig" }, .dependencies = &.{
         .{ .name = "objc", .module = mod_objc },
@@ -22,6 +25,7 @@ pub fn build(b: *std.Build) !void {
 
     const mod_runtime_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/RuntimeSupport.zig" }, .dependencies = &.{
         .{ .name = "objc", .module = mod_objc },
+        .{ .name = "sparse-enumset", .module = mod_sparse_enumset },
         .{ .name = "Runtime", .module = mod_runtime },
     } });
     try mod_runtime_support.dependencies.put("Runtime-Support", mod_runtime_support);
@@ -63,6 +67,7 @@ pub fn build(b: *std.Build) !void {
     });
     try mod_foundation.dependencies.put("Foundation", mod_foundation);
     try mod_coreGraphics.dependencies.put("Foundation", mod_foundation);
+    try mod_quartz.dependencies.put("Foundation", mod_foundation);
 
     // AppKit.framework
     const mod_appKit = b.createModule(.{
@@ -103,6 +108,7 @@ pub fn build(b: *std.Build) !void {
         .{ "book_flight", "src/examples/03_book_flight/main.zig" },
         .{ "timer", "src/examples/04_timer/main.zig" },
         .{ "crud", "src/examples/05_crud/main.zig" },
+        .{ "circle_drawer", "src/examples/06_circle_drawer/main.zig" },
     };
 
     // create example step

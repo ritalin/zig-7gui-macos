@@ -1,0 +1,10 @@
+.{
+    .name = "zig-sparse-enumset",
+    .version = "0.0.0",
+    .dependencies = .{
+    },
+    .paths = .{
+        "build.zig",
+        "src",
+    },
+}

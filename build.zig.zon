@@ -16,6 +16,9 @@
         .time_formatter = .{
             .path = "vendor/zig-time-formatter"
         },
+        .sparse_enumset = .{
+            .path = "vendor/zig-sparse-enumset"
+        },
         .example_step = .{
             .path = "vendor/zig-example-step",
             .scope = .develop,
