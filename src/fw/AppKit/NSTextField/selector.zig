@@ -3,13 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTextFieldSelectors = struct {
-    var _sel_backgroundColor: ?objc.Sel = null;
-    var _sel_setBackgroundColor: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-
     pub fn backgroundColor() objc.Sel {
         if (_sel_backgroundColor == null) {
             _sel_backgroundColor = objc.Sel.registerName("backgroundColor");
@@ -51,13 +44,16 @@ pub const NSTextFieldSelectors = struct {
         }
         return _sel_setDelegate.?;
     }
+
+    var _sel_backgroundColor: ?objc.Sel = null;
+    var _sel_setBackgroundColor: ?objc.Sel = null;
+    var _sel_isEditable: ?objc.Sel = null;
+    var _sel_setEditable: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
 };
 
 pub const NSTextFieldConvenienceForNSTextFieldSelectors = struct {
-    var _sel_labelWithString: ?objc.Sel = null;
-    var _sel_wrappingLabelWithString: ?objc.Sel = null;
-    var _sel_textFieldWithString: ?objc.Sel = null;
-
     pub fn labelWithString() objc.Sel {
         if (_sel_labelWithString == null) {
             _sel_labelWithString = objc.Sel.registerName("labelWithString:");
@@ -78,6 +74,10 @@ pub const NSTextFieldConvenienceForNSTextFieldSelectors = struct {
         }
         return _sel_textFieldWithString.?;
     }
+
+    var _sel_labelWithString: ?objc.Sel = null;
+    var _sel_wrappingLabelWithString: ?objc.Sel = null;
+    var _sel_textFieldWithString: ?objc.Sel = null;
 };
 
 pub const NSTextFieldDelegateSelectors = struct {};

@@ -3,15 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const CAShapeLayerSelectors = struct {
-    var _sel_path: ?objc.Sel = null;
-    var _sel_setPath: ?objc.Sel = null;
-    var _sel_fillColor: ?objc.Sel = null;
-    var _sel_setFillColor: ?objc.Sel = null;
-    var _sel_strokeColor: ?objc.Sel = null;
-    var _sel_setStrokeColor: ?objc.Sel = null;
-    var _sel_lineWidth: ?objc.Sel = null;
-    var _sel_setLineWidth: ?objc.Sel = null;
-
     pub fn path() objc.Sel {
         if (_sel_path == null) {
             _sel_path = objc.Sel.registerName("path");
@@ -67,4 +58,13 @@ pub const CAShapeLayerSelectors = struct {
         }
         return _sel_setLineWidth.?;
     }
+
+    var _sel_path: ?objc.Sel = null;
+    var _sel_setPath: ?objc.Sel = null;
+    var _sel_fillColor: ?objc.Sel = null;
+    var _sel_setFillColor: ?objc.Sel = null;
+    var _sel_strokeColor: ?objc.Sel = null;
+    var _sel_setStrokeColor: ?objc.Sel = null;
+    var _sel_lineWidth: ?objc.Sel = null;
+    var _sel_setLineWidth: ?objc.Sel = null;
 };

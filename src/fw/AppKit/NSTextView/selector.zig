@@ -3,22 +3,17 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTextViewSelectors = struct {
-    var _sel_textStorage: ?objc.Sel = null;
-
     pub fn textStorage() objc.Sel {
         if (_sel_textStorage == null) {
             _sel_textStorage = objc.Sel.registerName("textStorage");
         }
         return _sel_textStorage.?;
     }
+
+    var _sel_textStorage: ?objc.Sel = null;
 };
 
 pub const NSSharingForNSTextViewSelectors = struct {
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-
     pub fn delegate() objc.Sel {
         if (_sel_delegate == null) {
             _sel_delegate = objc.Sel.registerName("delegate");
@@ -46,15 +41,20 @@ pub const NSSharingForNSTextViewSelectors = struct {
         }
         return _sel_setEditable.?;
     }
+
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_isEditable: ?objc.Sel = null;
+    var _sel_setEditable: ?objc.Sel = null;
 };
 
 pub const NSTextViewDelegateSelectors = struct {
-    var _sel_textViewDoCommandBySelector: ?objc.Sel = null;
-
     pub fn textViewDoCommandBySelector() objc.Sel {
         if (_sel_textViewDoCommandBySelector == null) {
             _sel_textViewDoCommandBySelector = objc.Sel.registerName("textView:doCommandBySelector:");
         }
         return _sel_textViewDoCommandBySelector.?;
     }
+
+    var _sel_textViewDoCommandBySelector: ?objc.Sel = null;
 };

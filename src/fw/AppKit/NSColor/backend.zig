@@ -5,9 +5,6 @@ const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const CGColorRef = coreGraphics.CGColorRef;
-const NSInteger = runtime.NSInteger;
-
 pub const NSColorMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSColor").?;
@@ -267,3 +264,6 @@ pub const NSColorMessages = struct {
         return self.msgSend(CGColorRef, selector.NSColorSelectors.cgColor(), .{});
     }
 };
+
+const CGColorRef = coreGraphics.CGColorRef;
+const NSInteger = runtime.NSInteger;

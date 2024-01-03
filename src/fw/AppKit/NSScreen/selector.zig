@@ -3,10 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSScreenSelectors = struct {
-    var _sel_mainScreen: ?objc.Sel = null;
-    var _sel_frame: ?objc.Sel = null;
-    var _sel_visibleFrame: ?objc.Sel = null;
-
     pub fn mainScreen() objc.Sel {
         if (_sel_mainScreen == null) {
             _sel_mainScreen = objc.Sel.registerName("mainScreen");
@@ -27,6 +23,10 @@ pub const NSScreenSelectors = struct {
         }
         return _sel_visibleFrame.?;
     }
+
+    var _sel_mainScreen: ?objc.Sel = null;
+    var _sel_frame: ?objc.Sel = null;
+    var _sel_visibleFrame: ?objc.Sel = null;
 };
 
 pub const ExtensionsForNSScreenSelectors = struct {};

@@ -6,9 +6,6 @@ const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
-const CGFloat = coreGraphics.CGFloat;
-
 pub const NSTableColumnMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSTableColumn").?;
@@ -60,3 +57,6 @@ pub const NSTableColumnMessages = struct {
         });
     }
 };
+
+const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
+const CGFloat = coreGraphics.CGFloat;

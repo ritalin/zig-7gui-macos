@@ -4,8 +4,6 @@ const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
 const runtime_support = @import("Runtime-Support");
 
-const CGFloat = coreGraphics.CGFloat;
-
 pub const CGAffineTransform = extern struct {
     a: CGFloat,
     b: CGFloat,
@@ -14,3 +12,5 @@ pub const CGAffineTransform = extern struct {
     tx: CGFloat,
     ty: CGFloat,
 };
+
+const CGFloat = coreGraphics.CGFloat;

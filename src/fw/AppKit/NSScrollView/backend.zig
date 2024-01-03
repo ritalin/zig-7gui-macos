@@ -4,8 +4,6 @@ const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSScrollViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSScrollView").?;
@@ -81,3 +79,5 @@ pub const NSScrollViewMessages = struct {
         });
     }
 };
+
+const NSUInteger = runtime.NSUInteger;

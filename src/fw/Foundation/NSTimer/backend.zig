@@ -5,8 +5,6 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSTimeInterval = foundation.NSTimeInterval;
-
 pub const NSTimerMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSTimer").?;
@@ -42,3 +40,5 @@ pub const NSTimerMessages = struct {
         return self.msgSend(void, selector.NSTimerSelectors.invalidate(), .{});
     }
 };
+
+const NSTimeInterval = foundation.NSTimeInterval;

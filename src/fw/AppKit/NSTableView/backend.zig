@@ -5,10 +5,6 @@ const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const CGFloat = coreGraphics.CGFloat;
-const NSInteger = runtime.NSInteger;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSTableViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSTableView").?;
@@ -129,10 +125,6 @@ pub const NSTableViewMessages = struct {
 };
 
 pub const NSTableViewDataSourceMessages = struct {
-    pub const init = runtime_support.backend_support.newInstance;
-    pub const dealloc = runtime_support.backend_support.destroyInstance;
-    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
-
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -148,13 +140,13 @@ pub const NSTableViewDataSourceMessages = struct {
     pub fn registerTableViewObjectValueForTableColumnRow(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "tableView:objectValueForTableColumn:row:", runtime_support.wrapDelegateHandler(_handler), "@40@0:8@16@24q32");
     }
-};
 
-pub const NSTableViewDelegateMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
     pub const dealloc = runtime_support.backend_support.destroyInstance;
     pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
+};
 
+pub const NSTableViewDelegateMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -174,4 +166,12 @@ pub const NSTableViewDelegateMessages = struct {
     pub fn registerTableViewSelectionDidChange(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "tableViewSelectionDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
+
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };
+
+const CGFloat = coreGraphics.CGFloat;
+const NSInteger = runtime.NSInteger;
+const NSUInteger = runtime.NSUInteger;

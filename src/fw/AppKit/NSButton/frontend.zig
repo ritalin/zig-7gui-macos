@@ -6,29 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityButton = appKit.NSAccessibilityButton;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSBezelStyle = appKit.NSBezelStyle;
-const NSButtonType = appKit.NSButtonType;
-const NSControl = appKit.NSControl;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSUserInterfaceCompression = appKit.NSUserInterfaceCompression;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSButton = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -97,4 +75,26 @@ pub const NSButton = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityButton = appKit.NSAccessibilityButton;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSBezelStyle = appKit.NSBezelStyle;
+const NSButtonType = appKit.NSButtonType;
+const NSControl = appKit.NSControl;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSResponder = appKit.NSResponder;
+const NSUserInterfaceCompression = appKit.NSUserInterfaceCompression;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

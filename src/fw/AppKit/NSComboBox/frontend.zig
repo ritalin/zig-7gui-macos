@@ -6,34 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
-const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSControl = appKit.NSControl;
-const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSTextContent = appKit.NSTextContent;
-const NSTextField = appKit.NSTextField;
-const NSTextFieldDelegate = appKit.NSTextFieldDelegate;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSComboBox = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -109,11 +82,11 @@ pub const NSComboBox = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSComboBoxDataSource = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -124,9 +97,6 @@ pub const NSComboBoxDataSource = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDataSource", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSComboBoxDataSourceMessages.initClass(_class_name);
@@ -141,6 +111,9 @@ pub const NSComboBoxDataSource = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDataSource", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -222,11 +195,11 @@ pub const NSComboBoxDataSource = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
 
 pub const NSComboBoxDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -237,9 +210,6 @@ pub const NSComboBoxDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSComboBoxDelegateMessages.initClass(_class_name);
@@ -256,6 +226,9 @@ pub const NSComboBoxDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSComboBoxDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -292,4 +265,31 @@ pub const NSComboBoxDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
+const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSControl = appKit.NSControl;
+const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSResponder = appKit.NSResponder;
+const NSTextContent = appKit.NSTextContent;
+const NSTextField = appKit.NSTextField;
+const NSTextFieldDelegate = appKit.NSTextFieldDelegate;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotification = foundation.NSNotification;
+const NSNotificationName = foundation.NSNotificationName;
+const NSString = foundation.NSString;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

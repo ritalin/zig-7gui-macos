@@ -3,12 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTimerSelectors = struct {
-    var _sel_timerWithTimeIntervalRepeatsBlock: ?objc.Sel = null;
-    var _sel_scheduledTimerWithTimeIntervalRepeatsBlock: ?objc.Sel = null;
-    var _sel_tolerance: ?objc.Sel = null;
-    var _sel_setTolerance: ?objc.Sel = null;
-    var _sel_invalidate: ?objc.Sel = null;
-
     pub fn timerWithTimeIntervalRepeatsBlock() objc.Sel {
         if (_sel_timerWithTimeIntervalRepeatsBlock == null) {
             _sel_timerWithTimeIntervalRepeatsBlock = objc.Sel.registerName("timerWithTimeInterval:repeats:block:");
@@ -43,4 +37,10 @@ pub const NSTimerSelectors = struct {
         }
         return _sel_invalidate.?;
     }
+
+    var _sel_timerWithTimeIntervalRepeatsBlock: ?objc.Sel = null;
+    var _sel_scheduledTimerWithTimeIntervalRepeatsBlock: ?objc.Sel = null;
+    var _sel_tolerance: ?objc.Sel = null;
+    var _sel_setTolerance: ?objc.Sel = null;
+    var _sel_invalidate: ?objc.Sel = null;
 };

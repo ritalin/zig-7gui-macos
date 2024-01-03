@@ -5,8 +5,6 @@ const appKit = @import("AppKit");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSModalResponse = appKit.NSModalResponse;
-
 pub const NSAlertMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSAlert").?;
@@ -33,3 +31,5 @@ pub const NSAlertMessages = struct {
         });
     }
 };
+
+const NSModalResponse = appKit.NSModalResponse;

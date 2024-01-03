@@ -41,10 +41,6 @@ pub const NSSharingForNSTextViewMessages = struct {
 };
 
 pub const NSTextViewDelegateMessages = struct {
-    pub const init = runtime_support.backend_support.newInstance;
-    pub const dealloc = runtime_support.backend_support.destroyInstance;
-    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
-
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -56,4 +52,8 @@ pub const NSTextViewDelegateMessages = struct {
     pub fn registerTextViewDoCommandBySelector(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "textView:doCommandBySelector:", runtime_support.wrapDelegateHandler(_handler), "c32@0:8@16:24");
     }
+
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };

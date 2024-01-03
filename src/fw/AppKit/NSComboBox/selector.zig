@@ -3,16 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSComboBoxSelectors = struct {
-    var _sel_usesDataSource: ?objc.Sel = null;
-    var _sel_setUsesDataSource: ?objc.Sel = null;
-    var _sel_selectItemAtIndex: ?objc.Sel = null;
-    var _sel_deselectItemAtIndex: ?objc.Sel = null;
-    var _sel_indexOfSelectedItem: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_dataSource: ?objc.Sel = null;
-    var _sel_setDataSource: ?objc.Sel = null;
-
     pub fn usesDataSource() objc.Sel {
         if (_sel_usesDataSource == null) {
             _sel_usesDataSource = objc.Sel.registerName("usesDataSource");
@@ -75,14 +65,19 @@ pub const NSComboBoxSelectors = struct {
         }
         return _sel_setDataSource.?;
     }
+
+    var _sel_usesDataSource: ?objc.Sel = null;
+    var _sel_setUsesDataSource: ?objc.Sel = null;
+    var _sel_selectItemAtIndex: ?objc.Sel = null;
+    var _sel_deselectItemAtIndex: ?objc.Sel = null;
+    var _sel_indexOfSelectedItem: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_dataSource: ?objc.Sel = null;
+    var _sel_setDataSource: ?objc.Sel = null;
 };
 
 pub const NSComboBoxDataSourceSelectors = struct {
-    var _sel_numberOfItemsInComboBox: ?objc.Sel = null;
-    var _sel_comboBoxObjectValueForItemAtIndex: ?objc.Sel = null;
-    var _sel_comboBoxIndexOfItemWithStringValue: ?objc.Sel = null;
-    var _sel_comboBoxCompletedString: ?objc.Sel = null;
-
     pub fn numberOfItemsInComboBox() objc.Sel {
         if (_sel_numberOfItemsInComboBox == null) {
             _sel_numberOfItemsInComboBox = objc.Sel.registerName("numberOfItemsInComboBox:");
@@ -110,15 +105,20 @@ pub const NSComboBoxDataSourceSelectors = struct {
         }
         return _sel_comboBoxCompletedString.?;
     }
+
+    var _sel_numberOfItemsInComboBox: ?objc.Sel = null;
+    var _sel_comboBoxObjectValueForItemAtIndex: ?objc.Sel = null;
+    var _sel_comboBoxIndexOfItemWithStringValue: ?objc.Sel = null;
+    var _sel_comboBoxCompletedString: ?objc.Sel = null;
 };
 
 pub const NSComboBoxDelegateSelectors = struct {
-    var _sel_comboBoxSelectionDidChange: ?objc.Sel = null;
-
     pub fn comboBoxSelectionDidChange() objc.Sel {
         if (_sel_comboBoxSelectionDidChange == null) {
             _sel_comboBoxSelectionDidChange = objc.Sel.registerName("comboBoxSelectionDidChange:");
         }
         return _sel_comboBoxSelectionDidChange.?;
     }
+
+    var _sel_comboBoxSelectionDidChange: ?objc.Sel = null;
 };

@@ -5,10 +5,6 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSPoint = foundation.NSPoint;
-const NSRect = foundation.NSRect;
-const NSSize = foundation.NSSize;
-
 pub const NSViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSView").?;
@@ -52,6 +48,16 @@ pub const NSViewMessages = struct {
         });
     }
 
+    pub fn bounds(self: objc.Object) NSRect {
+        return self.msgSend(NSRect, selector.NSViewSelectors.bounds(), .{});
+    }
+
+    pub fn setBounds(self: objc.Object, _bounds: NSRect) void {
+        return self.msgSend(void, selector.NSViewSelectors.setBounds(), .{
+            _bounds,
+        });
+    }
+
     pub fn wantsLayer(self: objc.Object) objc.c.BOOL {
         return self.msgSend(objc.c.BOOL, selector.NSViewSelectors.wantsLayer(), .{});
     }
@@ -73,8 +79,24 @@ pub const NSViewMessages = struct {
     }
 };
 
+pub const NSGestureRecognizerForNSViewMessages = struct {
+    pub fn getClass() objc.Class {
+        return objc.getClass("NSView").?;
+    }
+
+    pub fn addGestureRecognizer(self: objc.Object, _gestureRecognizer: objc.Object) void {
+        return self.msgSend(void, selector.NSGestureRecognizerForNSViewSelectors.addGestureRecognizer(), .{
+            runtime_support.unwrapOptionalObject(_gestureRecognizer),
+        });
+    }
+};
+
 pub const NSLayerDelegateContentsScaleUpdatingForNSObjectMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSObject").?;
     }
 };
+
+const NSPoint = foundation.NSPoint;
+const NSRect = foundation.NSRect;
+const NSSize = foundation.NSSize;

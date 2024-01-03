@@ -7,31 +7,7 @@ const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSTrackingRectTag = NSInteger;
-pub const NSToolTipTag = NSInteger;
-pub const NSViewFullScreenModeOptionKey = NSString;
-pub const NSDefinitionOptionKey = NSString;
-pub const NSDefinitionPresentationType = NSString;
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSCoding = foundation.NSCoding;
-const NSNotificationName = foundation.NSNotificationName;
-const NSPoint = foundation.NSPoint;
-const NSRect = foundation.NSRect;
-const NSSize = foundation.NSSize;
-const NSString = foundation.NSString;
-const CALayer = quartzCore.CALayer;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSAutoresizingMaskOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSAutoresizingMaskOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     ViewMinXMargin = 1,
     ViewWidthSizable = 2,
     ViewMaxXMargin = 4,
@@ -41,8 +17,6 @@ pub const NSAutoresizingMaskOptions = std.enums.EnumSet(enum(NSUInteger) {
 });
 
 pub const NSView = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -79,6 +53,14 @@ pub const NSView = struct {
 
     pub fn setFrame(self: Self, _frame: NSRect) void {
         return backend.NSViewMessages.setFrame(runtime_support.objectId(NSView, self), runtime_support.pass(NSRect, _frame));
+    }
+
+    pub fn bounds(self: Self) NSRect {
+        return backend.NSViewMessages.bounds(runtime_support.objectId(NSView, self));
+    }
+
+    pub fn setBounds(self: Self, _bounds: NSRect) void {
+        return backend.NSViewMessages.setBounds(runtime_support.objectId(NSView, self), runtime_support.pass(NSRect, _bounds));
     }
 
     pub fn wantsLayer(self: Self) bool {
@@ -135,12 +117,32 @@ pub const NSView = struct {
     pub const ForNSObject = struct {
         pub const LayerDelegateContentsScaleUpdating = NSLayerDelegateContentsScaleUpdatingForNSObject;
     };
+
+    pub const Self = @This();
+    pub const GestureRecognizer = NSGestureRecognizerForNSView;
+};
+
+const NSGestureRecognizerForNSView = struct {
+    _id: objc.Object,
+
+    pub inline fn of(comptime DesiredType: type) type {
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+    }
+
+    pub fn addGestureRecognizer(self: Category, _gestureRecognizer: NSGestureRecognizer) void {
+        return backend.NSGestureRecognizerForNSViewMessages.addGestureRecognizer(runtime_support.objectId(NSGestureRecognizerForNSView, self), runtime_support.objectId(NSGestureRecognizer, _gestureRecognizer));
+    }
+
+    fn Constructor(comptime DesiredType: type) type {
+        _ = DesiredType;
+        return struct {};
+    }
+
+    const Category = @This();
+    pub const Self = NSView;
 };
 
 const NSLayerDelegateContentsScaleUpdatingForNSObject = struct {
-    const Category = @This();
-    pub const Self = NSObject;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -151,9 +153,14 @@ const NSLayerDelegateContentsScaleUpdatingForNSObject = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSObject;
 };
 
 pub const NSViewLayerContentsRedrawPolicy = struct {
+    _value: NSInteger,
+
     pub const Never: NSViewLayerContentsRedrawPolicy = .{
         ._value = 0,
     };
@@ -169,11 +176,11 @@ pub const NSViewLayerContentsRedrawPolicy = struct {
     pub const Crossfade: NSViewLayerContentsRedrawPolicy = .{
         ._value = 4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSViewLayerContentsPlacement = struct {
+    _value: NSInteger,
+
     pub const ScaleAxesIndependently: NSViewLayerContentsPlacement = .{
         ._value = 0,
     };
@@ -210,11 +217,11 @@ pub const NSViewLayerContentsPlacement = struct {
     pub const TopLeft: NSViewLayerContentsPlacement = .{
         ._value = 11,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSBorderType = struct {
+    _value: NSUInteger,
+
     pub const No: NSBorderType = .{
         ._value = 0,
     };
@@ -227,6 +234,23 @@ pub const NSBorderType = struct {
     pub const Groove: NSBorderType = .{
         ._value = 3,
     };
-
-    _value: NSUInteger,
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSGestureRecognizer = appKit.NSGestureRecognizer;
+const NSResponder = appKit.NSResponder;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSCoding = foundation.NSCoding;
+const NSNotificationName = foundation.NSNotificationName;
+const NSPoint = foundation.NSPoint;
+const NSRect = foundation.NSRect;
+const NSSize = foundation.NSSize;
+const CALayer = quartzCore.CALayer;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

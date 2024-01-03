@@ -7,23 +7,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAppKitVersion = appKit.NSAppKitVersion;
-const NSPasteboardReading = appKit.NSPasteboardReading;
-const NSPasteboardWriting = appKit.NSPasteboardWriting;
-const CGColorRef = coreGraphics.CGColorRef;
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSNotificationName = foundation.NSNotificationName;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
-pub const NSAppKitVersionNumberWithPatternColorLeakFix: NSAppKitVersion = 641.0;
-
 pub const NSColor = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -318,9 +302,13 @@ pub const NSColor = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSColorSystemEffect = struct {
+    _value: NSInteger,
+
     pub const None: NSColorSystemEffect = .{
         ._value = 0x0,
     };
@@ -336,11 +324,11 @@ pub const NSColorSystemEffect = struct {
     pub const Rollover: NSColorSystemEffect = .{
         ._value = 0x4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSColorType = struct {
+    _value: NSInteger,
+
     pub const ComponentBased: NSColorType = .{
         ._value = 0x0,
     };
@@ -350,6 +338,18 @@ pub const NSColorType = struct {
     pub const Catalog: NSColorType = .{
         ._value = 0x2,
     };
-
-    _value: NSInteger,
 };
+
+const NSAppKitVersion = appKit.NSAppKitVersion;
+const NSPasteboardReading = appKit.NSPasteboardReading;
+const NSPasteboardWriting = appKit.NSPasteboardWriting;
+const CGColorRef = coreGraphics.CGColorRef;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSNotificationName = foundation.NSNotificationName;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+
+pub const NSAppKitVersionNumberWithPatternColorLeakFix: NSAppKitVersion = 641.0;

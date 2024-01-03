@@ -3,12 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSBezierPathSelectors = struct {
-    var _sel_bezierPath: ?objc.Sel = null;
-    var _sel_bezierPathWithOvalInRect: ?objc.Sel = null;
-    var _sel_elementCount: ?objc.Sel = null;
-    var _sel_elementAtIndexAssociatedPoints: ?objc.Sel = null;
-    var _sel_appendBezierPathWithOvalInRect: ?objc.Sel = null;
-
     pub fn bezierPath() objc.Sel {
         if (_sel_bezierPath == null) {
             _sel_bezierPath = objc.Sel.registerName("bezierPath");
@@ -43,4 +37,10 @@ pub const NSBezierPathSelectors = struct {
         }
         return _sel_appendBezierPathWithOvalInRect.?;
     }
+
+    var _sel_bezierPath: ?objc.Sel = null;
+    var _sel_bezierPathWithOvalInRect: ?objc.Sel = null;
+    var _sel_elementCount: ?objc.Sel = null;
+    var _sel_elementAtIndexAssociatedPoints: ?objc.Sel = null;
+    var _sel_appendBezierPathWithOvalInRect: ?objc.Sel = null;
 };

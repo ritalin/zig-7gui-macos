@@ -4,12 +4,7 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSDraggingSession = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -45,4 +40,9 @@ pub const NSDraggingSession = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

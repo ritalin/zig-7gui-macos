@@ -3,28 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTableViewSelectors = struct {
-    var _sel_dataSource: ?objc.Sel = null;
-    var _sel_setDataSource: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_headerView: ?objc.Sel = null;
-    var _sel_setHeaderView: ?objc.Sel = null;
-    var _sel_rowHeight: ?objc.Sel = null;
-    var _sel_setRowHeight: ?objc.Sel = null;
-    var _sel_noteHeightOfRowsWithIndexesChanged: ?objc.Sel = null;
-    var _sel_addTableColumn: ?objc.Sel = null;
-    var _sel_scrollRowToVisible: ?objc.Sel = null;
-    var _sel_reloadDataForRowIndexesColumnIndexes: ?objc.Sel = null;
-    var _sel_selectedRow: ?objc.Sel = null;
-    var _sel_numberOfSelectedRows: ?objc.Sel = null;
-    var _sel_beginUpdates: ?objc.Sel = null;
-    var _sel_endUpdates: ?objc.Sel = null;
-    var _sel_insertRowsAtIndexesWithAnimation: ?objc.Sel = null;
-    var _sel_removeRowsAtIndexesWithAnimation: ?objc.Sel = null;
-    var _sel_hideRowsAtIndexesWithAnimation: ?objc.Sel = null;
-    var _sel_unhideRowsAtIndexesWithAnimation: ?objc.Sel = null;
-    var _sel_hiddenRowIndexes: ?objc.Sel = null;
-
     pub fn dataSource() objc.Sel {
         if (_sel_dataSource == null) {
             _sel_dataSource = objc.Sel.registerName("dataSource");
@@ -171,12 +149,31 @@ pub const NSTableViewSelectors = struct {
         }
         return _sel_hiddenRowIndexes.?;
     }
+
+    var _sel_dataSource: ?objc.Sel = null;
+    var _sel_setDataSource: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_headerView: ?objc.Sel = null;
+    var _sel_setHeaderView: ?objc.Sel = null;
+    var _sel_rowHeight: ?objc.Sel = null;
+    var _sel_setRowHeight: ?objc.Sel = null;
+    var _sel_noteHeightOfRowsWithIndexesChanged: ?objc.Sel = null;
+    var _sel_addTableColumn: ?objc.Sel = null;
+    var _sel_scrollRowToVisible: ?objc.Sel = null;
+    var _sel_reloadDataForRowIndexesColumnIndexes: ?objc.Sel = null;
+    var _sel_selectedRow: ?objc.Sel = null;
+    var _sel_numberOfSelectedRows: ?objc.Sel = null;
+    var _sel_beginUpdates: ?objc.Sel = null;
+    var _sel_endUpdates: ?objc.Sel = null;
+    var _sel_insertRowsAtIndexesWithAnimation: ?objc.Sel = null;
+    var _sel_removeRowsAtIndexesWithAnimation: ?objc.Sel = null;
+    var _sel_hideRowsAtIndexesWithAnimation: ?objc.Sel = null;
+    var _sel_unhideRowsAtIndexesWithAnimation: ?objc.Sel = null;
+    var _sel_hiddenRowIndexes: ?objc.Sel = null;
 };
 
 pub const NSTableViewDataSourceSelectors = struct {
-    var _sel_numberOfRowsInTableView: ?objc.Sel = null;
-    var _sel_tableViewObjectValueForTableColumnRow: ?objc.Sel = null;
-
     pub fn numberOfRowsInTableView() objc.Sel {
         if (_sel_numberOfRowsInTableView == null) {
             _sel_numberOfRowsInTableView = objc.Sel.registerName("numberOfRowsInTableView:");
@@ -190,13 +187,12 @@ pub const NSTableViewDataSourceSelectors = struct {
         }
         return _sel_tableViewObjectValueForTableColumnRow.?;
     }
+
+    var _sel_numberOfRowsInTableView: ?objc.Sel = null;
+    var _sel_tableViewObjectValueForTableColumnRow: ?objc.Sel = null;
 };
 
 pub const NSTableViewDelegateSelectors = struct {
-    var _sel_tableViewDidRemoveRowViewForRow: ?objc.Sel = null;
-    var _sel_tableViewHeightOfRow: ?objc.Sel = null;
-    var _sel_tableViewSelectionDidChange: ?objc.Sel = null;
-
     pub fn tableViewDidRemoveRowViewForRow() objc.Sel {
         if (_sel_tableViewDidRemoveRowViewForRow == null) {
             _sel_tableViewDidRemoveRowViewForRow = objc.Sel.registerName("tableView:didRemoveRowView:forRow:");
@@ -217,4 +213,8 @@ pub const NSTableViewDelegateSelectors = struct {
         }
         return _sel_tableViewSelectionDidChange.?;
     }
+
+    var _sel_tableViewDidRemoveRowViewForRow: ?objc.Sel = null;
+    var _sel_tableViewHeightOfRow: ?objc.Sel = null;
+    var _sel_tableViewSelectionDidChange: ?objc.Sel = null;
 };

@@ -6,18 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSNotificationName = foundation.NSNotificationName;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSMenuProperties = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSMenuProperties = runtime_support.EnumOptions(enum(NSUInteger) {
     PropertyItemTitle = 1 << 0,
     PropertyItemAttributedTitle = 1 << 1,
     PropertyItemKeyEquivalent = 1 << 2,
@@ -27,8 +16,6 @@ pub const NSMenuProperties = std.enums.EnumSet(enum(NSUInteger) {
 });
 
 pub const NSMenu = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -41,6 +28,14 @@ pub const NSMenu = struct {
 
     pub inline fn of(comptime DesiredType: type) type {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
+    }
+
+    pub fn popUpContextMenuWithEventForView(_menu: NSMenu, _event: NSEvent, _view: NSView) void {
+        return backend.NSMenuMessages.popUpContextMenuWithEventForView(runtime_support.objectId(NSMenu, _menu), runtime_support.objectId(NSEvent, _event), runtime_support.objectId(NSView, _view));
+    }
+
+    pub fn addItemWithTitleActionKeyEquivalent(self: Self, _string: NSString, _selector: ?objc.Sel, _charCode: NSString) NSMenuItem {
+        return runtime_support.wrapObject(NSMenuItem, backend.NSMenuMessages.addItemWithTitleActionKeyEquivalent(runtime_support.objectId(NSMenu, self), runtime_support.objectId(NSString, _string), runtime_support.pass(?objc.Sel, _selector), runtime_support.objectId(NSString, _charCode)));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -72,11 +67,11 @@ pub const NSMenu = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSMenuItemValidation = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -87,9 +82,6 @@ pub const NSMenuItemValidation = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSMenuItemValidation", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSMenuItemValidationMessages.initClass(_class_name);
@@ -104,6 +96,9 @@ pub const NSMenuItemValidation = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSMenuItemValidation", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -124,4 +119,21 @@ pub const NSMenuItemValidation = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSEvent = appKit.NSEvent;
+const NSMenuItem = appKit.NSMenuItem;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSNotificationName = foundation.NSNotificationName;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

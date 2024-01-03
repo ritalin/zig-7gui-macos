@@ -1,35 +1,24 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
-const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSPasteboardType = NSString;
-pub const NSPasteboardName = NSString;
-pub const NSPasteboardReadingOptionKey = NSString;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSPasteboardWritingOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSPasteboardWritingOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     Promised = 1 << 9,
 });
 
-pub const NSPasteboardReadingOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSPasteboardReadingOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     AsString = 1 << 0,
     AsPropertyList = 1 << 1,
     AsKeyedArchive = 1 << 2,
 });
 
-pub const NSPasteboardContentsOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSPasteboardContentsOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     CurrentHostOnly = 1 << 0,
 });
 
 pub const NSPasteboardWriting = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -40,9 +29,6 @@ pub const NSPasteboardWriting = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSPasteboardWriting", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSPasteboardWritingMessages.initClass(_class_name);
@@ -57,6 +43,9 @@ pub const NSPasteboardWriting = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSPasteboardWriting", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -77,4 +66,10 @@ pub const NSPasteboardWriting = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

@@ -6,19 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSModalResponse = appKit.NSModalResponse;
-const NSWindow = appKit.NSWindow;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
-pub const NSAlertFirstButtonReturn: NSModalResponse = 1000;
-pub const NSAlertSecondButtonReturn: NSModalResponse = 1001;
-pub const NSAlertThirdButtonReturn: NSModalResponse = 1002;
-
 pub const NSAlert = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -58,10 +46,6 @@ pub const NSAlert = struct {
         return struct {
             pub fn BeginSheetModalForWindowBlock(comptime _handler: Handlers.BeginSheetModalForWindowHandler) type {
                 return struct {
-                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
-                        NSModalResponse,
-                    }, void);
-
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSModalResponse) void) {
                         const block = try Block.init(.{
                             .context = user_context,
@@ -76,6 +60,10 @@ pub const NSAlert = struct {
                             unreachable;
                         };
                     }
+
+                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
+                        NSModalResponse,
+                    }, void);
                 };
             }
 
@@ -101,4 +89,16 @@ pub const NSAlert = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSModalResponse = appKit.NSModalResponse;
+const NSWindow = appKit.NSWindow;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+
+pub const NSAlertFirstButtonReturn: NSModalResponse = 1000;
+pub const NSAlertSecondButtonReturn: NSModalResponse = 1001;
+pub const NSAlertThirdButtonReturn: NSModalResponse = 1002;

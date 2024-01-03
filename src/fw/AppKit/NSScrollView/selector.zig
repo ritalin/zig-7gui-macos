@@ -3,21 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSScrollViewSelectors = struct {
-    var _sel_documentView: ?objc.Sel = null;
-    var _sel_setDocumentView: ?objc.Sel = null;
-    var _sel_contentView: ?objc.Sel = null;
-    var _sel_setContentView: ?objc.Sel = null;
-    var _sel_borderType: ?objc.Sel = null;
-    var _sel_setBorderType: ?objc.Sel = null;
-    var _sel_drawsBackground: ?objc.Sel = null;
-    var _sel_setDrawsBackground: ?objc.Sel = null;
-    var _sel_hasVerticalScroller: ?objc.Sel = null;
-    var _sel_setHasVerticalScroller: ?objc.Sel = null;
-    var _sel_hasHorizontalScroller: ?objc.Sel = null;
-    var _sel_setHasHorizontalScroller: ?objc.Sel = null;
-    var _sel_autohidesScrollers: ?objc.Sel = null;
-    var _sel_setAutohidesScrollers: ?objc.Sel = null;
-
     pub fn documentView() objc.Sel {
         if (_sel_documentView == null) {
             _sel_documentView = objc.Sel.registerName("documentView");
@@ -115,4 +100,19 @@ pub const NSScrollViewSelectors = struct {
         }
         return _sel_setAutohidesScrollers.?;
     }
+
+    var _sel_documentView: ?objc.Sel = null;
+    var _sel_setDocumentView: ?objc.Sel = null;
+    var _sel_contentView: ?objc.Sel = null;
+    var _sel_setContentView: ?objc.Sel = null;
+    var _sel_borderType: ?objc.Sel = null;
+    var _sel_setBorderType: ?objc.Sel = null;
+    var _sel_drawsBackground: ?objc.Sel = null;
+    var _sel_setDrawsBackground: ?objc.Sel = null;
+    var _sel_hasVerticalScroller: ?objc.Sel = null;
+    var _sel_setHasVerticalScroller: ?objc.Sel = null;
+    var _sel_hasHorizontalScroller: ?objc.Sel = null;
+    var _sel_setHasHorizontalScroller: ?objc.Sel = null;
+    var _sel_autohidesScrollers: ?objc.Sel = null;
+    var _sel_setAutohidesScrollers: ?objc.Sel = null;
 };

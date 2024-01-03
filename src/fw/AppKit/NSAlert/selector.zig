@@ -3,11 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSAlertSelectors = struct {
-    var _sel_messageText: ?objc.Sel = null;
-    var _sel_setMessageText: ?objc.Sel = null;
-    var _sel_runModal: ?objc.Sel = null;
-    var _sel_beginSheetModalForWindowCompletionHandler: ?objc.Sel = null;
-
     pub fn messageText() objc.Sel {
         if (_sel_messageText == null) {
             _sel_messageText = objc.Sel.registerName("messageText");
@@ -35,4 +30,9 @@ pub const NSAlertSelectors = struct {
         }
         return _sel_beginSheetModalForWindowCompletionHandler.?;
     }
+
+    var _sel_messageText: ?objc.Sel = null;
+    var _sel_setMessageText: ?objc.Sel = null;
+    var _sel_runModal: ?objc.Sel = null;
+    var _sel_beginSheetModalForWindowCompletionHandler: ?objc.Sel = null;
 };

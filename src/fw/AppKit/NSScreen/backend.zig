@@ -5,8 +5,6 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSRect = foundation.NSRect;
-
 pub const NSScreenMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSScreen").?;
@@ -30,3 +28,5 @@ pub const ExtensionsForNSScreenMessages = struct {
         return objc.getClass("NSScreen").?;
     }
 };
+
+const NSRect = foundation.NSRect;

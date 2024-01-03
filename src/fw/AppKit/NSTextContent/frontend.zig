@@ -1,17 +1,10 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
-const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSTextContentType = NSString;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-
 pub const NSTextContent = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -22,9 +15,6 @@ pub const NSTextContent = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextContent", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextContentMessages.initClass(_class_name);
@@ -38,6 +28,9 @@ pub const NSTextContent = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextContent", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -57,4 +50,8 @@ pub const NSTextContent = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSObject = runtime.NSObject;

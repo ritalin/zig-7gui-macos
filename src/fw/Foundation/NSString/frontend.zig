@@ -5,24 +5,12 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const unichar = c_ushort;
-pub const NSStringTransform = NSString;
-pub const NSStringEncodingDetectionOptionsKey = NSString;
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSExceptionName = foundation.NSExceptionName;
-const NSMutableCopying = foundation.NSMutableCopying;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSStringEncodingConversionOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSStringEncodingConversionOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     AllowLossy = 1,
     ExternalRepresentation = 2,
 });
 
-pub const NSStringCompareOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSStringCompareOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     CaseInsensitiveSearch = 1,
     LiteralSearch = 2,
     BackwardsSearch = 4,
@@ -34,21 +22,16 @@ pub const NSStringCompareOptions = std.enums.EnumSet(enum(NSUInteger) {
     RegularExpressionSearch = 1024,
 });
 
-pub const NSStringEnumerationOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSStringEnumerationOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     ByParagraphs = 1,
     ByComposedCharacterSequences = 2,
-    ByWords = 3,
     BySentences = 4,
-    ByCaretPositions = 5,
-    ByDeletionClusters = 6,
     Reverse = 1 << 8,
     SubstringNotRequired = 1 << 9,
     Localized = 1 << 10,
 });
 
 pub const NSSimpleCString = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -85,15 +68,11 @@ pub const NSSimpleCString = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSString = struct {
-    pub const Self = @This();
-    pub const ExtendedStringPropertyListParsing = NSExtendedStringPropertyListParsingForNSString;
-    pub const EncodingDetection = NSStringEncodingDetectionForNSString;
-    pub const ExtensionMethods = NSStringExtensionMethodsForNSString;
-    pub const ItemProvider = NSItemProviderForNSString;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -142,11 +121,15 @@ pub const NSString = struct {
             });
         }
     };
+
+    pub const Self = @This();
+    pub const ExtendedStringPropertyListParsing = NSExtendedStringPropertyListParsingForNSString;
+    pub const EncodingDetection = NSStringEncodingDetectionForNSString;
+    pub const ExtensionMethods = NSStringExtensionMethodsForNSString;
+    pub const ItemProvider = NSItemProviderForNSString;
 };
 
 pub const NSConstantString = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -184,12 +167,11 @@ pub const NSConstantString = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSMutableString = struct {
-    pub const Self = @This();
-    pub const ExtensionMethods = NSMutableStringExtensionMethodsForNSMutableString;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -226,12 +208,12 @@ pub const NSMutableString = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
+    pub const ExtensionMethods = NSMutableStringExtensionMethodsForNSMutableString;
 };
 
 const NSExtendedStringPropertyListParsingForNSString = struct {
-    const Category = @This();
-    pub const Self = NSString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -242,12 +224,12 @@ const NSExtendedStringPropertyListParsingForNSString = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSString;
 };
 
 const NSMutableStringExtensionMethodsForNSMutableString = struct {
-    const Category = @This();
-    pub const Self = NSMutableString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -258,12 +240,12 @@ const NSMutableStringExtensionMethodsForNSMutableString = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSMutableString;
 };
 
 const NSStringEncodingDetectionForNSString = struct {
-    const Category = @This();
-    pub const Self = NSString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -274,12 +256,12 @@ const NSStringEncodingDetectionForNSString = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSString;
 };
 
 const NSStringExtensionMethodsForNSString = struct {
-    const Category = @This();
-    pub const Self = NSString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -298,12 +280,12 @@ const NSStringExtensionMethodsForNSString = struct {
             }
         };
     }
+
+    const Category = @This();
+    pub const Self = NSString;
 };
 
 const NSItemProviderForNSString = struct {
-    const Category = @This();
-    pub const Self = NSString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -314,9 +296,14 @@ const NSItemProviderForNSString = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSString;
 };
 
 pub const NSStringEncoding = struct {
+    _value: NSUInteger,
+
     pub const ASCII: NSStringEncoding = .{
         ._value = 1,
     };
@@ -369,7 +356,7 @@ pub const NSStringEncoding = struct {
         ._value = 30,
     };
     pub const UTF16: NSStringEncoding = .{
-        ._value = NSStringEncoding.Unicode,
+        ._value = NSStringEncoding.Unicode._value,
     };
     pub const UTF16BigEndian: NSStringEncoding = .{
         ._value = 0x90000100,
@@ -389,6 +376,14 @@ pub const NSStringEncoding = struct {
     pub const Proprietary: NSStringEncoding = .{
         ._value = 65536,
     };
-
-    _value: NSUInteger,
 };
+
+pub const unichar = c_ushort;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSExceptionName = foundation.NSExceptionName;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

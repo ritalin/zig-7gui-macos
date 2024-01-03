@@ -4,19 +4,12 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSApplicationActivationOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSApplicationActivationOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     ActivateAllWindows = 1 << 0,
     ActivateIgnoringOtherApps = 1 << 1,
 });
 
 pub const NSRunningApplication = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -52,9 +45,13 @@ pub const NSRunningApplication = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSApplicationActivationPolicy = struct {
+    _value: NSInteger,
+
     pub const Regular: NSApplicationActivationPolicy = .{
         ._value = 0x0,
     };
@@ -64,6 +61,9 @@ pub const NSApplicationActivationPolicy = struct {
     pub const Prohibited: NSApplicationActivationPolicy = .{
         ._value = 0x2,
     };
-
-    _value: NSInteger,
 };
+
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

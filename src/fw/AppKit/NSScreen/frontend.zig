@@ -5,15 +5,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSNotificationName = foundation.NSNotificationName;
-const NSRect = foundation.NSRect;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSScreen = struct {
-    pub const Self = @This();
-    pub const Extensions = ExtensionsForNSScreen;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -61,12 +53,12 @@ pub const NSScreen = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
+    pub const Extensions = ExtensionsForNSScreen;
 };
 
 const ExtensionsForNSScreen = struct {
-    const Category = @This();
-    pub const Self = NSScreen;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -77,4 +69,12 @@ const ExtensionsForNSScreen = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSScreen;
 };
+
+const NSNotificationName = foundation.NSNotificationName;
+const NSRect = foundation.NSRect;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

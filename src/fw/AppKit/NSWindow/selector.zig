@@ -3,23 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSWindowSelectors = struct {
-    var _sel_initWithContentRectStyleMaskBacking: ?objc.Sel = null;
-    var _sel_title: ?objc.Sel = null;
-    var _sel_setTitle: ?objc.Sel = null;
-    var _sel_contentView: ?objc.Sel = null;
-    var _sel_setContentView: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_makeFirstResponder: ?objc.Sel = null;
-    var _sel_firstResponder: ?objc.Sel = null;
-    var _sel_backgroundColor: ?objc.Sel = null;
-    var _sel_setBackgroundColor: ?objc.Sel = null;
-    var _sel_makeKeyAndOrderFront: ?objc.Sel = null;
-    var _sel_initialFirstResponder: ?objc.Sel = null;
-    var _sel_setInitialFirstResponder: ?objc.Sel = null;
-    var _sel_selectNextKeyView: ?objc.Sel = null;
-    var _sel_selectPreviousKeyView: ?objc.Sel = null;
-
     pub fn initWithContentRectStyleMaskBacking() objc.Sel {
         if (_sel_initWithContentRectStyleMaskBacking == null) {
             _sel_initWithContentRectStyleMaskBacking = objc.Sel.registerName("initWithContentRect:styleMask:backing:defer:screen:");
@@ -67,6 +50,20 @@ pub const NSWindowSelectors = struct {
             _sel_setDelegate = objc.Sel.registerName("setDelegate:");
         }
         return _sel_setDelegate.?;
+    }
+
+    pub fn displayIfNeeded() objc.Sel {
+        if (_sel_displayIfNeeded == null) {
+            _sel_displayIfNeeded = objc.Sel.registerName("displayIfNeeded");
+        }
+        return _sel_displayIfNeeded.?;
+    }
+
+    pub fn display() objc.Sel {
+        if (_sel_display == null) {
+            _sel_display = objc.Sel.registerName("display");
+        }
+        return _sel_display.?;
     }
 
     pub fn makeFirstResponder() objc.Sel {
@@ -131,6 +128,25 @@ pub const NSWindowSelectors = struct {
         }
         return _sel_selectPreviousKeyView.?;
     }
+
+    var _sel_initWithContentRectStyleMaskBacking: ?objc.Sel = null;
+    var _sel_title: ?objc.Sel = null;
+    var _sel_setTitle: ?objc.Sel = null;
+    var _sel_contentView: ?objc.Sel = null;
+    var _sel_setContentView: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_displayIfNeeded: ?objc.Sel = null;
+    var _sel_display: ?objc.Sel = null;
+    var _sel_makeFirstResponder: ?objc.Sel = null;
+    var _sel_firstResponder: ?objc.Sel = null;
+    var _sel_backgroundColor: ?objc.Sel = null;
+    var _sel_setBackgroundColor: ?objc.Sel = null;
+    var _sel_makeKeyAndOrderFront: ?objc.Sel = null;
+    var _sel_initialFirstResponder: ?objc.Sel = null;
+    var _sel_setInitialFirstResponder: ?objc.Sel = null;
+    var _sel_selectNextKeyView: ?objc.Sel = null;
+    var _sel_selectPreviousKeyView: ?objc.Sel = null;
 };
 
 pub const NSCursorRectForNSWindowSelectors = struct {};
@@ -142,12 +158,12 @@ pub const NSEventForNSWindowSelectors = struct {};
 pub const NSDragForNSWindowSelectors = struct {};
 
 pub const NSWindowDelegateSelectors = struct {
-    var _sel_windowWillClose: ?objc.Sel = null;
-
     pub fn windowWillClose() objc.Sel {
         if (_sel_windowWillClose == null) {
             _sel_windowWillClose = objc.Sel.registerName("windowWillClose:");
         }
         return _sel_windowWillClose.?;
     }
+
+    var _sel_windowWillClose: ?objc.Sel = null;
 };

@@ -5,26 +5,12 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSTextStorageEditedOptions = NSUInteger;
-const NSAttributedString = foundation.NSAttributedString;
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSMutableAttributedString = foundation.NSMutableAttributedString;
-const NSMutableCopying = foundation.NSMutableCopying;
-const NSNotificationName = foundation.NSNotificationName;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSTextStorageEditActions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSTextStorageEditActions = runtime_support.EnumOptions(enum(NSUInteger) {
     EditedAttributes = (1 << 0),
     EditedCharacters = (1 << 1),
 });
 
 pub const NSTextStorage = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -65,4 +51,17 @@ pub const NSTextStorage = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSAttributedString = foundation.NSAttributedString;
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSMutableAttributedString = foundation.NSMutableAttributedString;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSNotificationName = foundation.NSNotificationName;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

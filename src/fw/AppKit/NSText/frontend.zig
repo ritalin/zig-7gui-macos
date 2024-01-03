@@ -6,50 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSChangeSpelling = appKit.NSChangeSpelling;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
-const NSResponder = appKit.NSResponder;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
-pub const NSEnterCharacter: c_uint = 0x0003;
-pub const NSBackspaceCharacter: c_uint = 0x0008;
-pub const NSTabCharacter: c_uint = 0x0009;
-pub const NSNewlineCharacter: c_uint = 0x000a;
-pub const NSFormFeedCharacter: c_uint = 0x000c;
-pub const NSCarriageReturnCharacter: c_uint = 0x000d;
-pub const NSBackTabCharacter: c_uint = 0x0019;
-pub const NSDeleteCharacter: c_uint = 0x007f;
-pub const NSLineSeparatorCharacter: c_uint = 0x2028;
-pub const NSParagraphSeparatorCharacter: c_uint = 0x2029;
-pub const NSIllegalTextMovement: c_uint = 0;
-pub const NSReturnTextMovement: c_uint = 0x10;
-pub const NSTabTextMovement: c_uint = 0x11;
-pub const NSBacktabTextMovement: c_uint = 0x12;
-pub const NSLeftTextMovement: c_uint = 0x13;
-pub const NSRightTextMovement: c_uint = 0x14;
-pub const NSUpTextMovement: c_uint = 0x15;
-pub const NSDownTextMovement: c_uint = 0x16;
-pub const NSCancelTextMovement: c_uint = 0x17;
-pub const NSOtherTextMovement: c_uint = 0;
-pub const NSTextWritingDirectionEmbedding: c_uint = (0 << 1);
-pub const NSTextWritingDirectionOverride: c_uint = (1 << 1);
-
 pub const NSText = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -114,9 +71,13 @@ pub const NSText = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSTextAlignment = struct {
+    _value: NSInteger,
+
     pub const Left: NSTextAlignment = .{
         ._value = 0,
     };
@@ -132,11 +93,11 @@ pub const NSTextAlignment = struct {
     pub const Natural: NSTextAlignment = .{
         ._value = 4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTextMovement = struct {
+    _value: NSInteger,
+
     pub const Return: NSTextMovement = .{
         ._value = 0x10,
     };
@@ -164,11 +125,11 @@ pub const NSTextMovement = struct {
     pub const Other: NSTextMovement = .{
         ._value = 0,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSWritingDirection = struct {
+    _value: NSInteger,
+
     pub const Natural: NSWritingDirection = .{
         ._value = -1,
     };
@@ -178,13 +139,9 @@ pub const NSWritingDirection = struct {
     pub const RightToLeft: NSWritingDirection = .{
         ._value = 1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTextDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -195,9 +152,6 @@ pub const NSTextDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextDelegateMessages.initClass(_class_name);
@@ -212,6 +166,9 @@ pub const NSTextDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -246,4 +203,47 @@ pub const NSTextDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSChangeSpelling = appKit.NSChangeSpelling;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
+const NSResponder = appKit.NSResponder;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotification = foundation.NSNotification;
+const NSNotificationName = foundation.NSNotificationName;
+const NSString = foundation.NSString;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+
+pub const NSEnterCharacter: c_uint = 0x0003;
+pub const NSBackspaceCharacter: c_uint = 0x0008;
+pub const NSTabCharacter: c_uint = 0x0009;
+pub const NSNewlineCharacter: c_uint = 0x000a;
+pub const NSFormFeedCharacter: c_uint = 0x000c;
+pub const NSCarriageReturnCharacter: c_uint = 0x000d;
+pub const NSBackTabCharacter: c_uint = 0x0019;
+pub const NSDeleteCharacter: c_uint = 0x007f;
+pub const NSLineSeparatorCharacter: c_uint = 0x2028;
+pub const NSParagraphSeparatorCharacter: c_uint = 0x2029;
+pub const NSIllegalTextMovement: c_uint = 0;
+pub const NSReturnTextMovement: c_uint = 0x10;
+pub const NSTabTextMovement: c_uint = 0x11;
+pub const NSBacktabTextMovement: c_uint = 0x12;
+pub const NSLeftTextMovement: c_uint = 0x13;
+pub const NSRightTextMovement: c_uint = 0x14;
+pub const NSUpTextMovement: c_uint = 0x15;
+pub const NSDownTextMovement: c_uint = 0x16;
+pub const NSCancelTextMovement: c_uint = 0x17;
+pub const NSOtherTextMovement: c_uint = 0;
+pub const NSTextWritingDirectionEmbedding: c_uint = (0 << 1);
+pub const NSTextWritingDirectionOverride: c_uint = (1 << 1);

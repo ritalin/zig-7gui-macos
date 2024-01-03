@@ -5,8 +5,6 @@ const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSObject = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -55,11 +53,11 @@ pub const NSObject = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSObjectProtocol = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -70,9 +68,6 @@ pub const NSObjectProtocol = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSObjectProtocol", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSObjectProtocolMessages.initClass(_class_name);
@@ -86,6 +81,9 @@ pub const NSObjectProtocol = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSObjectProtocol", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -105,4 +103,6 @@ pub const NSObjectProtocol = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };

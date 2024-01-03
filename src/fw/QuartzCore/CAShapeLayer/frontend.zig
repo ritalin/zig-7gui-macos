@@ -7,23 +7,7 @@ const quartzCore = @import("QuartzCore");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const CAShapeLayerFillRule = NSString;
-pub const CAShapeLayerLineJoin = NSString;
-pub const CAShapeLayerLineCap = NSString;
-const CGColorRef = coreGraphics.CGColorRef;
-const CGFloat = coreGraphics.CGFloat;
-const CGPathRef = coreGraphics.CGPathRef;
-const NSCoding = foundation.NSCoding;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSString = foundation.NSString;
-const CALayer = quartzCore.CALayer;
-const CAMediaTiming = quartzCore.CAMediaTiming;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const CAShapeLayer = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -92,4 +76,16 @@ pub const CAShapeLayer = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
+
+const CGColorRef = coreGraphics.CGColorRef;
+const CGFloat = coreGraphics.CGFloat;
+const CGPathRef = coreGraphics.CGPathRef;
+const NSCoding = foundation.NSCoding;
+const NSSecureCoding = foundation.NSSecureCoding;
+const CALayer = quartzCore.CALayer;
+const CAMediaTiming = quartzCore.CAMediaTiming;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

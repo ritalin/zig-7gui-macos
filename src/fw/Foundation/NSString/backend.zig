@@ -4,9 +4,6 @@ const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const unichar = c_ushort;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSSimpleCStringMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSSimpleCString").?;
@@ -80,3 +77,6 @@ pub const NSItemProviderForNSStringMessages = struct {
         return objc.getClass("NSString").?;
     }
 };
+
+const unichar = c_ushort;
+const NSUInteger = runtime.NSUInteger;

@@ -4,12 +4,7 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSCandidateListTouchBarItemDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -20,9 +15,6 @@ pub const NSCandidateListTouchBarItemDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSCandidateListTouchBarItemDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSCandidateListTouchBarItemDelegateMessages.initClass(_class_name);
@@ -37,6 +29,9 @@ pub const NSCandidateListTouchBarItemDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSCandidateListTouchBarItemDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -57,4 +52,9 @@ pub const NSCandidateListTouchBarItemDelegate = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

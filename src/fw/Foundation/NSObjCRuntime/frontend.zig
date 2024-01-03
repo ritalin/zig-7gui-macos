@@ -5,25 +5,19 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSExceptionName = NSString;
-pub const NSRunLoopMode = NSString;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSNotFound: NSInteger = 0x7fffffffffffffff;
-
-pub const NSEnumerationOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSEnumerationOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     Concurrent = (1 << 0),
     Reverse = (1 << 1),
 });
 
-pub const NSSortOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSSortOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     Concurrent = (1 << 0),
     Stable = (1 << 4),
 });
 
 pub const NSQualityOfService = struct {
+    _value: NSInteger,
+
     pub const UserInteractive: NSQualityOfService = .{
         ._value = 0x21,
     };
@@ -39,11 +33,11 @@ pub const NSQualityOfService = struct {
     pub const Default: NSQualityOfService = .{
         ._value = -1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSComparisonResult = struct {
+    _value: NSInteger,
+
     pub const OrderedAscending: NSComparisonResult = .{
         ._value = -1,
     };
@@ -53,6 +47,12 @@ pub const NSComparisonResult = struct {
     pub const OrderedDescending: NSComparisonResult = .{
         ._value = 0x1,
     };
-
-    _value: NSInteger,
 };
+
+pub const NSExceptionName = NSString;
+pub const NSRunLoopMode = NSString;
+const NSString = foundation.NSString;
+const NSInteger = runtime.NSInteger;
+const NSUInteger = runtime.NSUInteger;
+
+pub const NSNotFound: NSInteger = 0x7fffffffffffffff;

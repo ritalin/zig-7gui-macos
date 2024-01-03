@@ -7,22 +7,12 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
-const CGFloat = coreGraphics.CGFloat;
-const NSCoding = foundation.NSCoding;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSTableColumnResizingOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSTableColumnResizingOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     AutoresizingMask = (1 << 0),
     User = (1 << 1),
 });
 
 pub const NSTableColumn = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -97,4 +87,14 @@ pub const NSTableColumn = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
+const CGFloat = coreGraphics.CGFloat;
+const NSCoding = foundation.NSCoding;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

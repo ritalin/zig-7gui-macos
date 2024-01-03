@@ -67,8 +67,21 @@ pub const RuntimeTypeConverter = struct {
         return v._value;
     }
 
-    pub inline fn packOptions(comptime EnumOptionType: type, v: EnumOptionType) runtime.NSUInteger {
+    pub inline fn packOptions(comptime EnumOptionType: type, v: EnumOptionType) @TypeOf(v.bits.mask) {
         return v.bits.mask;
+    }
+
+    pub inline fn unpackOptions(comptime EnumOptionType: type, comptime UnderlyingType: type, v: UnderlyingType) EnumOptionType {
+        var result = EnumOptionType.initEmpty();
+
+        const indexes = std.meta.fields(EnumOptionType.Indexer.Key);
+        inline for (indexes) |index| {
+            if ((v & index.value) != 0) {
+                result.insert(@enumFromInt(index.value));
+            }
+        }
+
+        return result;
     }
 
     pub inline fn unwrapObject(id: objc.Object) objc.c.id {
@@ -83,6 +96,10 @@ pub const RuntimeTypeConverter = struct {
         return if (id != null) .{
             ._id = id.?,
         } else null;
+    }
+
+    pub inline fn wrapOptionalSelValue(sel: objc.c.SEL) ?objc.Sel {
+        return if (sel != null) .{.value = sel} else null;
     }
 
     pub inline fn unwrapApiBlock(comptime ApiBlockType: type, block: ApiBlockType) if (@typeInfo(ApiBlockType) == .Optional) ?runtime_support.BlockContextRef else runtime_support.BlockContextRef {

@@ -6,23 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAccessibilityGroup = appKit.NSAccessibilityGroup;
-const NSAccessibilityRow = appKit.NSAccessibilityRow;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSTableRowView = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -65,4 +49,20 @@ pub const NSTableRowView = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityGroup = appKit.NSAccessibilityGroup;
+const NSAccessibilityRow = appKit.NSAccessibilityRow;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSResponder = appKit.NSResponder;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

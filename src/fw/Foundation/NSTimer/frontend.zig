@@ -5,13 +5,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSTimeInterval = foundation.NSTimeInterval;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSTimer = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -55,10 +49,6 @@ pub const NSTimer = struct {
         return struct {
             pub fn TimerWithTimeIntervalBlock(comptime _handler: Handlers.TimerWithTimeIntervalHandler) type {
                 return struct {
-                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
-                        objc.c.id,
-                    }, void);
-
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSTimer) void) {
                         const block = try Block.init(.{
                             .context = user_context,
@@ -74,15 +64,15 @@ pub const NSTimer = struct {
                             unreachable;
                         };
                     }
+
+                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
+                        objc.c.id,
+                    }, void);
                 };
             }
 
             pub fn ScheduledTimerWithTimeIntervalBlock(comptime _handler: Handlers.ScheduledTimerWithTimeIntervalHandler) type {
                 return struct {
-                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
-                        objc.c.id,
-                    }, void);
-
                     pub fn init(user_context: *UserContextType) !runtime_support.ApiBlock(fn (_: NSTimer) void) {
                         const block = try Block.init(.{
                             .context = user_context,
@@ -98,6 +88,10 @@ pub const NSTimer = struct {
                             unreachable;
                         };
                     }
+
+                    const Block = objc.Block(runtime_support.BlockCaptures(UserContextType), .{
+                        objc.c.id,
+                    }, void);
                 };
             }
 
@@ -124,4 +118,10 @@ pub const NSTimer = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSTimeInterval = foundation.NSTimeInterval;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

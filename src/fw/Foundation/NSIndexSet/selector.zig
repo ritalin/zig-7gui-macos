@@ -3,22 +3,17 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSMutableIndexSetSelectors = struct {
-    var _sel_addIndex: ?objc.Sel = null;
-
     pub fn addIndex() objc.Sel {
         if (_sel_addIndex == null) {
             _sel_addIndex = objc.Sel.registerName("addIndex:");
         }
         return _sel_addIndex.?;
     }
+
+    var _sel_addIndex: ?objc.Sel = null;
 };
 
 pub const NSIndexSetSelectors = struct {
-    var _sel_indexSet: ?objc.Sel = null;
-    var _sel_indexSetWithIndex: ?objc.Sel = null;
-    var _sel_count: ?objc.Sel = null;
-    var _sel_containsIndex: ?objc.Sel = null;
-
     pub fn indexSet() objc.Sel {
         if (_sel_indexSet == null) {
             _sel_indexSet = objc.Sel.registerName("indexSet");
@@ -46,4 +41,9 @@ pub const NSIndexSetSelectors = struct {
         }
         return _sel_containsIndex.?;
     }
+
+    var _sel_indexSet: ?objc.Sel = null;
+    var _sel_indexSetWithIndex: ?objc.Sel = null;
+    var _sel_count: ?objc.Sel = null;
+    var _sel_containsIndex: ?objc.Sel = null;
 };

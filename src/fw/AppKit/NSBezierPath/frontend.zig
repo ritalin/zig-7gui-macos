@@ -5,19 +5,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSPointArray = foundation.NSPointArray;
-const NSRect = foundation.NSRect;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSBezierPath = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -77,9 +65,13 @@ pub const NSBezierPath = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSBezierPathElement = struct {
+    _value: NSUInteger,
+
     pub const MoveTo: NSBezierPathElement = .{
         ._value = 0x0,
     };
@@ -92,22 +84,22 @@ pub const NSBezierPathElement = struct {
     pub const ClosePath: NSBezierPathElement = .{
         ._value = 0x3,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindingRule = struct {
+    _value: NSUInteger,
+
     pub const NonZero: NSWindingRule = .{
         ._value = 0,
     };
     pub const EvenOdd: NSWindingRule = .{
         ._value = 1,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSLineCapStyle = struct {
+    _value: NSUInteger,
+
     pub const Butt: NSLineCapStyle = .{
         ._value = 0,
     };
@@ -117,11 +109,11 @@ pub const NSLineCapStyle = struct {
     pub const Square: NSLineCapStyle = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSLineJoinStyle = struct {
+    _value: NSUInteger,
+
     pub const Miter: NSLineJoinStyle = .{
         ._value = 0,
     };
@@ -131,6 +123,14 @@ pub const NSLineJoinStyle = struct {
     pub const Bevel: NSLineJoinStyle = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
+
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSPointArray = foundation.NSPointArray;
+const NSRect = foundation.NSRect;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

@@ -4,8 +4,6 @@ const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSInteger = runtime.NSInteger;
-
 pub const NSComboBoxMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSComboBox").?;
@@ -59,10 +57,6 @@ pub const NSComboBoxMessages = struct {
 };
 
 pub const NSComboBoxDataSourceMessages = struct {
-    pub const init = runtime_support.backend_support.newInstance;
-    pub const dealloc = runtime_support.backend_support.destroyInstance;
-    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
-
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -86,13 +80,13 @@ pub const NSComboBoxDataSourceMessages = struct {
     pub fn registerComboBoxCompletedString(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBox:completedString:", runtime_support.wrapDelegateHandler(_handler), "@32@0:8@16@24");
     }
-};
 
-pub const NSComboBoxDelegateMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
     pub const dealloc = runtime_support.backend_support.destroyInstance;
     pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
+};
 
+pub const NSComboBoxDelegateMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -104,4 +98,10 @@ pub const NSComboBoxDelegateMessages = struct {
     pub fn registerComboBoxSelectionDidChange(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "comboBoxSelectionDidChange:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
+
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };
+
+const NSInteger = runtime.NSInteger;

@@ -6,27 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSBorderType = appKit.NSBorderType;
-const NSClipView = appKit.NSClipView;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSTextFinderBarContainer = appKit.NSTextFinderBarContainer;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotificationName = foundation.NSNotificationName;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSScrollView = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -123,9 +103,13 @@ pub const NSScrollView = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSScrollViewFindBarPosition = struct {
+    _value: NSInteger,
+
     pub const AboveHorizontalRuler: NSScrollViewFindBarPosition = .{
         ._value = 0,
     };
@@ -135,11 +119,11 @@ pub const NSScrollViewFindBarPosition = struct {
     pub const BelowContent: NSScrollViewFindBarPosition = .{
         ._value = 2,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSScrollElasticity = struct {
+    _value: NSInteger,
+
     pub const Automatic: NSScrollElasticity = .{
         ._value = 0,
     };
@@ -149,6 +133,22 @@ pub const NSScrollElasticity = struct {
     pub const Allowed: NSScrollElasticity = .{
         ._value = 2,
     };
-
-    _value: NSInteger,
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSBorderType = appKit.NSBorderType;
+const NSClipView = appKit.NSClipView;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSResponder = appKit.NSResponder;
+const NSTextFinderBarContainer = appKit.NSTextFinderBarContainer;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotificationName = foundation.NSNotificationName;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

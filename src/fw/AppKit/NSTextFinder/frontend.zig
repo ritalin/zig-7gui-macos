@@ -1,17 +1,12 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
-const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSPasteboardTypeTextFinderOptionKey = NSString;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSTextFinderAction = struct {
+    _value: NSInteger,
+
     pub const ShowFindInterface: NSTextFinderAction = .{
         ._value = 1,
     };
@@ -51,11 +46,11 @@ pub const NSTextFinderAction = struct {
     pub const HideReplaceInterface: NSTextFinderAction = .{
         ._value = 13,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTextFinderMatchingType = struct {
+    _value: NSInteger,
+
     pub const Contains: NSTextFinderMatchingType = .{
         ._value = 0,
     };
@@ -68,13 +63,9 @@ pub const NSTextFinderMatchingType = struct {
     pub const EndsWith: NSTextFinderMatchingType = .{
         ._value = 3,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTextFinderBarContainer = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -85,9 +76,6 @@ pub const NSTextFinderBarContainer = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextFinderBarContainer", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextFinderBarContainerMessages.initClass(_class_name);
@@ -102,6 +90,9 @@ pub const NSTextFinderBarContainer = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextFinderBarContainer", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -122,4 +113,10 @@ pub const NSTextFinderBarContainer = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

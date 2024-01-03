@@ -4,12 +4,7 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSAccessibilityNavigableStaticText = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -20,9 +15,6 @@ pub const NSAccessibilityNavigableStaticText = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityNavigableStaticText", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSAccessibilityNavigableStaticTextMessages.initClass(_class_name);
@@ -39,6 +31,9 @@ pub const NSAccessibilityNavigableStaticText = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityNavigableStaticText", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -61,11 +56,11 @@ pub const NSAccessibilityNavigableStaticText = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
 
 pub const NSAccessibilityElement = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -76,9 +71,6 @@ pub const NSAccessibilityElement = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityElement", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSAccessibilityElementMessages.initClass(_class_name);
@@ -93,6 +85,9 @@ pub const NSAccessibilityElement = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityElement", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -113,11 +108,11 @@ pub const NSAccessibilityElement = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
 
 pub const NSAccessibilityStaticText = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -128,9 +123,6 @@ pub const NSAccessibilityStaticText = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityStaticText", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSAccessibilityStaticTextMessages.initClass(_class_name);
@@ -146,6 +138,9 @@ pub const NSAccessibilityStaticText = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSAccessibilityStaticText", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -167,4 +162,9 @@ pub const NSAccessibilityStaticText = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

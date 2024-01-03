@@ -5,10 +5,6 @@ const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSAccessibilityNavigableStaticTextMessages = struct {
-    pub const init = runtime_support.backend_support.newInstance;
-    pub const dealloc = runtime_support.backend_support.destroyInstance;
-    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
-
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -16,13 +12,13 @@ pub const NSAccessibilityNavigableStaticTextMessages = struct {
         }
         return class.?;
     }
-};
 
-pub const NSAccessibilityElementMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
     pub const dealloc = runtime_support.backend_support.destroyInstance;
     pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
+};
 
+pub const NSAccessibilityElementMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -30,13 +26,13 @@ pub const NSAccessibilityElementMessages = struct {
         }
         return class.?;
     }
-};
 
-pub const NSAccessibilityStaticTextMessages = struct {
     pub const init = runtime_support.backend_support.newInstance;
     pub const dealloc = runtime_support.backend_support.destroyInstance;
     pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
+};
 
+pub const NSAccessibilityStaticTextMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -44,4 +40,8 @@ pub const NSAccessibilityStaticTextMessages = struct {
         }
         return class.?;
     }
+
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };

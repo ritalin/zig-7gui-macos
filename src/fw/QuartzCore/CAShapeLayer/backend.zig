@@ -5,10 +5,6 @@ const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const CGColorRef = coreGraphics.CGColorRef;
-const CGFloat = coreGraphics.CGFloat;
-const CGPathRef = coreGraphics.CGPathRef;
-
 pub const CAShapeLayerMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("CAShapeLayer").?;
@@ -54,3 +50,7 @@ pub const CAShapeLayerMessages = struct {
         });
     }
 };
+
+const CGColorRef = coreGraphics.CGColorRef;
+const CGFloat = coreGraphics.CGFloat;
+const CGPathRef = coreGraphics.CGPathRef;

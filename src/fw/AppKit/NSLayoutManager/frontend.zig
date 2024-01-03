@@ -4,22 +4,14 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-
-pub const NSGlyphAttributeSoft: c_uint = 0;
-pub const NSGlyphAttributeElastic: c_uint = 1;
-pub const NSGlyphAttributeBidiLevel: c_uint = 2;
-pub const NSGlyphAttributeInscribe: c_uint = 5;
-
-pub const NSGlyphProperty = std.enums.EnumSet(enum(NSInteger) {
+pub const NSGlyphProperty = runtime_support.EnumOptions(enum(NSInteger) {
     Null = (1 << 0),
     ControlCharacter = (1 << 1),
     Elastic = (1 << 2),
     NonBaseCharacter = (1 << 3),
 });
 
-pub const NSControlCharacterAction = std.enums.EnumSet(enum(NSInteger) {
+pub const NSControlCharacterAction = runtime_support.EnumOptions(enum(NSInteger) {
     ZeroAdvancement = (1 << 0),
     Whitespace = (1 << 1),
     HorizontalTab = (1 << 2),
@@ -29,17 +21,19 @@ pub const NSControlCharacterAction = std.enums.EnumSet(enum(NSInteger) {
 });
 
 pub const NSTextLayoutOrientation = struct {
+    _value: NSInteger,
+
     pub const Horizontal: NSTextLayoutOrientation = .{
         ._value = 0,
     };
     pub const Vertical: NSTextLayoutOrientation = .{
         ._value = 1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTypesetterBehavior = struct {
+    _value: NSInteger,
+
     pub const Latest: NSTypesetterBehavior = .{
         ._value = -1,
     };
@@ -58,13 +52,9 @@ pub const NSTypesetterBehavior = struct {
     pub const Behavior_10_4: NSTypesetterBehavior = .{
         ._value = 4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTextLayoutOrientationProvider = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -75,9 +65,6 @@ pub const NSTextLayoutOrientationProvider = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextLayoutOrientationProvider", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextLayoutOrientationProviderMessages.initClass(_class_name);
@@ -91,6 +78,9 @@ pub const NSTextLayoutOrientationProvider = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextLayoutOrientationProvider", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -110,4 +100,14 @@ pub const NSTextLayoutOrientationProvider = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+
+pub const NSGlyphAttributeSoft: c_uint = 0;
+pub const NSGlyphAttributeElastic: c_uint = 1;
+pub const NSGlyphAttributeBidiLevel: c_uint = 2;
+pub const NSGlyphAttributeInscribe: c_uint = 5;

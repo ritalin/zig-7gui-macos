@@ -4,9 +4,6 @@ const selector = @import("./selector.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAppKitVersion = f64;
-const NSInteger = runtime.NSInteger;
-
 pub const NSApplicationMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSApplication").?;
@@ -47,11 +44,17 @@ pub const NSApplicationMessages = struct {
     }
 };
 
-pub const NSApplicationDelegateMessages = struct {
-    pub const init = runtime_support.backend_support.newInstance;
-    pub const dealloc = runtime_support.backend_support.destroyInstance;
-    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
+pub const NSEventForNSApplicationMessages = struct {
+    pub fn getClass() objc.Class {
+        return objc.getClass("NSApplication").?;
+    }
 
+    pub fn currentEvent(self: objc.Object) ?objc.Object {
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSEventForNSApplicationSelectors.currentEvent(), .{}));
+    }
+};
+
+pub const NSApplicationDelegateMessages = struct {
     pub fn initClass(_class_name: [:0]const u8) objc.Class {
         var class = objc.getClass(_class_name);
         if (class == null) {
@@ -67,4 +70,11 @@ pub const NSApplicationDelegateMessages = struct {
     pub fn registerApplicationDidFinishLaunching(_class: objc.Class, _handler: *const runtime_support.DelegateHandler) void {
         runtime_support.backend_support.ObjectRegistry.registerMessage(_class, "applicationDidFinishLaunching:", runtime_support.wrapDelegateHandler(_handler), "v24@0:8@16");
     }
+
+    pub const init = runtime_support.backend_support.newInstance;
+    pub const dealloc = runtime_support.backend_support.destroyInstance;
+    pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };
+
+const NSAppKitVersion = f64;
+const NSInteger = runtime.NSInteger;

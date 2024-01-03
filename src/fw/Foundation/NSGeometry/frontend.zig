@@ -5,23 +5,7 @@ const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSPoint = CGPoint;
-pub const NSPointPointer = *NSPoint;
-pub const NSPointArray = *NSPoint;
-pub const NSSize = CGSize;
-pub const NSSizePointer = *NSSize;
-pub const NSSizeArray = *NSSize;
-pub const NSRect = CGRect;
-pub const NSRectPointer = *NSRect;
-pub const NSRectArray = *NSRect;
-const CGFloat = coreGraphics.CGFloat;
-const CGPoint = coreGraphics.CGPoint;
-const CGRect = coreGraphics.CGRect;
-const CGRectEdge = coreGraphics.CGRectEdge;
-const CGSize = coreGraphics.CGSize;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSAlignmentOptions = std.enums.EnumSet(enum(c_ulonglong) {
+pub const NSAlignmentOptions = runtime_support.EnumOptions(enum(c_ulonglong) {
     AlignMinXInward = 1 << 0,
     AlignMinYInward = 1 << 1,
     AlignMaxXInward = 1 << 2,
@@ -51,30 +35,42 @@ pub const NSEdgeInsets = extern struct {
 };
 
 pub const NSRectEdge = struct {
+    _value: NSUInteger,
+
     pub const MinX: NSRectEdge = .{
-        ._value = CGRectEdge.MinX,
+        ._value = CGRectEdge.MinX._value,
     };
     pub const MinY: NSRectEdge = .{
-        ._value = CGRectEdge.MinY,
+        ._value = CGRectEdge.MinY._value,
     };
     pub const MaxX: NSRectEdge = .{
-        ._value = CGRectEdge.MaxX,
+        ._value = CGRectEdge.MaxX._value,
     };
     pub const MaxY: NSRectEdge = .{
-        ._value = CGRectEdge.MaxY,
+        ._value = CGRectEdge.MaxY._value,
     };
     pub const MinXEdge: NSRectEdge = .{
-        ._value = NSRectEdge.MinX,
+        ._value = NSRectEdge.MinX._value,
     };
     pub const MinYEdge: NSRectEdge = .{
-        ._value = NSRectEdge.MinY,
+        ._value = NSRectEdge.MinY._value,
     };
     pub const MaxXEdge: NSRectEdge = .{
-        ._value = NSRectEdge.MaxX,
+        ._value = NSRectEdge.MaxX._value,
     };
     pub const MaxYEdge: NSRectEdge = .{
-        ._value = NSRectEdge.MaxY,
+        ._value = NSRectEdge.MaxY._value,
     };
-
-    _value: NSUInteger,
 };
+
+pub const NSPoint = CGPoint;
+pub const NSPointPointer = *NSPoint;
+pub const NSPointArray = *NSPoint;
+pub const NSSize = CGSize;
+pub const NSRect = CGRect;
+const CGFloat = coreGraphics.CGFloat;
+const CGPoint = coreGraphics.CGPoint;
+const CGRect = coreGraphics.CGRect;
+const CGRectEdge = coreGraphics.CGRectEdge;
+const CGSize = coreGraphics.CGSize;
+const NSUInteger = runtime.NSUInteger;

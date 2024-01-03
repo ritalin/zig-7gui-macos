@@ -6,27 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSTextAlignment = appKit.NSTextAlignment;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSRect = foundation.NSRect;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSControl = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -105,6 +85,14 @@ pub const NSControl = struct {
         return backend.NSControlMessages.setDoubleValue(runtime_support.objectId(NSControl, self), _doubleValue);
     }
 
+    pub fn sendActionOn(self: Self, _mask: NSEventMask) NSInteger {
+        return backend.NSControlMessages.sendActionOn(runtime_support.objectId(NSControl, self), runtime_support.packOptions(NSEventMask, _mask));
+    }
+
+    pub fn sendActionTo(self: Self, _action: ?objc.Sel, _target: ?objc.Object) bool {
+        return runtime_support.fromBOOL(backend.NSControlMessages.sendActionTo(runtime_support.objectId(NSControl, self), runtime_support.pass(?objc.Sel, _action), runtime_support.pass(?objc.Object, _target)));
+    }
+
     pub fn alignment(self: Self) NSTextAlignment {
         return runtime_support.wrapEnum(NSTextAlignment, NSInteger, backend.NSControlMessages.alignment(runtime_support.objectId(NSControl, self)));
     }
@@ -140,11 +128,11 @@ pub const NSControl = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSControlTextEditingDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -155,9 +143,6 @@ pub const NSControlTextEditingDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSControlTextEditingDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSControlTextEditingDelegateMessages.initClass(_class_name);
@@ -172,6 +157,9 @@ pub const NSControlTextEditingDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSControlTextEditingDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -206,4 +194,25 @@ pub const NSControlTextEditingDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSEventMask = appKit.NSEventMask;
+const NSResponder = appKit.NSResponder;
+const NSTextAlignment = appKit.NSTextAlignment;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotification = foundation.NSNotification;
+const NSNotificationName = foundation.NSNotificationName;
+const NSRect = foundation.NSRect;
+const NSString = foundation.NSString;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

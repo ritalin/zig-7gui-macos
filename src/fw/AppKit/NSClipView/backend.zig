@@ -5,8 +5,6 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSPoint = foundation.NSPoint;
-
 pub const NSClipViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSClipView").?;
@@ -18,3 +16,5 @@ pub const NSClipViewMessages = struct {
         });
     }
 };
+
+const NSPoint = foundation.NSPoint;

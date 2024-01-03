@@ -6,30 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
-const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSColor = appKit.NSColor;
-const NSControl = appKit.NSControl;
-const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSResponder = appKit.NSResponder;
-const NSTextContent = appKit.NSTextContent;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-
 pub const NSTextField = struct {
-    pub const Self = @This();
-    pub const Convenience = NSTextFieldConvenienceForNSTextField;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -99,12 +76,12 @@ pub const NSTextField = struct {
             });
         }
     };
+
+    pub const Self = @This();
+    pub const Convenience = NSTextFieldConvenienceForNSTextField;
 };
 
 const NSTextFieldConvenienceForNSTextField = struct {
-    const Category = @This();
-    pub const Self = NSTextField;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -129,11 +106,12 @@ const NSTextFieldConvenienceForNSTextField = struct {
             }
         };
     }
+
+    const Category = @This();
+    pub const Self = NSTextField;
 };
 
 pub const NSTextFieldDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -144,9 +122,6 @@ pub const NSTextFieldDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextFieldDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextFieldDelegateMessages.initClass(_class_name);
@@ -162,6 +137,9 @@ pub const NSTextFieldDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextFieldDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -183,4 +161,26 @@ pub const NSTextFieldDelegate = struct {
             pub const Handler = struct {};
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
+const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSColor = appKit.NSColor;
+const NSControl = appKit.NSControl;
+const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSResponder = appKit.NSResponder;
+const NSTextContent = appKit.NSTextContent;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;

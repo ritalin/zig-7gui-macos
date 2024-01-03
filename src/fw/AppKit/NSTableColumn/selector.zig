@@ -3,16 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTableColumnSelectors = struct {
-    var _sel_initWithIdentifier: ?objc.Sel = null;
-    var _sel_width: ?objc.Sel = null;
-    var _sel_setWidth: ?objc.Sel = null;
-    var _sel_minWidth: ?objc.Sel = null;
-    var _sel_setMinWidth: ?objc.Sel = null;
-    var _sel_maxWidth: ?objc.Sel = null;
-    var _sel_setMaxWidth: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-
     pub fn initWithIdentifier() objc.Sel {
         if (_sel_initWithIdentifier == null) {
             _sel_initWithIdentifier = objc.Sel.registerName("initWithIdentifier:");
@@ -75,4 +65,14 @@ pub const NSTableColumnSelectors = struct {
         }
         return _sel_setEditable.?;
     }
+
+    var _sel_initWithIdentifier: ?objc.Sel = null;
+    var _sel_width: ?objc.Sel = null;
+    var _sel_setWidth: ?objc.Sel = null;
+    var _sel_minWidth: ?objc.Sel = null;
+    var _sel_setMinWidth: ?objc.Sel = null;
+    var _sel_maxWidth: ?objc.Sel = null;
+    var _sel_setMaxWidth: ?objc.Sel = null;
+    var _sel_isEditable: ?objc.Sel = null;
+    var _sel_setEditable: ?objc.Sel = null;
 };

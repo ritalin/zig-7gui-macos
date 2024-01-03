@@ -5,17 +5,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSMutableCopying = foundation.NSMutableCopying;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSMutableIndexSet = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -56,11 +46,11 @@ pub const NSMutableIndexSet = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSIndexSet = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -118,4 +108,14 @@ pub const NSIndexSet = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
+
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

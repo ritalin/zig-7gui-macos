@@ -3,18 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSViewSelectors = struct {
-    var _sel_initWithFrame: ?objc.Sel = null;
-    var _sel_superview: ?objc.Sel = null;
-    var _sel_addSubview: ?objc.Sel = null;
-    var _sel_setFrameOrigin: ?objc.Sel = null;
-    var _sel_setFrameSize: ?objc.Sel = null;
-    var _sel_frame: ?objc.Sel = null;
-    var _sel_setFrame: ?objc.Sel = null;
-    var _sel_wantsLayer: ?objc.Sel = null;
-    var _sel_setWantsLayer: ?objc.Sel = null;
-    var _sel_layer: ?objc.Sel = null;
-    var _sel_setLayer: ?objc.Sel = null;
-
     pub fn initWithFrame() objc.Sel {
         if (_sel_initWithFrame == null) {
             _sel_initWithFrame = objc.Sel.registerName("initWithFrame:");
@@ -64,6 +52,20 @@ pub const NSViewSelectors = struct {
         return _sel_setFrame.?;
     }
 
+    pub fn bounds() objc.Sel {
+        if (_sel_bounds == null) {
+            _sel_bounds = objc.Sel.registerName("bounds");
+        }
+        return _sel_bounds.?;
+    }
+
+    pub fn setBounds() objc.Sel {
+        if (_sel_setBounds == null) {
+            _sel_setBounds = objc.Sel.registerName("setBounds:");
+        }
+        return _sel_setBounds.?;
+    }
+
     pub fn wantsLayer() objc.Sel {
         if (_sel_wantsLayer == null) {
             _sel_wantsLayer = objc.Sel.registerName("wantsLayer");
@@ -91,6 +93,31 @@ pub const NSViewSelectors = struct {
         }
         return _sel_setLayer.?;
     }
+
+    var _sel_initWithFrame: ?objc.Sel = null;
+    var _sel_superview: ?objc.Sel = null;
+    var _sel_addSubview: ?objc.Sel = null;
+    var _sel_setFrameOrigin: ?objc.Sel = null;
+    var _sel_setFrameSize: ?objc.Sel = null;
+    var _sel_frame: ?objc.Sel = null;
+    var _sel_setFrame: ?objc.Sel = null;
+    var _sel_bounds: ?objc.Sel = null;
+    var _sel_setBounds: ?objc.Sel = null;
+    var _sel_wantsLayer: ?objc.Sel = null;
+    var _sel_setWantsLayer: ?objc.Sel = null;
+    var _sel_layer: ?objc.Sel = null;
+    var _sel_setLayer: ?objc.Sel = null;
+};
+
+pub const NSGestureRecognizerForNSViewSelectors = struct {
+    pub fn addGestureRecognizer() objc.Sel {
+        if (_sel_addGestureRecognizer == null) {
+            _sel_addGestureRecognizer = objc.Sel.registerName("addGestureRecognizer:");
+        }
+        return _sel_addGestureRecognizer.?;
+    }
+
+    var _sel_addGestureRecognizer: ?objc.Sel = null;
 };
 
 pub const NSLayerDelegateContentsScaleUpdatingForNSObjectSelectors = struct {};

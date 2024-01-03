@@ -4,20 +4,14 @@ const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
 const runtime_support = @import("Runtime-Support");
 
-pub const CGMutablePathRef = *CGPath;
-pub const CGPathRef = *CGPath;
-pub const CGPathApplierFunction = fn (_: ?*void, _: *const CGPathElement) void;
-pub const CGPathApplyBlock = fn (_: *const CGPathElement) void;
-const CGPoint = coreGraphics.CGPoint;
-
-const CGPath = anyopaque;
-
 pub const CGPathElement = extern struct {
     type: CGPathElementType,
     points: *CGPoint,
 };
 
 pub const CGLineJoin = struct {
+    _value: i32,
+
     pub const kCGLineJoinMiter: CGLineJoin = .{
         ._value = 0x0,
     };
@@ -27,11 +21,11 @@ pub const CGLineJoin = struct {
     pub const kCGLineJoinBevel: CGLineJoin = .{
         ._value = 0x2,
     };
-
-    _value: i32,
 };
 
 pub const CGPathElementType = struct {
+    _value: i32,
+
     pub const kCGPathElementMoveToPoint: CGPathElementType = .{
         ._value = 0x0,
     };
@@ -47,11 +41,11 @@ pub const CGPathElementType = struct {
     pub const kCGPathElementCloseSubpath: CGPathElementType = .{
         ._value = 0x4,
     };
-
-    _value: i32,
 };
 
 pub const CGLineCap = struct {
+    _value: i32,
+
     pub const kCGLineCapButt: CGLineCap = .{
         ._value = 0x0,
     };
@@ -61,6 +55,18 @@ pub const CGLineCap = struct {
     pub const kCGLineCapSquare: CGLineCap = .{
         ._value = 0x2,
     };
-
-    _value: i32,
 };
+
+pub const CGMutablePathRef = *CGPath;
+pub const CGPathRef = *CGPath;
+const CGAffineTransform = coreGraphics.CGAffineTransform;
+const CGFloat = coreGraphics.CGFloat;
+const CGPoint = coreGraphics.CGPoint;
+
+const CGPath = anyopaque;
+pub extern fn CGPathCreateMutable() callconv(.C) CGMutablePathRef;
+pub extern fn CGPathRelease(path: ?CGPathRef) callconv(.C) void;
+pub extern fn CGPathMoveToPoint(path: ?CGMutablePathRef, m: ?*const CGAffineTransform, x: CGFloat, y: CGFloat) callconv(.C) void;
+pub extern fn CGPathAddLineToPoint(path: ?CGMutablePathRef, m: ?*const CGAffineTransform, x: CGFloat, y: CGFloat) callconv(.C) void;
+pub extern fn CGPathAddCurveToPoint(path: ?CGMutablePathRef, m: ?*const CGAffineTransform, cp1x: CGFloat, cp1y: CGFloat, cp2x: CGFloat, cp2y: CGFloat, x: CGFloat, y: CGFloat) callconv(.C) void;
+pub extern fn CGPathCloseSubpath(path: ?CGMutablePathRef) callconv(.C) void;

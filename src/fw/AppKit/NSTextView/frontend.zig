@@ -6,43 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSPasteboardTypeFindPanelSearchOptionKey = NSString;
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
-const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSChangeSpelling = appKit.NSChangeSpelling;
-const NSColorChanging = appKit.NSColorChanging;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSDraggingSource = appKit.NSDraggingSource;
-const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
-const NSMenuItemValidation = appKit.NSMenuItemValidation;
-const NSPasteboardType = appKit.NSPasteboardType;
-const NSResponder = appKit.NSResponder;
-const NSStandardKeyBindingResponding = appKit.NSStandardKeyBindingResponding;
-const NSText = appKit.NSText;
-const NSTextContent = appKit.NSTextContent;
-const NSTextDelegate = appKit.NSTextDelegate;
-const NSTextInput = appKit.NSTextInput;
-const NSTextInputClient = appKit.NSTextInputClient;
-const NSTextLayoutOrientationProvider = appKit.NSTextLayoutOrientationProvider;
-const NSTextStorage = appKit.NSTextStorage;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotificationName = foundation.NSNotificationName;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSTextView = struct {
-    pub const Self = @This();
-    pub const Sharing = NSSharingForNSTextView;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -99,12 +63,12 @@ pub const NSTextView = struct {
             });
         }
     };
+
+    pub const Self = @This();
+    pub const Sharing = NSSharingForNSTextView;
 };
 
 const NSSharingForNSTextView = struct {
-    const Category = @This();
-    pub const Self = NSTextView;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -131,9 +95,14 @@ const NSSharingForNSTextView = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSTextView;
 };
 
 pub const NSFindPanelAction = struct {
+    _value: NSUInteger,
+
     pub const ShowFindPanel: NSFindPanelAction = .{
         ._value = 1,
     };
@@ -164,22 +133,22 @@ pub const NSFindPanelAction = struct {
     pub const SelectAllInSelection: NSFindPanelAction = .{
         ._value = 10,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSSelectionAffinity = struct {
+    _value: NSUInteger,
+
     pub const Upstream: NSSelectionAffinity = .{
         ._value = 0,
     };
     pub const Downstream: NSSelectionAffinity = .{
         ._value = 1,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSSelectionGranularity = struct {
+    _value: NSUInteger,
+
     pub const SelectByCharacter: NSSelectionGranularity = .{
         ._value = 0,
     };
@@ -189,11 +158,11 @@ pub const NSSelectionGranularity = struct {
     pub const SelectByParagraph: NSSelectionGranularity = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSFindPanelSubstringMatchType = struct {
+    _value: NSUInteger,
+
     pub const Contains: NSFindPanelSubstringMatchType = .{
         ._value = 0,
     };
@@ -206,13 +175,9 @@ pub const NSFindPanelSubstringMatchType = struct {
     pub const EndsWith: NSFindPanelSubstringMatchType = .{
         ._value = 3,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSTextViewDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -223,9 +188,6 @@ pub const NSTextViewDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextViewDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTextViewDelegateMessages.initClass(_class_name);
@@ -241,6 +203,9 @@ pub const NSTextViewDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTextViewDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -277,4 +242,38 @@ pub const NSTextViewDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityNavigableStaticText = appKit.NSAccessibilityNavigableStaticText;
+const NSAccessibilityStaticText = appKit.NSAccessibilityStaticText;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSChangeSpelling = appKit.NSChangeSpelling;
+const NSColorChanging = appKit.NSColorChanging;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSDraggingSource = appKit.NSDraggingSource;
+const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
+const NSMenuItemValidation = appKit.NSMenuItemValidation;
+const NSPasteboardType = appKit.NSPasteboardType;
+const NSResponder = appKit.NSResponder;
+const NSStandardKeyBindingResponding = appKit.NSStandardKeyBindingResponding;
+const NSText = appKit.NSText;
+const NSTextContent = appKit.NSTextContent;
+const NSTextDelegate = appKit.NSTextDelegate;
+const NSTextInput = appKit.NSTextInput;
+const NSTextInputClient = appKit.NSTextInputClient;
+const NSTextLayoutOrientationProvider = appKit.NSTextLayoutOrientationProvider;
+const NSTextStorage = appKit.NSTextStorage;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotificationName = foundation.NSNotificationName;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

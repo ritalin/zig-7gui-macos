@@ -4,9 +4,9 @@ const backend = @import("./backend.zig");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSBezelStyle = struct {
+    _value: NSUInteger,
+
     pub const Rounded: NSBezelStyle = .{
         ._value = 1,
     };
@@ -46,11 +46,11 @@ pub const NSBezelStyle = struct {
     pub const Inline: NSBezelStyle = .{
         ._value = 15,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSButtonType = struct {
+    _value: NSUInteger,
+
     pub const MomentaryLight: NSButtonType = .{
         ._value = 0,
     };
@@ -81,6 +81,6 @@ pub const NSButtonType = struct {
     pub const MultiLevelAccelerator: NSButtonType = .{
         ._value = 9,
     };
-
-    _value: NSUInteger,
 };
+
+const NSUInteger = runtime.NSUInteger;

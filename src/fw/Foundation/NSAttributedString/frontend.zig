@@ -5,25 +5,12 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSAttributedStringKey = NSString;
-const NSCoding = foundation.NSCoding;
-const NSCopying = foundation.NSCopying;
-const NSMutableCopying = foundation.NSMutableCopying;
-const NSSecureCoding = foundation.NSSecureCoding;
-const NSString = foundation.NSString;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSAttributedStringEnumerationOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSAttributedStringEnumerationOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     Reverse = (1 << 1),
     LongestEffectiveRangeNotRequired = (1 << 20),
 });
 
 pub const NSAttributedString = struct {
-    pub const Self = @This();
-    pub const ExtendedAttributedString = NSExtendedAttributedStringForNSAttributedString;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -68,12 +55,12 @@ pub const NSAttributedString = struct {
             });
         }
     };
+
+    pub const Self = @This();
+    pub const ExtendedAttributedString = NSExtendedAttributedStringForNSAttributedString;
 };
 
 pub const NSMutableAttributedString = struct {
-    pub const Self = @This();
-    pub const ExtendedMutableAttributedString = NSExtendedMutableAttributedStringForNSMutableAttributedString;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -110,12 +97,12 @@ pub const NSMutableAttributedString = struct {
             return runtime_support.typeConstraints(DesiredType.Self, .{});
         }
     };
+
+    pub const Self = @This();
+    pub const ExtendedMutableAttributedString = NSExtendedMutableAttributedStringForNSMutableAttributedString;
 };
 
 const NSExtendedAttributedStringForNSAttributedString = struct {
-    const Category = @This();
-    pub const Self = NSAttributedString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -130,12 +117,12 @@ const NSExtendedAttributedStringForNSAttributedString = struct {
             }
         };
     }
+
+    const Category = @This();
+    pub const Self = NSAttributedString;
 };
 
 const NSExtendedMutableAttributedStringForNSMutableAttributedString = struct {
-    const Category = @This();
-    pub const Self = NSMutableAttributedString;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -150,4 +137,16 @@ const NSExtendedMutableAttributedStringForNSMutableAttributedString = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSMutableAttributedString;
 };
+
+const NSCoding = foundation.NSCoding;
+const NSCopying = foundation.NSCopying;
+const NSMutableCopying = foundation.NSMutableCopying;
+const NSSecureCoding = foundation.NSSecureCoding;
+const NSString = foundation.NSString;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

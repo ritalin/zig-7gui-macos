@@ -3,13 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSTextSelectors = struct {
-    var _sel_string: ?objc.Sel = null;
-    var _sel_setString: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_isEditable: ?objc.Sel = null;
-    var _sel_setEditable: ?objc.Sel = null;
-
     pub fn string() objc.Sel {
         if (_sel_string == null) {
             _sel_string = objc.Sel.registerName("string");
@@ -51,15 +44,22 @@ pub const NSTextSelectors = struct {
         }
         return _sel_setEditable.?;
     }
+
+    var _sel_string: ?objc.Sel = null;
+    var _sel_setString: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_isEditable: ?objc.Sel = null;
+    var _sel_setEditable: ?objc.Sel = null;
 };
 
 pub const NSTextDelegateSelectors = struct {
-    var _sel_textDidChange: ?objc.Sel = null;
-
     pub fn textDidChange() objc.Sel {
         if (_sel_textDidChange == null) {
             _sel_textDidChange = objc.Sel.registerName("textDidChange:");
         }
         return _sel_textDidChange.?;
     }
+
+    var _sel_textDidChange: ?objc.Sel = null;
 };

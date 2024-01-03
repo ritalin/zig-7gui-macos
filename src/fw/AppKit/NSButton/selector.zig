@@ -3,13 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSButtonSelectors = struct {
-    var _sel_buttonWithTitleTargetAction: ?objc.Sel = null;
-    var _sel_setButtonType: ?objc.Sel = null;
-    var _sel_title: ?objc.Sel = null;
-    var _sel_setTitle: ?objc.Sel = null;
-    var _sel_bezelStyle: ?objc.Sel = null;
-    var _sel_setBezelStyle: ?objc.Sel = null;
-
     pub fn buttonWithTitleTargetAction() objc.Sel {
         if (_sel_buttonWithTitleTargetAction == null) {
             _sel_buttonWithTitleTargetAction = objc.Sel.registerName("buttonWithTitle:target:action:");
@@ -51,4 +44,11 @@ pub const NSButtonSelectors = struct {
         }
         return _sel_setBezelStyle.?;
     }
+
+    var _sel_buttonWithTitleTargetAction: ?objc.Sel = null;
+    var _sel_setButtonType: ?objc.Sel = null;
+    var _sel_title: ?objc.Sel = null;
+    var _sel_setTitle: ?objc.Sel = null;
+    var _sel_bezelStyle: ?objc.Sel = null;
+    var _sel_setBezelStyle: ?objc.Sel = null;
 };

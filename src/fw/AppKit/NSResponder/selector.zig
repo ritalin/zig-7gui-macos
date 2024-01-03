@@ -5,17 +5,6 @@ const runtime_support = @import("Runtime-Support");
 pub const NSResponderSelectors = struct {};
 
 pub const NSStandardKeyBindingRespondingSelectors = struct {
-    var _sel_insertTab: ?objc.Sel = null;
-    var _sel_insertBacktab: ?objc.Sel = null;
-    var _sel_insertNewline: ?objc.Sel = null;
-    var _sel_insertParagraphSeparator: ?objc.Sel = null;
-    var _sel_insertNewlineIgnoringFieldEditor: ?objc.Sel = null;
-    var _sel_insertTabIgnoringFieldEditor: ?objc.Sel = null;
-    var _sel_insertLineBreak: ?objc.Sel = null;
-    var _sel_insertContainerBreak: ?objc.Sel = null;
-    var _sel_insertSingleQuoteIgnoringSubstitution: ?objc.Sel = null;
-    var _sel_insertDoubleQuoteIgnoringSubstitution: ?objc.Sel = null;
-
     pub fn insertTab() objc.Sel {
         if (_sel_insertTab == null) {
             _sel_insertTab = objc.Sel.registerName("insertTab:");
@@ -85,4 +74,15 @@ pub const NSStandardKeyBindingRespondingSelectors = struct {
         }
         return _sel_insertDoubleQuoteIgnoringSubstitution.?;
     }
+
+    var _sel_insertTab: ?objc.Sel = null;
+    var _sel_insertBacktab: ?objc.Sel = null;
+    var _sel_insertNewline: ?objc.Sel = null;
+    var _sel_insertParagraphSeparator: ?objc.Sel = null;
+    var _sel_insertNewlineIgnoringFieldEditor: ?objc.Sel = null;
+    var _sel_insertTabIgnoringFieldEditor: ?objc.Sel = null;
+    var _sel_insertLineBreak: ?objc.Sel = null;
+    var _sel_insertContainerBreak: ?objc.Sel = null;
+    var _sel_insertSingleQuoteIgnoringSubstitution: ?objc.Sel = null;
+    var _sel_insertDoubleQuoteIgnoringSubstitution: ?objc.Sel = null;
 };

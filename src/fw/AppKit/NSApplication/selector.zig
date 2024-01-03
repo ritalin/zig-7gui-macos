@@ -3,14 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSApplicationSelectors = struct {
-    var _sel_sharedApplication: ?objc.Sel = null;
-    var _sel_delegate: ?objc.Sel = null;
-    var _sel_setDelegate: ?objc.Sel = null;
-    var _sel_activateIgnoringOtherApps: ?objc.Sel = null;
-    var _sel_run: ?objc.Sel = null;
-    var _sel_activationPolicy: ?objc.Sel = null;
-    var _sel_setActivationPolicy: ?objc.Sel = null;
-
     pub fn sharedApplication() objc.Sel {
         if (_sel_sharedApplication == null) {
             _sel_sharedApplication = objc.Sel.registerName("sharedApplication");
@@ -59,12 +51,28 @@ pub const NSApplicationSelectors = struct {
         }
         return _sel_setActivationPolicy.?;
     }
+
+    var _sel_sharedApplication: ?objc.Sel = null;
+    var _sel_delegate: ?objc.Sel = null;
+    var _sel_setDelegate: ?objc.Sel = null;
+    var _sel_activateIgnoringOtherApps: ?objc.Sel = null;
+    var _sel_run: ?objc.Sel = null;
+    var _sel_activationPolicy: ?objc.Sel = null;
+    var _sel_setActivationPolicy: ?objc.Sel = null;
+};
+
+pub const NSEventForNSApplicationSelectors = struct {
+    pub fn currentEvent() objc.Sel {
+        if (_sel_currentEvent == null) {
+            _sel_currentEvent = objc.Sel.registerName("currentEvent");
+        }
+        return _sel_currentEvent.?;
+    }
+
+    var _sel_currentEvent: ?objc.Sel = null;
 };
 
 pub const NSApplicationDelegateSelectors = struct {
-    var _sel_applicationWillFinishLaunching: ?objc.Sel = null;
-    var _sel_applicationDidFinishLaunching: ?objc.Sel = null;
-
     pub fn applicationWillFinishLaunching() objc.Sel {
         if (_sel_applicationWillFinishLaunching == null) {
             _sel_applicationWillFinishLaunching = objc.Sel.registerName("applicationWillFinishLaunching:");
@@ -78,4 +86,7 @@ pub const NSApplicationDelegateSelectors = struct {
         }
         return _sel_applicationDidFinishLaunching.?;
     }
+
+    var _sel_applicationWillFinishLaunching: ?objc.Sel = null;
+    var _sel_applicationDidFinishLaunching: ?objc.Sel = null;
 };

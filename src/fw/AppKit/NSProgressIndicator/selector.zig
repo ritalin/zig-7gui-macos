@@ -3,20 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSProgressIndicatorSelectors = struct {
-    var _sel_isIndeterminate: ?objc.Sel = null;
-    var _sel_setIndeterminate: ?objc.Sel = null;
-    var _sel_doubleValue: ?objc.Sel = null;
-    var _sel_setDoubleValue: ?objc.Sel = null;
-    var _sel_incrementBy: ?objc.Sel = null;
-    var _sel_minValue: ?objc.Sel = null;
-    var _sel_setMinValue: ?objc.Sel = null;
-    var _sel_maxValue: ?objc.Sel = null;
-    var _sel_setMaxValue: ?objc.Sel = null;
-    var _sel_startAnimation: ?objc.Sel = null;
-    var _sel_stopAnimation: ?objc.Sel = null;
-    var _sel_isDisplayedWhenStopped: ?objc.Sel = null;
-    var _sel_setDisplayedWhenStopped: ?objc.Sel = null;
-
     pub fn isIndeterminate() objc.Sel {
         if (_sel_isIndeterminate == null) {
             _sel_isIndeterminate = objc.Sel.registerName("isIndeterminate");
@@ -107,4 +93,18 @@ pub const NSProgressIndicatorSelectors = struct {
         }
         return _sel_setDisplayedWhenStopped.?;
     }
+
+    var _sel_isIndeterminate: ?objc.Sel = null;
+    var _sel_setIndeterminate: ?objc.Sel = null;
+    var _sel_doubleValue: ?objc.Sel = null;
+    var _sel_setDoubleValue: ?objc.Sel = null;
+    var _sel_incrementBy: ?objc.Sel = null;
+    var _sel_minValue: ?objc.Sel = null;
+    var _sel_setMinValue: ?objc.Sel = null;
+    var _sel_maxValue: ?objc.Sel = null;
+    var _sel_setMaxValue: ?objc.Sel = null;
+    var _sel_startAnimation: ?objc.Sel = null;
+    var _sel_stopAnimation: ?objc.Sel = null;
+    var _sel_isDisplayedWhenStopped: ?objc.Sel = null;
+    var _sel_setDisplayedWhenStopped: ?objc.Sel = null;
 };

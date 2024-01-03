@@ -6,53 +6,7 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSWindowLevel = NSInteger;
-pub const NSWindowFrameAutosaveName = NSString;
-pub const NSWindowPersistableFrameDescriptor = NSString;
-pub const NSWindowTabbingIdentifier = NSString;
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppKitVersion = appKit.NSAppKitVersion;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSBackingStoreType = appKit.NSBackingStoreType;
-const NSColor = appKit.NSColor;
-const NSMenuItemValidation = appKit.NSMenuItemValidation;
-const NSModalResponse = appKit.NSModalResponse;
-const NSResponder = appKit.NSResponder;
-const NSScreen = appKit.NSScreen;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const NSCoding = foundation.NSCoding;
-const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSRect = foundation.NSRect;
-const NSString = foundation.NSString;
-const NSTimeInterval = foundation.NSTimeInterval;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSAppKitVersionNumberWithCustomSheetPosition: NSAppKitVersion = 686.0;
-pub const NSAppKitVersionNumberWithDeferredWindowDisplaySupport: NSAppKitVersion = 1019.0;
-pub const NSModalResponseOK: NSModalResponse = 1;
-pub const NSModalResponseCancel: NSModalResponse = 0;
-pub const NSDisplayWindowRunLoopOrdering: c_uint = 600000;
-pub const NSResetCursorRectsRunLoopOrdering: c_uint = 700000;
-pub const NSNormalWindowLevel: NSWindowLevel = (0);
-pub const NSFloatingWindowLevel: NSWindowLevel = (3);
-pub const NSSubmenuWindowLevel: NSWindowLevel = (3);
-pub const NSTornOffMenuWindowLevel: NSWindowLevel = (3);
-pub const NSMainMenuWindowLevel: NSWindowLevel = (24);
-pub const NSStatusWindowLevel: NSWindowLevel = (25);
-pub const NSModalPanelWindowLevel: NSWindowLevel = (8);
-pub const NSPopUpMenuWindowLevel: NSWindowLevel = (101);
-pub const NSScreenSaverWindowLevel: NSWindowLevel = (1000);
-pub const NSEventDurationForever: NSTimeInterval = 1.7976931348623157e+308;
-
-pub const NSWindowCollectionBehavior = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSWindowCollectionBehavior = runtime_support.EnumOptions(enum(NSUInteger) {
     CanJoinAllSpaces = 1 << 0,
     MoveToActiveSpace = 1 << 1,
     Managed = 1 << 2,
@@ -67,7 +21,7 @@ pub const NSWindowCollectionBehavior = std.enums.EnumSet(enum(NSUInteger) {
     FullScreenDisallowsTiling = 1 << 12,
 });
 
-pub const NSWindowStyleMask = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSWindowStyleMask = runtime_support.EnumOptions(enum(NSUInteger) {
     Titled = 1 << 0,
     Closable = 1 << 1,
     Miniaturizable = 1 << 2,
@@ -81,22 +35,16 @@ pub const NSWindowStyleMask = std.enums.EnumSet(enum(NSUInteger) {
     HUDWindow = 1 << 13,
 });
 
-pub const NSWindowOcclusionState = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSWindowOcclusionState = runtime_support.EnumOptions(enum(NSUInteger) {
     Visible = 1 << 1,
 });
 
-pub const NSWindowNumberListOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSWindowNumberListOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     AllApplications = 1 << 0,
     AllSpaces = 1 << 4,
 });
 
 pub const NSWindow = struct {
-    pub const Self = @This();
-    pub const CursorRect = NSCursorRectForNSWindow;
-    pub const CarbonExtensions = NSCarbonExtensionsForNSWindow;
-    pub const Event = NSEventForNSWindow;
-    pub const Drag = NSDragForNSWindow;
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -133,6 +81,14 @@ pub const NSWindow = struct {
 
     pub fn setDelegate(self: Self, _delegate: ?NSWindowDelegate) void {
         return backend.NSWindowMessages.setDelegate(runtime_support.objectId(NSWindow, self), runtime_support.objectId(?NSWindowDelegate, _delegate));
+    }
+
+    pub fn displayIfNeeded(self: Self) void {
+        return backend.NSWindowMessages.displayIfNeeded(runtime_support.objectId(NSWindow, self));
+    }
+
+    pub fn display(self: Self) void {
+        return backend.NSWindowMessages.display(runtime_support.objectId(NSWindow, self));
     }
 
     pub fn makeFirstResponder(self: Self, _responder: ?NSResponder) bool {
@@ -207,12 +163,15 @@ pub const NSWindow = struct {
             });
         }
     };
+
+    pub const Self = @This();
+    pub const CursorRect = NSCursorRectForNSWindow;
+    pub const CarbonExtensions = NSCarbonExtensionsForNSWindow;
+    pub const Event = NSEventForNSWindow;
+    pub const Drag = NSDragForNSWindow;
 };
 
 const NSCursorRectForNSWindow = struct {
-    const Category = @This();
-    pub const Self = NSWindow;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -223,12 +182,12 @@ const NSCursorRectForNSWindow = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSWindow;
 };
 
 const NSCarbonExtensionsForNSWindow = struct {
-    const Category = @This();
-    pub const Self = NSWindow;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -239,12 +198,12 @@ const NSCarbonExtensionsForNSWindow = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSWindow;
 };
 
 const NSEventForNSWindow = struct {
-    const Category = @This();
-    pub const Self = NSWindow;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -255,12 +214,12 @@ const NSEventForNSWindow = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSWindow;
 };
 
 const NSDragForNSWindow = struct {
-    const Category = @This();
-    pub const Self = NSWindow;
-
     _id: objc.Object,
 
     pub inline fn of(comptime DesiredType: type) type {
@@ -271,9 +230,14 @@ const NSDragForNSWindow = struct {
         _ = DesiredType;
         return struct {};
     }
+
+    const Category = @This();
+    pub const Self = NSWindow;
 };
 
 pub const NSWindowToolbarStyle = struct {
+    _value: NSInteger,
+
     pub const Automatic: NSWindowToolbarStyle = .{
         ._value = 0x0,
     };
@@ -289,11 +253,11 @@ pub const NSWindowToolbarStyle = struct {
     pub const UnifiedCompact: NSWindowToolbarStyle = .{
         ._value = 0x4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTitlebarSeparatorStyle = struct {
+    _value: NSInteger,
+
     pub const Automatic: NSTitlebarSeparatorStyle = .{
         ._value = 0x0,
     };
@@ -306,11 +270,11 @@ pub const NSTitlebarSeparatorStyle = struct {
     pub const Shadow: NSTitlebarSeparatorStyle = .{
         ._value = 0x3,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSWindowButton = struct {
+    _value: NSUInteger,
+
     pub const Close: NSWindowButton = .{
         ._value = 0x0,
     };
@@ -329,11 +293,11 @@ pub const NSWindowButton = struct {
     pub const DocumentVersions: NSWindowButton = .{
         ._value = 6,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindowTabbingMode = struct {
+    _value: NSInteger,
+
     pub const Automatic: NSWindowTabbingMode = .{
         ._value = 0x0,
     };
@@ -343,11 +307,11 @@ pub const NSWindowTabbingMode = struct {
     pub const Disallowed: NSWindowTabbingMode = .{
         ._value = 0x2,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSWindowUserTabbingPreference = struct {
+    _value: NSInteger,
+
     pub const Manual: NSWindowUserTabbingPreference = .{
         ._value = 0x0,
     };
@@ -357,22 +321,22 @@ pub const NSWindowUserTabbingPreference = struct {
     pub const InFullScreen: NSWindowUserTabbingPreference = .{
         ._value = 0x2,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSWindowTitleVisibility = struct {
+    _value: NSInteger,
+
     pub const Visible: NSWindowTitleVisibility = .{
         ._value = 0,
     };
     pub const Hidden: NSWindowTitleVisibility = .{
         ._value = 1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSSelectionDirection = struct {
+    _value: NSUInteger,
+
     pub const Direct: NSSelectionDirection = .{
         ._value = 0,
     };
@@ -382,11 +346,11 @@ pub const NSSelectionDirection = struct {
     pub const SelectingPrevious: NSSelectionDirection = .{
         ._value = 0x2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindowAnimationBehavior = struct {
+    _value: NSInteger,
+
     pub const Default: NSWindowAnimationBehavior = .{
         ._value = 0,
     };
@@ -402,11 +366,11 @@ pub const NSWindowAnimationBehavior = struct {
     pub const AlertPanel: NSWindowAnimationBehavior = .{
         ._value = 5,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSWindowSharingType = struct {
+    _value: NSUInteger,
+
     pub const None: NSWindowSharingType = .{
         ._value = 0,
     };
@@ -416,13 +380,9 @@ pub const NSWindowSharingType = struct {
     pub const ReadWrite: NSWindowSharingType = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindowDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -433,9 +393,6 @@ pub const NSWindowDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSWindowDelegateMessages.initClass(_class_name);
@@ -450,6 +407,9 @@ pub const NSWindowDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSWindowDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -484,4 +444,52 @@ pub const NSWindowDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+pub const NSWindowLevel = NSInteger;
+pub const NSWindowFrameAutosaveName = NSString;
+pub const NSWindowPersistableFrameDescriptor = NSString;
+pub const NSWindowTabbingIdentifier = NSString;
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppKitVersion = appKit.NSAppKitVersion;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSBackingStoreType = appKit.NSBackingStoreType;
+const NSColor = appKit.NSColor;
+const NSMenuItemValidation = appKit.NSMenuItemValidation;
+const NSModalResponse = appKit.NSModalResponse;
+const NSResponder = appKit.NSResponder;
+const NSScreen = appKit.NSScreen;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const NSCoding = foundation.NSCoding;
+const NSNotification = foundation.NSNotification;
+const NSNotificationName = foundation.NSNotificationName;
+const NSRect = foundation.NSRect;
+const NSString = foundation.NSString;
+const NSTimeInterval = foundation.NSTimeInterval;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;
+
+pub const NSAppKitVersionNumberWithCustomSheetPosition: NSAppKitVersion = 686.0;
+pub const NSAppKitVersionNumberWithDeferredWindowDisplaySupport: NSAppKitVersion = 1019.0;
+pub const NSModalResponseOK: NSModalResponse = 1;
+pub const NSModalResponseCancel: NSModalResponse = 0;
+pub const NSDisplayWindowRunLoopOrdering: c_uint = 600000;
+pub const NSResetCursorRectsRunLoopOrdering: c_uint = 700000;
+pub const NSNormalWindowLevel: NSWindowLevel = (0);
+pub const NSFloatingWindowLevel: NSWindowLevel = (3);
+pub const NSSubmenuWindowLevel: NSWindowLevel = (3);
+pub const NSTornOffMenuWindowLevel: NSWindowLevel = (3);
+pub const NSMainMenuWindowLevel: NSWindowLevel = (24);
+pub const NSStatusWindowLevel: NSWindowLevel = (25);
+pub const NSModalPanelWindowLevel: NSWindowLevel = (8);
+pub const NSPopUpMenuWindowLevel: NSWindowLevel = (101);
+pub const NSScreenSaverWindowLevel: NSWindowLevel = (1000);
+pub const NSEventDurationForever: NSTimeInterval = 1.7976931348623157e+308;

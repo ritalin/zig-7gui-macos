@@ -2,29 +2,23 @@ const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
 const coreGraphics = @import("CoreGraphics");
-const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSColorSpaceName = NSString;
-pub const NSDeviceDescriptionKey = NSString;
-const CGFloat = coreGraphics.CGFloat;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSAnimationEffect = struct {
+    _value: NSUInteger,
+
     pub const DisappearingItemDefault: NSAnimationEffect = .{
         ._value = 0,
     };
     pub const Poof: NSAnimationEffect = .{
         ._value = 10,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindowOrderingMode = struct {
+    _value: NSInteger,
+
     pub const Above: NSWindowOrderingMode = .{
         ._value = 1,
     };
@@ -34,22 +28,22 @@ pub const NSWindowOrderingMode = struct {
     pub const Out: NSWindowOrderingMode = .{
         ._value = 0,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSDisplayGamut = struct {
+    _value: NSInteger,
+
     pub const SRGB: NSDisplayGamut = .{
         ._value = 1,
     };
     pub const P3: NSDisplayGamut = .{
         ._value = 0x0,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSFocusRingPlacement = struct {
+    _value: NSUInteger,
+
     pub const Only: NSFocusRingPlacement = .{
         ._value = 0,
     };
@@ -59,11 +53,11 @@ pub const NSFocusRingPlacement = struct {
     pub const Above: NSFocusRingPlacement = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSWindowDepth = struct {
+    _value: i32,
+
     pub const TwentyfourBitRGB: NSWindowDepth = .{
         ._value = 0x208,
     };
@@ -73,19 +67,19 @@ pub const NSWindowDepth = struct {
     pub const OnehundredtwentyeightBitRGB: NSWindowDepth = .{
         ._value = 0x220,
     };
-
-    _value: i32,
 };
 
 pub const NSBackingStoreType = struct {
+    _value: NSUInteger,
+
     pub const Buffered: NSBackingStoreType = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSCompositingOperation = struct {
+    _value: NSUInteger,
+
     pub const Clear: NSCompositingOperation = .{
         ._value = 0x0,
     };
@@ -170,11 +164,11 @@ pub const NSCompositingOperation = struct {
     pub const Luminosity: NSCompositingOperation = .{
         ._value = 0x1B,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSColorRenderingIntent = struct {
+    _value: NSInteger,
+
     pub const Default: NSColorRenderingIntent = .{
         ._value = 0x0,
     };
@@ -190,11 +184,11 @@ pub const NSColorRenderingIntent = struct {
     pub const Saturation: NSColorRenderingIntent = .{
         ._value = 0x4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSFocusRingType = struct {
+    _value: NSUInteger,
+
     pub const Default: NSFocusRingType = .{
         ._value = 0,
     };
@@ -204,6 +198,8 @@ pub const NSFocusRingType = struct {
     pub const Exterior: NSFocusRingType = .{
         ._value = 2,
     };
-
-    _value: NSUInteger,
 };
+
+const CGFloat = coreGraphics.CGFloat;
+const NSInteger = runtime.NSInteger;
+const NSUInteger = runtime.NSUInteger;

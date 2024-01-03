@@ -13,6 +13,9 @@ pub usingnamespace @import("./AppKit/NSAppearance/selector.zig");
 // NSApplication
 pub usingnamespace @import("./AppKit/NSApplication/frontend.zig");
 pub usingnamespace @import("./AppKit/NSApplication/selector.zig");
+// NSBezierPath
+pub usingnamespace @import("./AppKit/NSBezierPath/frontend.zig");
+pub usingnamespace @import("./AppKit/NSBezierPath/selector.zig");
 // NSButton
 pub usingnamespace @import("./AppKit/NSButton/frontend.zig");
 pub usingnamespace @import("./AppKit/NSButton/selector.zig");
@@ -21,6 +24,9 @@ pub usingnamespace @import("./AppKit/NSButtonCell/frontend.zig");
 // NSCandidateListTouchBarItem
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/frontend.zig");
 pub usingnamespace @import("./AppKit/NSCandidateListTouchBarItem/selector.zig");
+// NSClickGestureRecognizer
+pub usingnamespace @import("./AppKit/NSClickGestureRecognizer/frontend.zig");
+pub usingnamespace @import("./AppKit/NSClickGestureRecognizer/selector.zig");
 // NSClipView
 pub usingnamespace @import("./AppKit/NSClipView/frontend.zig");
 pub usingnamespace @import("./AppKit/NSClipView/selector.zig");
@@ -42,6 +48,12 @@ pub usingnamespace @import("./AppKit/NSDragging/selector.zig");
 // NSDraggingSession
 pub usingnamespace @import("./AppKit/NSDraggingSession/frontend.zig");
 pub usingnamespace @import("./AppKit/NSDraggingSession/selector.zig");
+// NSEvent
+pub usingnamespace @import("./AppKit/NSEvent/frontend.zig");
+pub usingnamespace @import("./AppKit/NSEvent/selector.zig");
+// NSGestureRecognizer
+pub usingnamespace @import("./AppKit/NSGestureRecognizer/frontend.zig");
+pub usingnamespace @import("./AppKit/NSGestureRecognizer/selector.zig");
 // NSGraphics
 pub usingnamespace @import("./AppKit/NSGraphics/frontend.zig");
 // NSInputManager
@@ -53,9 +65,21 @@ pub usingnamespace @import("./AppKit/NSLayoutManager/selector.zig");
 // NSMenu
 pub usingnamespace @import("./AppKit/NSMenu/frontend.zig");
 pub usingnamespace @import("./AppKit/NSMenu/selector.zig");
+// NSMenuItem
+pub usingnamespace @import("./AppKit/NSMenuItem/frontend.zig");
+pub usingnamespace @import("./AppKit/NSMenuItem/selector.zig");
+// NSPanel
+pub usingnamespace @import("./AppKit/NSPanel/frontend.zig");
+pub usingnamespace @import("./AppKit/NSPanel/selector.zig");
 // NSPasteboard
 pub usingnamespace @import("./AppKit/NSPasteboard/frontend.zig");
 pub usingnamespace @import("./AppKit/NSPasteboard/selector.zig");
+// NSPressGestureRecognizer
+pub usingnamespace @import("./AppKit/NSPressGestureRecognizer/frontend.zig");
+pub usingnamespace @import("./AppKit/NSPressGestureRecognizer/selector.zig");
+// NSPressureConfiguration
+pub usingnamespace @import("./AppKit/NSPressureConfiguration/frontend.zig");
+pub usingnamespace @import("./AppKit/NSPressureConfiguration/selector.zig");
 // NSProgressIndicator
 pub usingnamespace @import("./AppKit/NSProgressIndicator/frontend.zig");
 pub usingnamespace @import("./AppKit/NSProgressIndicator/selector.zig");
@@ -125,3 +149,4 @@ pub usingnamespace @import("./AppKit/NSView/selector.zig");
 // NSWindow
 pub usingnamespace @import("./AppKit/NSWindow/frontend.zig");
 pub usingnamespace @import("./AppKit/NSWindow/selector.zig");
+

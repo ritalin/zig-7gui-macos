@@ -3,26 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSControlSelectors = struct {
-    var _sel_initWithFrame: ?objc.Sel = null;
-    var _sel_target: ?objc.Sel = null;
-    var _sel_setTarget: ?objc.Sel = null;
-    var _sel_action: ?objc.Sel = null;
-    var _sel_setAction: ?objc.Sel = null;
-    var _sel_isEnabled: ?objc.Sel = null;
-    var _sel_setEnabled: ?objc.Sel = null;
-    var _sel_stringValue: ?objc.Sel = null;
-    var _sel_setStringValue: ?objc.Sel = null;
-    var _sel_intValue: ?objc.Sel = null;
-    var _sel_setIntValue: ?objc.Sel = null;
-    var _sel_integerValue: ?objc.Sel = null;
-    var _sel_setIntegerValue: ?objc.Sel = null;
-    var _sel_floatValue: ?objc.Sel = null;
-    var _sel_setFloatValue: ?objc.Sel = null;
-    var _sel_doubleValue: ?objc.Sel = null;
-    var _sel_setDoubleValue: ?objc.Sel = null;
-    var _sel_alignment: ?objc.Sel = null;
-    var _sel_setAlignment: ?objc.Sel = null;
-
     pub fn initWithFrame() objc.Sel {
         if (_sel_initWithFrame == null) {
             _sel_initWithFrame = objc.Sel.registerName("initWithFrame:");
@@ -142,6 +122,20 @@ pub const NSControlSelectors = struct {
         return _sel_setDoubleValue.?;
     }
 
+    pub fn sendActionOn() objc.Sel {
+        if (_sel_sendActionOn == null) {
+            _sel_sendActionOn = objc.Sel.registerName("sendActionOn:");
+        }
+        return _sel_sendActionOn.?;
+    }
+
+    pub fn sendActionTo() objc.Sel {
+        if (_sel_sendActionTo == null) {
+            _sel_sendActionTo = objc.Sel.registerName("sendAction:to:");
+        }
+        return _sel_sendActionTo.?;
+    }
+
     pub fn alignment() objc.Sel {
         if (_sel_alignment == null) {
             _sel_alignment = objc.Sel.registerName("alignment");
@@ -155,15 +149,37 @@ pub const NSControlSelectors = struct {
         }
         return _sel_setAlignment.?;
     }
+
+    var _sel_initWithFrame: ?objc.Sel = null;
+    var _sel_target: ?objc.Sel = null;
+    var _sel_setTarget: ?objc.Sel = null;
+    var _sel_action: ?objc.Sel = null;
+    var _sel_setAction: ?objc.Sel = null;
+    var _sel_isEnabled: ?objc.Sel = null;
+    var _sel_setEnabled: ?objc.Sel = null;
+    var _sel_stringValue: ?objc.Sel = null;
+    var _sel_setStringValue: ?objc.Sel = null;
+    var _sel_intValue: ?objc.Sel = null;
+    var _sel_setIntValue: ?objc.Sel = null;
+    var _sel_integerValue: ?objc.Sel = null;
+    var _sel_setIntegerValue: ?objc.Sel = null;
+    var _sel_floatValue: ?objc.Sel = null;
+    var _sel_setFloatValue: ?objc.Sel = null;
+    var _sel_doubleValue: ?objc.Sel = null;
+    var _sel_setDoubleValue: ?objc.Sel = null;
+    var _sel_sendActionOn: ?objc.Sel = null;
+    var _sel_sendActionTo: ?objc.Sel = null;
+    var _sel_alignment: ?objc.Sel = null;
+    var _sel_setAlignment: ?objc.Sel = null;
 };
 
 pub const NSControlTextEditingDelegateSelectors = struct {
-    var _sel_controlTextDidChange: ?objc.Sel = null;
-
     pub fn controlTextDidChange() objc.Sel {
         if (_sel_controlTextDidChange == null) {
             _sel_controlTextDidChange = objc.Sel.registerName("controlTextDidChange:");
         }
         return _sel_controlTextDidChange.?;
     }
+
+    var _sel_controlTextDidChange: ?objc.Sel = null;
 };

@@ -3,11 +3,6 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSSliderSelectors = struct {
-    var _sel_minValue: ?objc.Sel = null;
-    var _sel_setMinValue: ?objc.Sel = null;
-    var _sel_maxValue: ?objc.Sel = null;
-    var _sel_setMaxValue: ?objc.Sel = null;
-
     pub fn minValue() objc.Sel {
         if (_sel_minValue == null) {
             _sel_minValue = objc.Sel.registerName("minValue");
@@ -35,4 +30,9 @@ pub const NSSliderSelectors = struct {
         }
         return _sel_setMaxValue.?;
     }
+
+    var _sel_minValue: ?objc.Sel = null;
+    var _sel_setMinValue: ?objc.Sel = null;
+    var _sel_maxValue: ?objc.Sel = null;
+    var _sel_setMaxValue: ?objc.Sel = null;
 };

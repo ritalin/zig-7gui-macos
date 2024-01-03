@@ -7,56 +7,21 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-pub const NSTableViewAutosaveName = NSString;
-const NSAccessibility = appKit.NSAccessibility;
-const NSAccessibilityElement = appKit.NSAccessibilityElement;
-const NSAccessibilityGroup = appKit.NSAccessibilityGroup;
-const NSAccessibilityTable = appKit.NSAccessibilityTable;
-const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
-const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
-const NSControl = appKit.NSControl;
-const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
-const NSDraggingDestination = appKit.NSDraggingDestination;
-const NSDraggingSource = appKit.NSDraggingSource;
-const NSResponder = appKit.NSResponder;
-const NSTableColumn = appKit.NSTableColumn;
-const NSTableHeaderView = appKit.NSTableHeaderView;
-const NSTableRowView = appKit.NSTableRowView;
-const NSTextDelegate = appKit.NSTextDelegate;
-const NSTextViewDelegate = appKit.NSTextViewDelegate;
-const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
-const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
-const NSView = appKit.NSView;
-const CGFloat = coreGraphics.CGFloat;
-const NSCoding = foundation.NSCoding;
-const NSIndexSet = foundation.NSIndexSet;
-const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSString = foundation.NSString;
-const NSInteger = runtime.NSInteger;
-const NSObject = runtime.NSObject;
-const NSObjectProtocol = runtime.NSObjectProtocol;
-const NSUInteger = runtime.NSUInteger;
-
-pub const NSTableViewAnimationOptions = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSTableViewAnimationOptions = runtime_support.EnumOptions(enum(NSUInteger) {
     EffectFade = 0x1,
     EffectGap = 0x2,
     SlideUp = 0x10,
     SlideDown = 0x20,
-    SlideLeft = 0x30,
     SlideRight = 0x40,
 });
 
-pub const NSTableViewGridLineStyle = std.enums.EnumSet(enum(NSUInteger) {
+pub const NSTableViewGridLineStyle = runtime_support.EnumOptions(enum(NSUInteger) {
     SolidVertical = 1 << 0,
     SolidHorizontal = 1 << 1,
     DashedHorizontal = 1 << 3,
 });
 
 pub const NSTableView = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -188,31 +153,35 @@ pub const NSTableView = struct {
             });
         }
     };
+
+    pub const Self = @This();
 };
 
 pub const NSTableViewDropOperation = struct {
+    _value: NSUInteger,
+
     pub const On: NSTableViewDropOperation = .{
         ._value = 0x0,
     };
     pub const Above: NSTableViewDropOperation = .{
         ._value = 0x1,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSTableRowActionEdge = struct {
+    _value: NSInteger,
+
     pub const Leading: NSTableRowActionEdge = .{
         ._value = 0x0,
     };
     pub const Trailing: NSTableRowActionEdge = .{
         ._value = 0x1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTableViewDraggingDestinationFeedbackStyle = struct {
+    _value: NSInteger,
+
     pub const None: NSTableViewDraggingDestinationFeedbackStyle = .{
         ._value = -1,
     };
@@ -225,11 +194,11 @@ pub const NSTableViewDraggingDestinationFeedbackStyle = struct {
     pub const Gap: NSTableViewDraggingDestinationFeedbackStyle = .{
         ._value = 2,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTableViewSelectionHighlightStyle = struct {
+    _value: NSInteger,
+
     pub const None: NSTableViewSelectionHighlightStyle = .{
         ._value = -1,
     };
@@ -239,11 +208,11 @@ pub const NSTableViewSelectionHighlightStyle = struct {
     pub const SourceList: NSTableViewSelectionHighlightStyle = .{
         ._value = 1,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTableViewStyle = struct {
+    _value: NSInteger,
+
     pub const Automatic: NSTableViewStyle = .{
         ._value = 0x0,
     };
@@ -259,11 +228,11 @@ pub const NSTableViewStyle = struct {
     pub const Plain: NSTableViewStyle = .{
         ._value = 0x4,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTableViewRowSizeStyle = struct {
+    _value: NSInteger,
+
     pub const Default: NSTableViewRowSizeStyle = .{
         ._value = -1,
     };
@@ -279,11 +248,11 @@ pub const NSTableViewRowSizeStyle = struct {
     pub const Large: NSTableViewRowSizeStyle = .{
         ._value = 3,
     };
-
-    _value: NSInteger,
 };
 
 pub const NSTableViewColumnAutoresizingStyle = struct {
+    _value: NSUInteger,
+
     pub const No: NSTableViewColumnAutoresizingStyle = .{
         ._value = 0,
     };
@@ -302,13 +271,9 @@ pub const NSTableViewColumnAutoresizingStyle = struct {
     pub const First: NSTableViewColumnAutoresizingStyle = .{
         ._value = 0x5,
     };
-
-    _value: NSUInteger,
 };
 
 pub const NSTableViewDataSource = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -319,9 +284,6 @@ pub const NSTableViewDataSource = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTableViewDataSource", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTableViewDataSourceMessages.initClass(_class_name);
@@ -336,6 +298,9 @@ pub const NSTableViewDataSource = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTableViewDataSource", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -386,11 +351,11 @@ pub const NSTableViewDataSource = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
 
 pub const NSTableViewDelegate = struct {
-    pub const Self = @This();
-
     _id: objc.Object,
 
     fn deinit(self: *Self) void {
@@ -401,9 +366,6 @@ pub const NSTableViewDelegate = struct {
         return struct {
             pub fn Derive(comptime _delegate_handlers: HandlerSet, comptime SuffixIdSeed: type) type {
                 return struct {
-                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTableViewDelegate", SuffixIdSeed.generateIdentifier());
-                    var _class: ?objc.Class = null;
-
                     pub fn initWithContext(context: *ContextType) Self {
                         if (_class == null) {
                             const class = backend.NSTableViewDelegateMessages.initClass(_class_name);
@@ -419,6 +381,9 @@ pub const NSTableViewDelegate = struct {
                         runtime_support.ContextReg(ContextType).setContext(_id, context);
                         return _instance;
                     }
+
+                    const _class_name = runtime_support.backend_support.concreteTypeName("NSTableViewDelegate", SuffixIdSeed.generateIdentifier());
+                    var _class: ?objc.Class = null;
                 };
             }
 
@@ -485,4 +450,36 @@ pub const NSTableViewDelegate = struct {
             };
         };
     }
+
+    pub const Self = @This();
 };
+
+const NSAccessibility = appKit.NSAccessibility;
+const NSAccessibilityElement = appKit.NSAccessibilityElement;
+const NSAccessibilityGroup = appKit.NSAccessibilityGroup;
+const NSAccessibilityTable = appKit.NSAccessibilityTable;
+const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
+const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
+const NSControl = appKit.NSControl;
+const NSControlTextEditingDelegate = appKit.NSControlTextEditingDelegate;
+const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSDraggingSource = appKit.NSDraggingSource;
+const NSResponder = appKit.NSResponder;
+const NSTableColumn = appKit.NSTableColumn;
+const NSTableHeaderView = appKit.NSTableHeaderView;
+const NSTableRowView = appKit.NSTableRowView;
+const NSTextDelegate = appKit.NSTextDelegate;
+const NSTextViewDelegate = appKit.NSTextViewDelegate;
+const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
+const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
+const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
+const NSView = appKit.NSView;
+const CGFloat = coreGraphics.CGFloat;
+const NSCoding = foundation.NSCoding;
+const NSIndexSet = foundation.NSIndexSet;
+const NSNotification = foundation.NSNotification;
+const NSNotificationName = foundation.NSNotificationName;
+const NSInteger = runtime.NSInteger;
+const NSObject = runtime.NSObject;
+const NSObjectProtocol = runtime.NSObjectProtocol;
+const NSUInteger = runtime.NSUInteger;

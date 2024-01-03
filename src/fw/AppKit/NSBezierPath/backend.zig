@@ -5,11 +5,6 @@ const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
-const NSPointArray = foundation.NSPointArray;
-const NSRect = foundation.NSRect;
-const NSInteger = runtime.NSInteger;
-const NSUInteger = runtime.NSUInteger;
-
 pub const NSBezierPathMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSBezierPath").?;
@@ -42,3 +37,8 @@ pub const NSBezierPathMessages = struct {
         });
     }
 };
+
+const NSPointArray = foundation.NSPointArray;
+const NSRect = foundation.NSRect;
+const NSInteger = runtime.NSInteger;
+const NSUInteger = runtime.NSUInteger;

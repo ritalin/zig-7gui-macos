@@ -3,9 +3,9 @@ const objc = @import("objc");
 const backend = @import("./backend.zig");
 const runtime_support = @import("Runtime-Support");
 
-pub const CGWindowLevel = i32;
-
 pub const CGWindowLevelKey = struct {
+    _value: i32,
+
     pub const kCGBaseWindowLevelKey: CGWindowLevelKey = .{
         ._value = 0,
     };
@@ -72,6 +72,4 @@ pub const CGWindowLevelKey = struct {
     pub const kCGNumberOfWindowLevelKeys: CGWindowLevelKey = .{
         ._value = 0x15,
     };
-
-    _value: i32,
 };
