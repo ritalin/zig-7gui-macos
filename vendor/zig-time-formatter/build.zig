@@ -10,8 +10,8 @@ pub fn build(b: *std.Build) void {
     _ = b.addModule(
         "time-formatter",
         .{
-            .source_file = .{ .path = "src/main.zig" },
-            .dependencies = &.{},
+            .root_source_file = .{ .path = "src/main.zig" },
+            .imports = &.{},
         }
     );
 }

@@ -5,8 +5,7 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     _ = b.addModule("sparse_enumset", .{
-        .source_file = .{ .path = "src/root.zig" },
-        .dependencies = &.{},        
+        .root_source_file = .{ .path = "src/root.zig" },
     });
 
     const lib_unit_tests = b.addTest(.{

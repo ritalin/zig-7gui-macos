@@ -1,6 +1,6 @@
 const std = @import("std");
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -10,8 +10,8 @@ pub fn build(b: *std.build.Builder) void {
     const mod_time_parser = b.addModule(
         "time-parser",
         .{
-            .source_file = .{ .path = "src/main.zig" },
-            .dependencies = &.{
+            .root_source_file = .{ .path = "src/main.zig" },
+            .imports = &.{
                 .{ .name = "time-formatter", .module = mod_time_formatter },
             },
         },
@@ -25,8 +25,8 @@ pub fn build(b: *std.build.Builder) void {
         .target = target,
         .optimize = optimize,
     });
-    exe.addModule("time-parser", mod_time_parser);
-    exe.addModule("time-formatter", mod_time_formatter);
+    exe.root_module.addImport("time-parser", mod_time_parser);
+    exe.root_module.addImport("time-formatter", mod_time_formatter);
 
     b.installArtifact(exe);
     const run_cmd = b.addRunArtifact(exe);
@@ -38,8 +38,8 @@ pub fn build(b: *std.build.Builder) void {
         .target = target,
         .optimize = optimize,
     });
-    unit_tests.addModule("time-parser", mod_time_parser);
-    unit_tests.addModule("time-formatter", mod_time_formatter);
+    unit_tests.root_module.addImport("time-parser", mod_time_parser);
+    unit_tests.root_module.addImport("time-formatter", mod_time_formatter);
 
     const run_unit_tests = b.addRunArtifact(unit_tests);
     const test_step = b.step("test", "Run unit tests");

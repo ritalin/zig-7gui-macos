@@ -18,61 +18,61 @@ pub fn build(b: *std.Build) !void {
     const mod_sparse_enumset = dep_sparse_enumset.module("sparse_enumset");
 
     // Core modules (NSObject, etc...)
-    const mod_runtime = b.createModule(.{ .source_file = .{ .path = "src/fw/Runtime.zig" }, .dependencies = &.{
+    const mod_runtime = b.createModule(.{ .root_source_file = .{ .path = "src/fw/Runtime.zig" }, .imports = &.{
         .{ .name = "objc", .module = mod_objc },
     } });
-    try mod_runtime.dependencies.put("Runtime", mod_runtime);
+    mod_runtime.addImport("Runtime", mod_runtime);
 
-    const mod_runtime_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/RuntimeSupport.zig" }, .dependencies = &.{
+    const mod_runtime_support = b.createModule(.{ .root_source_file = .{ .path = "src/fw/Support/RuntimeSupport.zig" }, .imports = &.{
         .{ .name = "objc", .module = mod_objc },
         .{ .name = "sparse-enumset", .module = mod_sparse_enumset },
         .{ .name = "Runtime", .module = mod_runtime },
     } });
-    try mod_runtime_support.dependencies.put("Runtime-Support", mod_runtime_support);
-    try mod_runtime.dependencies.put("Runtime-Support", mod_runtime_support);
+    mod_runtime_support.addImport("Runtime-Support", mod_runtime_support);
+    mod_runtime.addImport("Runtime-Support", mod_runtime_support);
 
     // QuartzCore.framework (referencing from AppKit.framework)
     const mod_quartz = b.createModule(.{
-        .source_file = .{ .path = "src/fw/QuartzCore.zig" },
-        .dependencies = &.{
+        .root_source_file = .{ .path = "src/fw/QuartzCore.zig" },
+        .imports = &.{
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
-    try mod_quartz.dependencies.put("QuartzCore", mod_quartz);
+    mod_quartz.addImport("QuartzCore", mod_quartz);
     // CoreGraphics.framework (referencing from AppKit.framework)
     const mod_coreGraphics = b.createModule(.{
-        .source_file = .{ .path = "src/fw/CoreGraphics.zig" },
-        .dependencies = &.{
+        .root_source_file = .{ .path = "src/fw/CoreGraphics.zig" },
+        .imports = &.{
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "QuartzCore", .module = mod_quartz },
             .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
-    try mod_coreGraphics.dependencies.put("CoreGraphics", mod_coreGraphics);
+    mod_coreGraphics.addImport("CoreGraphics", mod_coreGraphics);
     // QuartzCore and CoreGraphics has been depended each other.
-    try mod_quartz.dependencies.put("CoreGraphics", mod_coreGraphics);
+    mod_quartz.addImport("CoreGraphics", mod_coreGraphics);
 
     // Foundation.framework
     const mod_foundation = b.createModule(.{
-        .source_file = .{ .path = "src/fw/Foundation.zig" },
-        .dependencies = &.{
+        .root_source_file = .{ .path = "src/fw/Foundation.zig" },
+        .imports = &.{
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "CoreGraphics", .module = mod_coreGraphics },
             .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
-    try mod_foundation.dependencies.put("Foundation", mod_foundation);
-    try mod_coreGraphics.dependencies.put("Foundation", mod_foundation);
-    try mod_quartz.dependencies.put("Foundation", mod_foundation);
+    mod_foundation.addImport("Foundation", mod_foundation);
+    mod_coreGraphics.addImport("Foundation", mod_foundation);
+    mod_quartz.addImport("Foundation", mod_foundation);
 
     // AppKit.framework
     const mod_appKit = b.createModule(.{
-        .source_file = .{ .path = "src/fw/AppKit.zig" },
-        .dependencies = &.{
+        .root_source_file = .{ .path = "src/fw/AppKit.zig" },
+        .imports = &.{
             .{ .name = "objc", .module = mod_objc },
             .{ .name = "Runtime", .module = mod_runtime },
             .{ .name = "Foundation", .module = mod_foundation },
@@ -81,10 +81,10 @@ pub fn build(b: *std.Build) !void {
             .{ .name = "Runtime-Support", .module = mod_runtime_support },
         },
     });
-    try mod_appKit.dependencies.put("AppKit", mod_appKit);
+    mod_appKit.addImport("AppKit", mod_appKit);
 
     // AppKit support package (event handling, etc..)
-    const mod_appKit_support = b.createModule(.{ .source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" }, .dependencies = &.{
+    const mod_appKit_support = b.createModule(.{ .root_source_file = .{ .path = "src/fw/Support/AppKitSupport.zig" }, .imports = &.{
         .{ .name = "objc", .module = mod_objc },
         .{ .name = "Runtime", .module = mod_runtime },
         .{ .name = "CoreGraphics", .module = mod_coreGraphics },
@@ -124,18 +124,18 @@ pub fn build(b: *std.Build) !void {
             .optimize = optimize,
         });
 
-        exe.addModule("objc", mod_objc);
-        exe.addModule("Runtime", mod_runtime);
-        exe.addModule("CoreGraphics", mod_coreGraphics);
-        exe.addModule("QuartzCore", mod_quartz);
-        exe.addModule("Foundation", mod_foundation);
-        exe.addModule("AppKit", mod_appKit);
-        exe.addModule("Runtime-Support", mod_runtime_support);
-        exe.addModule("AppKit-Support", mod_appKit_support);
+        exe.root_module.addImport("objc", mod_objc);
+        exe.root_module.addImport("Runtime", mod_runtime);
+        exe.root_module.addImport("CoreGraphics", mod_coreGraphics);
+        exe.root_module.addImport("QuartzCore", mod_quartz);
+        exe.root_module.addImport("Foundation", mod_foundation);
+        exe.root_module.addImport("AppKit", mod_appKit);
+        exe.root_module.addImport("Runtime-Support", mod_runtime_support);
+        exe.root_module.addImport("AppKit-Support", mod_appKit_support);
 
         // exe.addModule("time", mod_time);
-        exe.addModule("time-parser", mod_time_parser);
-        exe.addModule("time-formatter", mod_time_formatter);
+        exe.root_module.addImport("time-parser", mod_time_parser);
+        exe.root_module.addImport("time-formatter", mod_time_formatter);
 
         exe.addSystemIncludePath(.{ .path = "/usr/include" });
         exe.addFrameworkPath(.{ .path = "/System/Library/Frameworks" });
