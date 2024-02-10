@@ -1,7 +1,6 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
-const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
@@ -100,7 +99,6 @@ pub const NSColorChanging = struct {
     pub const Self = @This();
 };
 
-const NSNotificationName = foundation.NSNotificationName;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

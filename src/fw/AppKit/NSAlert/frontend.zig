@@ -98,7 +98,3 @@ const NSWindow = appKit.NSWindow;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
-
-pub const NSAlertFirstButtonReturn: NSModalResponse = 1000;
-pub const NSAlertSecondButtonReturn: NSModalResponse = 1001;
-pub const NSAlertThirdButtonReturn: NSModalResponse = 1002;

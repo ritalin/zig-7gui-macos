@@ -24,6 +24,13 @@ pub const NSViewSelectors = struct {
         return _sel_addSubview.?;
     }
 
+    pub fn removeFromSuperview() objc.Sel {
+        if (_sel_removeFromSuperview == null) {
+            _sel_removeFromSuperview = objc.Sel.registerName("removeFromSuperview");
+        }
+        return _sel_removeFromSuperview.?;
+    }
+
     pub fn setFrameOrigin() objc.Sel {
         if (_sel_setFrameOrigin == null) {
             _sel_setFrameOrigin = objc.Sel.registerName("setFrameOrigin:");
@@ -52,6 +59,20 @@ pub const NSViewSelectors = struct {
         return _sel_setFrame.?;
     }
 
+    pub fn setBoundsOrigin() objc.Sel {
+        if (_sel_setBoundsOrigin == null) {
+            _sel_setBoundsOrigin = objc.Sel.registerName("setBoundsOrigin:");
+        }
+        return _sel_setBoundsOrigin.?;
+    }
+
+    pub fn setBoundsSize() objc.Sel {
+        if (_sel_setBoundsSize == null) {
+            _sel_setBoundsSize = objc.Sel.registerName("setBoundsSize:");
+        }
+        return _sel_setBoundsSize.?;
+    }
+
     pub fn bounds() objc.Sel {
         if (_sel_bounds == null) {
             _sel_bounds = objc.Sel.registerName("bounds");
@@ -64,6 +85,13 @@ pub const NSViewSelectors = struct {
             _sel_setBounds = objc.Sel.registerName("setBounds:");
         }
         return _sel_setBounds.?;
+    }
+
+    pub fn convertPointFromView() objc.Sel {
+        if (_sel_convertPointFromView == null) {
+            _sel_convertPointFromView = objc.Sel.registerName("convertPoint:fromView:");
+        }
+        return _sel_convertPointFromView.?;
     }
 
     pub fn wantsLayer() objc.Sel {
@@ -97,12 +125,16 @@ pub const NSViewSelectors = struct {
     var _sel_initWithFrame: ?objc.Sel = null;
     var _sel_superview: ?objc.Sel = null;
     var _sel_addSubview: ?objc.Sel = null;
+    var _sel_removeFromSuperview: ?objc.Sel = null;
     var _sel_setFrameOrigin: ?objc.Sel = null;
     var _sel_setFrameSize: ?objc.Sel = null;
     var _sel_frame: ?objc.Sel = null;
     var _sel_setFrame: ?objc.Sel = null;
+    var _sel_setBoundsOrigin: ?objc.Sel = null;
+    var _sel_setBoundsSize: ?objc.Sel = null;
     var _sel_bounds: ?objc.Sel = null;
     var _sel_setBounds: ?objc.Sel = null;
+    var _sel_convertPointFromView: ?objc.Sel = null;
     var _sel_wantsLayer: ?objc.Sel = null;
     var _sel_setWantsLayer: ?objc.Sel = null;
     var _sel_layer: ?objc.Sel = null;

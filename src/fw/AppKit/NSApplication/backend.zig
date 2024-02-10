@@ -76,5 +76,7 @@ pub const NSApplicationDelegateMessages = struct {
     pub const registerMessage = runtime_support.backend_support.ObjectRegistry.registerMessage;
 };
 
+pub extern var NSAppKitVersionNumber: NSAppKitVersion;
+
 const NSAppKitVersion = f64;
 const NSInteger = runtime.NSInteger;

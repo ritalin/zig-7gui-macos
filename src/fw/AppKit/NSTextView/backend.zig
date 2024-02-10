@@ -14,6 +14,18 @@ pub const NSTextViewMessages = struct {
     }
 };
 
+pub const NSTextCheckingForNSTextViewMessages = struct {
+    pub fn getClass() objc.Class {
+        return objc.getClass("NSTextView").?;
+    }
+
+    pub fn setAutomaticQuoteSubstitutionEnabled(self: objc.Object, _automaticQuoteSubstitutionEnabled: objc.c.BOOL) void {
+        return self.msgSend(void, selector.NSTextCheckingForNSTextViewSelectors.setAutomaticQuoteSubstitutionEnabled(), .{
+            _automaticQuoteSubstitutionEnabled,
+        });
+    }
+};
+
 pub const NSSharingForNSTextViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSTextView").?;

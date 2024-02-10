@@ -210,7 +210,6 @@ const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentificati
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;

@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
+const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
@@ -54,4 +55,6 @@ pub const NSTextContent = struct {
     pub const Self = @This();
 };
 
+pub const NSTextContentType = *const NSString;
+const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;

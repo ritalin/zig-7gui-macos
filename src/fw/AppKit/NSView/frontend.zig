@@ -39,6 +39,10 @@ pub const NSView = struct {
         return backend.NSViewMessages.addSubview(runtime_support.objectId(NSView, self), runtime_support.objectId(NSView, _view));
     }
 
+    pub fn removeFromSuperview(self: Self) void {
+        return backend.NSViewMessages.removeFromSuperview(runtime_support.objectId(NSView, self));
+    }
+
     pub fn setFrameOrigin(self: Self, _newOrigin: NSPoint) void {
         return backend.NSViewMessages.setFrameOrigin(runtime_support.objectId(NSView, self), runtime_support.pass(NSPoint, _newOrigin));
     }
@@ -55,12 +59,24 @@ pub const NSView = struct {
         return backend.NSViewMessages.setFrame(runtime_support.objectId(NSView, self), runtime_support.pass(NSRect, _frame));
     }
 
+    pub fn setBoundsOrigin(self: Self, _newOrigin: NSPoint) void {
+        return backend.NSViewMessages.setBoundsOrigin(runtime_support.objectId(NSView, self), runtime_support.pass(NSPoint, _newOrigin));
+    }
+
+    pub fn setBoundsSize(self: Self, _newSize: NSSize) void {
+        return backend.NSViewMessages.setBoundsSize(runtime_support.objectId(NSView, self), runtime_support.pass(NSSize, _newSize));
+    }
+
     pub fn bounds(self: Self) NSRect {
         return backend.NSViewMessages.bounds(runtime_support.objectId(NSView, self));
     }
 
     pub fn setBounds(self: Self, _bounds: NSRect) void {
         return backend.NSViewMessages.setBounds(runtime_support.objectId(NSView, self), runtime_support.pass(NSRect, _bounds));
+    }
+
+    pub fn convertPointFromView(self: Self, _point: NSPoint, _view: ?NSView) NSPoint {
+        return backend.NSViewMessages.convertPointFromView(runtime_support.objectId(NSView, self), runtime_support.pass(NSPoint, _point), runtime_support.objectId(?NSView, _view));
     }
 
     pub fn wantsLayer(self: Self) bool {
@@ -120,6 +136,7 @@ pub const NSView = struct {
 
     pub const Self = @This();
     pub const GestureRecognizer = NSGestureRecognizerForNSView;
+    pub const ExternVars = ExternVarsForNSView;
 };
 
 const NSGestureRecognizerForNSView = struct {
@@ -236,6 +253,15 @@ pub const NSBorderType = struct {
     };
 };
 
+const ExternVarsForNSView = struct {
+    pub fn NSViewBoundsDidChangeNotification() NSNotificationName {
+        return runtime_support.wrapObject(NSNotificationName, objc.Object.fromId(backend.NSViewBoundsDidChangeNotification));
+    }
+};
+
+pub const NSViewFullScreenModeOptionKey = *const NSString;
+pub const NSDefinitionOptionKey = *const NSString;
+pub const NSDefinitionPresentationType = *const NSString;
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;
@@ -249,6 +275,7 @@ const NSNotificationName = foundation.NSNotificationName;
 const NSPoint = foundation.NSPoint;
 const NSRect = foundation.NSRect;
 const NSSize = foundation.NSSize;
+const NSString = foundation.NSString;
 const CALayer = quartzCore.CALayer;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;

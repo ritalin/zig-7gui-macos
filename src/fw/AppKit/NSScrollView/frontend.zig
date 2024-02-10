@@ -21,6 +21,10 @@ pub const NSScrollView = struct {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn documentVisibleRect(self: Self) NSRect {
+        return backend.NSScrollViewMessages.documentVisibleRect(runtime_support.objectId(NSScrollView, self));
+    }
+
     pub fn documentView(self: Self) ?NSView {
         return runtime_support.wrapObject(?NSView, backend.NSScrollViewMessages.documentView(runtime_support.objectId(NSScrollView, self)));
     }
@@ -75,6 +79,26 @@ pub const NSScrollView = struct {
 
     pub fn setAutohidesScrollers(self: Self, _autohidesScrollers: bool) void {
         return backend.NSScrollViewMessages.setAutohidesScrollers(runtime_support.objectId(NSScrollView, self), runtime_support.toBOOL(_autohidesScrollers));
+    }
+
+    pub fn addFloatingSubviewForAxis(self: Self, _view: NSView, _axis: NSEventGestureAxis) void {
+        return backend.NSScrollViewMessages.addFloatingSubviewForAxis(runtime_support.objectId(NSScrollView, self), runtime_support.objectId(NSView, _view), runtime_support.unwrapEnum(NSEventGestureAxis, NSInteger, _axis));
+    }
+
+    pub fn automaticallyAdjustsContentInsets(self: Self) bool {
+        return runtime_support.fromBOOL(backend.NSScrollViewMessages.automaticallyAdjustsContentInsets(runtime_support.objectId(NSScrollView, self)));
+    }
+
+    pub fn setAutomaticallyAdjustsContentInsets(self: Self, _automaticallyAdjustsContentInsets: bool) void {
+        return backend.NSScrollViewMessages.setAutomaticallyAdjustsContentInsets(runtime_support.objectId(NSScrollView, self), runtime_support.toBOOL(_automaticallyAdjustsContentInsets));
+    }
+
+    pub fn contentInsets(self: Self) NSEdgeInsets {
+        return backend.NSScrollViewMessages.contentInsets(runtime_support.objectId(NSScrollView, self));
+    }
+
+    pub fn setContentInsets(self: Self, _contentInsets: NSEdgeInsets) void {
+        return backend.NSScrollViewMessages.setContentInsets(runtime_support.objectId(NSScrollView, self), runtime_support.pass(NSEdgeInsets, _contentInsets));
     }
 
     fn Constructor(comptime DesiredType: type) type {
@@ -142,12 +166,14 @@ const NSAppearanceCustomization = appKit.NSAppearanceCustomization;
 const NSBorderType = appKit.NSBorderType;
 const NSClipView = appKit.NSClipView;
 const NSDraggingDestination = appKit.NSDraggingDestination;
+const NSEventGestureAxis = appKit.NSEventGestureAxis;
 const NSResponder = appKit.NSResponder;
 const NSTextFinderBarContainer = appKit.NSTextFinderBarContainer;
 const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
-const NSNotificationName = foundation.NSNotificationName;
+const NSEdgeInsets = foundation.NSEdgeInsets;
+const NSRect = foundation.NSRect;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

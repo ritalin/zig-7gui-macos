@@ -84,6 +84,11 @@ pub const NSIndexSet = struct {
                 const _class = DesiredType.TypeSupport.getClass();
                 return runtime_support.wrapObject(DesiredType, backend.NSIndexSetMessages.indexSetWithIndex(_class, runtime_support.pass(NSUInteger, _value)));
             }
+
+            pub fn indexSetWithIndexesInRange(_range: NSRange) DesiredType {
+                const _class = DesiredType.TypeSupport.getClass();
+                return runtime_support.wrapObject(DesiredType, backend.NSIndexSetMessages.indexSetWithIndexesInRange(_class, runtime_support.pass(NSRange, _range)));
+            }
         };
     }
 
@@ -115,6 +120,7 @@ pub const NSIndexSet = struct {
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
 const NSMutableCopying = foundation.NSMutableCopying;
+const NSRange = foundation.NSRange;
 const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

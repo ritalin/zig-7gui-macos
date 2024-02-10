@@ -1,12 +1,17 @@
 const std = @import("std");
 const objc = @import("objc");
 const selector = @import("./selector.zig");
+const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSScrollViewMessages = struct {
     pub fn getClass() objc.Class {
         return objc.getClass("NSScrollView").?;
+    }
+
+    pub fn documentVisibleRect(self: objc.Object) NSRect {
+        return self.msgSend(NSRect, selector.NSScrollViewSelectors.documentVisibleRect(), .{});
     }
 
     pub fn documentView(self: objc.Object) ?objc.Object {
@@ -78,6 +83,36 @@ pub const NSScrollViewMessages = struct {
             _autohidesScrollers,
         });
     }
+
+    pub fn addFloatingSubviewForAxis(self: objc.Object, _view: objc.Object, _axis: NSInteger) void {
+        return self.msgSend(void, selector.NSScrollViewSelectors.addFloatingSubviewForAxis(), .{
+            runtime_support.unwrapOptionalObject(_view),
+            _axis,
+        });
+    }
+
+    pub fn automaticallyAdjustsContentInsets(self: objc.Object) objc.c.BOOL {
+        return self.msgSend(objc.c.BOOL, selector.NSScrollViewSelectors.automaticallyAdjustsContentInsets(), .{});
+    }
+
+    pub fn setAutomaticallyAdjustsContentInsets(self: objc.Object, _automaticallyAdjustsContentInsets: objc.c.BOOL) void {
+        return self.msgSend(void, selector.NSScrollViewSelectors.setAutomaticallyAdjustsContentInsets(), .{
+            _automaticallyAdjustsContentInsets,
+        });
+    }
+
+    pub fn contentInsets(self: objc.Object) NSEdgeInsets {
+        return self.msgSend(NSEdgeInsets, selector.NSScrollViewSelectors.contentInsets(), .{});
+    }
+
+    pub fn setContentInsets(self: objc.Object, _contentInsets: NSEdgeInsets) void {
+        return self.msgSend(void, selector.NSScrollViewSelectors.setContentInsets(), .{
+            _contentInsets,
+        });
+    }
 };
 
+const NSEdgeInsets = foundation.NSEdgeInsets;
+const NSRect = foundation.NSRect;
+const NSInteger = runtime.NSInteger;
 const NSUInteger = runtime.NSUInteger;

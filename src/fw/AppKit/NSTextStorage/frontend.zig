@@ -60,7 +60,6 @@ const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
 const NSMutableAttributedString = foundation.NSMutableAttributedString;
 const NSMutableCopying = foundation.NSMutableCopying;
-const NSNotificationName = foundation.NSNotificationName;
 const NSSecureCoding = foundation.NSSecureCoding;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

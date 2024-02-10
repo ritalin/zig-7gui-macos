@@ -51,6 +51,14 @@ pub const NSTableColumn = struct {
         return backend.NSTableColumnMessages.setMaxWidth(runtime_support.objectId(NSTableColumn, self), runtime_support.pass(CGFloat, _maxWidth));
     }
 
+    pub fn title(self: Self) NSString {
+        return runtime_support.wrapObject(NSString, backend.NSTableColumnMessages.title(runtime_support.objectId(NSTableColumn, self)));
+    }
+
+    pub fn setTitle(self: Self, _title: NSString) void {
+        return backend.NSTableColumnMessages.setTitle(runtime_support.objectId(NSTableColumn, self), runtime_support.objectId(NSString, _title));
+    }
+
     pub fn isEditable(self: Self) bool {
         return runtime_support.fromBOOL(backend.NSTableColumnMessages.isEditable(runtime_support.objectId(NSTableColumn, self)));
     }
@@ -63,7 +71,7 @@ pub const NSTableColumn = struct {
         return struct {
             pub fn initWithIdentifier(_identifier: NSUserInterfaceItemIdentifier) DesiredType {
                 const _class = DesiredType.TypeSupport.getClass();
-                return runtime_support.wrapObject(DesiredType, backend.NSTableColumnMessages.initWithIdentifier(_class, runtime_support.pass(NSUserInterfaceItemIdentifier, _identifier)));
+                return runtime_support.wrapObject(DesiredType, backend.NSTableColumnMessages.initWithIdentifier(_class, runtime_support.objectId(NSString, _identifier)));
             }
         };
     }
@@ -95,6 +103,7 @@ const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentificati
 const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
 const CGFloat = coreGraphics.CGFloat;
 const NSCoding = foundation.NSCoding;
+const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;

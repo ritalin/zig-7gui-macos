@@ -106,6 +106,7 @@ pub const NSApplication = struct {
 
     pub const Self = @This();
     pub const Event = NSEventForNSApplication;
+    pub const ExternVars = ExternVarsForNSApplication;
 };
 
 const NSEventForNSApplication = struct {
@@ -265,11 +266,17 @@ pub const NSApplicationDelegate = struct {
     pub const Self = @This();
 };
 
-pub const NSAppKitVersion = f64;
-pub const NSModalResponse = NSInteger;
-pub const NSModalSession = *anyopaque;
-pub const NSAboutPanelOptionKey = NSString;
-pub const NSServiceProviderName = NSString;
+const ExternVarsForNSApplication = struct {
+    pub fn NSAppKitVersionNumber() NSAppKitVersion {
+        return runtime_support.wrapObject(NSAppKitVersion, objc.Object.fromId(backend.NSAppKitVersionNumber));
+    }
+};
+
+pub const NSAppKitVersion = *const f64;
+pub const NSModalResponse = *const NSInteger;
+pub const NSModalSession = *const *anyopaque;
+pub const NSAboutPanelOptionKey = *const NSString;
+pub const NSServiceProviderName = *const NSString;
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;
@@ -279,8 +286,6 @@ const NSResponder = appKit.NSResponder;
 const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
 const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
-const NSRunLoopMode = foundation.NSRunLoopMode;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;

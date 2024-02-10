@@ -73,7 +73,6 @@ pub const NSMenuItem = struct {
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentification;
-const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
 const NSValidatedUserInterfaceItem = appKit.NSValidatedUserInterfaceItem;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;

@@ -132,7 +132,6 @@ const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentificati
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
-const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

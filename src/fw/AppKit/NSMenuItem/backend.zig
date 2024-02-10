@@ -20,7 +20,7 @@ pub const NSMenuItemMessages = struct {
     }
 
     pub fn action(self: objc.Object) ?objc.Sel {
-        return self.msgSend(?objc.Sel, selector.NSMenuItemSelectors.action(), .{});
+        return runtime_support.wrapOptionalSelValue(self.msgSend(objc.c.SEL, selector.NSMenuItemSelectors.action(), .{}));
     }
 
     pub fn setAction(self: objc.Object, _action: ?objc.Sel) void {

@@ -346,7 +346,6 @@ const NSPasteboardWriting = appKit.NSPasteboardWriting;
 const CGColorRef = coreGraphics.CGColorRef;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
-const NSNotificationName = foundation.NSNotificationName;
 const NSSecureCoding = foundation.NSSecureCoding;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;

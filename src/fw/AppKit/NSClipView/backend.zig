@@ -10,6 +10,10 @@ pub const NSClipViewMessages = struct {
         return objc.getClass("NSClipView").?;
     }
 
+    pub fn documentVisibleRect(self: objc.Object) NSRect {
+        return self.msgSend(NSRect, selector.NSClipViewSelectors.documentVisibleRect(), .{});
+    }
+
     pub fn scrollToPoint(self: objc.Object, _newOrigin: NSPoint) void {
         return self.msgSend(void, selector.NSClipViewSelectors.scrollToPoint(), .{
             _newOrigin,
@@ -18,3 +22,4 @@ pub const NSClipViewMessages = struct {
 };
 
 const NSPoint = foundation.NSPoint;
+const NSRect = foundation.NSRect;

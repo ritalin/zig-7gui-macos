@@ -65,7 +65,28 @@ pub const NSTextView = struct {
     };
 
     pub const Self = @This();
+    pub const Checking = NSTextCheckingForNSTextView;
     pub const Sharing = NSSharingForNSTextView;
+};
+
+const NSTextCheckingForNSTextView = struct {
+    _id: objc.Object,
+
+    pub inline fn of(comptime DesiredType: type) type {
+        return runtime_support.CategoryUpperCast(Category, Category.Constructor).of(DesiredType);
+    }
+
+    pub fn setAutomaticQuoteSubstitutionEnabled(self: Category, _automaticQuoteSubstitutionEnabled: bool) void {
+        return backend.NSTextCheckingForNSTextViewMessages.setAutomaticQuoteSubstitutionEnabled(runtime_support.objectId(NSTextCheckingForNSTextView, self), runtime_support.toBOOL(_automaticQuoteSubstitutionEnabled));
+    }
+
+    fn Constructor(comptime DesiredType: type) type {
+        _ = DesiredType;
+        return struct {};
+    }
+
+    const Category = @This();
+    pub const Self = NSTextView;
 };
 
 const NSSharingForNSTextView = struct {
@@ -258,7 +279,6 @@ const NSDraggingDestination = appKit.NSDraggingDestination;
 const NSDraggingSource = appKit.NSDraggingSource;
 const NSIgnoreMisspelledWords = appKit.NSIgnoreMisspelledWords;
 const NSMenuItemValidation = appKit.NSMenuItemValidation;
-const NSPasteboardType = appKit.NSPasteboardType;
 const NSResponder = appKit.NSResponder;
 const NSStandardKeyBindingResponding = appKit.NSStandardKeyBindingResponding;
 const NSText = appKit.NSText;
@@ -272,8 +292,6 @@ const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentificati
 const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
-const NSNotificationName = foundation.NSNotificationName;
-const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;

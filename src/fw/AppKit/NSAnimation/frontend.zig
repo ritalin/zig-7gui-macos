@@ -86,7 +86,9 @@ pub const NSAnimatablePropertyContainer = struct {
     pub const Self = @This();
 };
 
-const NSNotificationName = foundation.NSNotificationName;
+pub const NSViewAnimationKey = *const NSString;
+pub const NSViewAnimationEffectName = *const NSString;
+pub const NSAnimatablePropertyKey = *const NSString;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSUInteger = runtime.NSUInteger;

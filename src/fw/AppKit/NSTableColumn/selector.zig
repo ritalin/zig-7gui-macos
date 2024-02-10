@@ -52,6 +52,20 @@ pub const NSTableColumnSelectors = struct {
         return _sel_setMaxWidth.?;
     }
 
+    pub fn title() objc.Sel {
+        if (_sel_title == null) {
+            _sel_title = objc.Sel.registerName("title");
+        }
+        return _sel_title.?;
+    }
+
+    pub fn setTitle() objc.Sel {
+        if (_sel_setTitle == null) {
+            _sel_setTitle = objc.Sel.registerName("setTitle:");
+        }
+        return _sel_setTitle.?;
+    }
+
     pub fn isEditable() objc.Sel {
         if (_sel_isEditable == null) {
             _sel_isEditable = objc.Sel.registerName("isEditable");
@@ -73,6 +87,8 @@ pub const NSTableColumnSelectors = struct {
     var _sel_setMinWidth: ?objc.Sel = null;
     var _sel_maxWidth: ?objc.Sel = null;
     var _sel_setMaxWidth: ?objc.Sel = null;
+    var _sel_title: ?objc.Sel = null;
+    var _sel_setTitle: ?objc.Sel = null;
     var _sel_isEditable: ?objc.Sel = null;
     var _sel_setEditable: ?objc.Sel = null;
 };

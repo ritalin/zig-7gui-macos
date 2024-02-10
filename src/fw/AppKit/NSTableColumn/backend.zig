@@ -1,7 +1,6 @@
 const std = @import("std");
 const objc = @import("objc");
 const selector = @import("./selector.zig");
-const appKit = @import("AppKit");
 const coreGraphics = @import("CoreGraphics");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
@@ -11,9 +10,9 @@ pub const NSTableColumnMessages = struct {
         return objc.getClass("NSTableColumn").?;
     }
 
-    pub fn initWithIdentifier(_class: objc.Class, _identifier: NSUserInterfaceItemIdentifier) objc.Object {
+    pub fn initWithIdentifier(_class: objc.Class, _identifier: objc.Object) objc.Object {
         return runtime_support.backend_support.allocInstance(_class).msgSend(objc.Object, selector.NSTableColumnSelectors.initWithIdentifier(), .{
-            _identifier,
+            runtime_support.unwrapOptionalObject(_identifier),
         });
     }
 
@@ -47,6 +46,16 @@ pub const NSTableColumnMessages = struct {
         });
     }
 
+    pub fn title(self: objc.Object) objc.Object {
+        return self.msgSend(objc.Object, selector.NSTableColumnSelectors.title(), .{});
+    }
+
+    pub fn setTitle(self: objc.Object, _title: objc.Object) void {
+        return self.msgSend(void, selector.NSTableColumnSelectors.setTitle(), .{
+            runtime_support.unwrapOptionalObject(_title),
+        });
+    }
+
     pub fn isEditable(self: objc.Object) objc.c.BOOL {
         return self.msgSend(objc.c.BOOL, selector.NSTableColumnSelectors.isEditable(), .{});
     }
@@ -58,5 +67,4 @@ pub const NSTableColumnMessages = struct {
     }
 };
 
-const NSUserInterfaceItemIdentifier = appKit.NSUserInterfaceItemIdentifier;
 const CGFloat = coreGraphics.CGFloat;

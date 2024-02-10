@@ -17,6 +17,20 @@ pub const NSTextFieldSelectors = struct {
         return _sel_setBackgroundColor.?;
     }
 
+    pub fn textColor() objc.Sel {
+        if (_sel_textColor == null) {
+            _sel_textColor = objc.Sel.registerName("textColor");
+        }
+        return _sel_textColor.?;
+    }
+
+    pub fn setTextColor() objc.Sel {
+        if (_sel_setTextColor == null) {
+            _sel_setTextColor = objc.Sel.registerName("setTextColor:");
+        }
+        return _sel_setTextColor.?;
+    }
+
     pub fn isEditable() objc.Sel {
         if (_sel_isEditable == null) {
             _sel_isEditable = objc.Sel.registerName("isEditable");
@@ -47,6 +61,8 @@ pub const NSTextFieldSelectors = struct {
 
     var _sel_backgroundColor: ?objc.Sel = null;
     var _sel_setBackgroundColor: ?objc.Sel = null;
+    var _sel_textColor: ?objc.Sel = null;
+    var _sel_setTextColor: ?objc.Sel = null;
     var _sel_isEditable: ?objc.Sel = null;
     var _sel_setEditable: ?objc.Sel = null;
     var _sel_delegate: ?objc.Sel = null;

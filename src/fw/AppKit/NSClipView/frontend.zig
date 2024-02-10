@@ -21,6 +21,10 @@ pub const NSClipView = struct {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn documentVisibleRect(self: Self) NSRect {
+        return backend.NSClipViewMessages.documentVisibleRect(runtime_support.objectId(NSClipView, self));
+    }
+
     pub fn scrollToPoint(self: Self, _newOrigin: NSPoint) void {
         return backend.NSClipViewMessages.scrollToPoint(runtime_support.objectId(NSClipView, self), runtime_support.pass(NSPoint, _newOrigin));
     }
@@ -62,5 +66,6 @@ const NSUserInterfaceItemIdentification = appKit.NSUserInterfaceItemIdentificati
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
 const NSPoint = foundation.NSPoint;
+const NSRect = foundation.NSRect;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

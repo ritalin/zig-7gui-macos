@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const selector = @import("./selector.zig");
+const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
 
@@ -31,6 +32,12 @@ pub const NSIndexSetMessages = struct {
         });
     }
 
+    pub fn indexSetWithIndexesInRange(_class: objc.Class, _range: NSRange) objc.Object {
+        return _class.msgSend(objc.Object, selector.NSIndexSetSelectors.indexSetWithIndexesInRange(), .{
+            _range,
+        });
+    }
+
     pub fn count(self: objc.Object) NSUInteger {
         return self.msgSend(NSUInteger, selector.NSIndexSetSelectors.count(), .{});
     }
@@ -42,4 +49,5 @@ pub const NSIndexSetMessages = struct {
     }
 };
 
+const NSRange = foundation.NSRange;
 const NSUInteger = runtime.NSUInteger;

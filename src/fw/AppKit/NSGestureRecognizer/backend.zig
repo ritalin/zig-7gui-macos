@@ -28,7 +28,7 @@ pub const NSGestureRecognizerMessages = struct {
     }
 
     pub fn action(self: objc.Object) ?objc.Sel {
-        return self.msgSend(?objc.Sel, selector.NSGestureRecognizerSelectors.action(), .{});
+        return runtime_support.wrapOptionalSelValue(self.msgSend(objc.c.SEL, selector.NSGestureRecognizerSelectors.action(), .{}));
     }
 
     pub fn setAction(self: objc.Object, _action: ?objc.Sel) void {

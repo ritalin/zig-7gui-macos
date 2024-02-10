@@ -64,6 +64,14 @@ pub const NSNotificationCenter = struct {
         return runtime_support.ObjectUpperCast(Self, Self.Constructor).of(DesiredType);
     }
 
+    pub fn defaultCenter() NSNotificationCenter {
+        return runtime_support.wrapObject(NSNotificationCenter, backend.NSNotificationCenterMessages.defaultCenter());
+    }
+
+    pub fn addObserverSelectorName(self: Self, _observer: objc.Object, _aSelector: objc.Sel, _aName: ?NSNotificationName, _anObject: ?objc.Object) void {
+        return backend.NSNotificationCenterMessages.addObserverSelectorName(runtime_support.objectId(NSNotificationCenter, self), runtime_support.pass(objc.Object, _observer), runtime_support.pass(objc.Sel, _aSelector), runtime_support.objectId(?NSString, _aName), runtime_support.pass(?objc.Object, _anObject));
+    }
+
     fn Constructor(comptime DesiredType: type) type {
         _ = DesiredType;
         return struct {};
@@ -105,7 +113,9 @@ const NSNotificationCreationForNSNotification = struct {
     pub const Self = NSNotification;
 };
 
+pub const NSNotificationName = *const NSString;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
+const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

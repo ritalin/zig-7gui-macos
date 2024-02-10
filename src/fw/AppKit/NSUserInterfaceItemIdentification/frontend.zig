@@ -55,6 +55,6 @@ pub const NSUserInterfaceItemIdentification = struct {
     pub const Self = @This();
 };
 
-pub const NSUserInterfaceItemIdentifier = NSString;
+pub const NSUserInterfaceItemIdentifier = *const NSString;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;

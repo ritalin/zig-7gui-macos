@@ -26,6 +26,10 @@ pub const NSViewMessages = struct {
         });
     }
 
+    pub fn removeFromSuperview(self: objc.Object) void {
+        return self.msgSend(void, selector.NSViewSelectors.removeFromSuperview(), .{});
+    }
+
     pub fn setFrameOrigin(self: objc.Object, _newOrigin: NSPoint) void {
         return self.msgSend(void, selector.NSViewSelectors.setFrameOrigin(), .{
             _newOrigin,
@@ -48,6 +52,18 @@ pub const NSViewMessages = struct {
         });
     }
 
+    pub fn setBoundsOrigin(self: objc.Object, _newOrigin: NSPoint) void {
+        return self.msgSend(void, selector.NSViewSelectors.setBoundsOrigin(), .{
+            _newOrigin,
+        });
+    }
+
+    pub fn setBoundsSize(self: objc.Object, _newSize: NSSize) void {
+        return self.msgSend(void, selector.NSViewSelectors.setBoundsSize(), .{
+            _newSize,
+        });
+    }
+
     pub fn bounds(self: objc.Object) NSRect {
         return self.msgSend(NSRect, selector.NSViewSelectors.bounds(), .{});
     }
@@ -55,6 +71,13 @@ pub const NSViewMessages = struct {
     pub fn setBounds(self: objc.Object, _bounds: NSRect) void {
         return self.msgSend(void, selector.NSViewSelectors.setBounds(), .{
             _bounds,
+        });
+    }
+
+    pub fn convertPointFromView(self: objc.Object, _point: NSPoint, _view: ?objc.Object) NSPoint {
+        return self.msgSend(NSPoint, selector.NSViewSelectors.convertPointFromView(), .{
+            _point,
+            runtime_support.unwrapOptionalObject(_view),
         });
     }
 
@@ -96,6 +119,8 @@ pub const NSLayerDelegateContentsScaleUpdatingForNSObjectMessages = struct {
         return objc.getClass("NSObject").?;
     }
 };
+
+pub extern var NSViewBoundsDidChangeNotification: objc.c.id;
 
 const NSPoint = foundation.NSPoint;
 const NSRect = foundation.NSRect;

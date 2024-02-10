@@ -18,6 +18,8 @@ pub usingnamespace @import("./Foundation/NSObjCRuntime/frontend.zig");
 // NSObject
 pub usingnamespace @import("./Foundation/NSObject/frontend.zig");
 pub usingnamespace @import("./Foundation/NSObject/selector.zig");
+// NSRange
+pub usingnamespace @import("./Foundation/NSRange/frontend.zig");
 // NSString
 pub usingnamespace @import("./Foundation/NSString/frontend.zig");
 pub usingnamespace @import("./Foundation/NSString/selector.zig");

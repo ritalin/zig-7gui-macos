@@ -13,6 +13,17 @@ pub const NSTextViewSelectors = struct {
     var _sel_textStorage: ?objc.Sel = null;
 };
 
+pub const NSTextCheckingForNSTextViewSelectors = struct {
+    pub fn setAutomaticQuoteSubstitutionEnabled() objc.Sel {
+        if (_sel_setAutomaticQuoteSubstitutionEnabled == null) {
+            _sel_setAutomaticQuoteSubstitutionEnabled = objc.Sel.registerName("setAutomaticQuoteSubstitutionEnabled:");
+        }
+        return _sel_setAutomaticQuoteSubstitutionEnabled.?;
+    }
+
+    var _sel_setAutomaticQuoteSubstitutionEnabled: ?objc.Sel = null;
+};
+
 pub const NSSharingForNSTextViewSelectors = struct {
     pub fn delegate() objc.Sel {
         if (_sel_delegate == null) {

@@ -1,6 +1,7 @@
 const std = @import("std");
 const objc = @import("objc");
 const backend = @import("./backend.zig");
+const appKit = @import("AppKit");
 const foundation = @import("Foundation");
 const runtime = @import("Runtime");
 const runtime_support = @import("Runtime-Support");
@@ -73,6 +74,18 @@ pub const NSEvent = struct {
 
     pub fn modifierFlags(self: Self) NSEventModifierFlags {
         return runtime_support.unpackOptions(NSEventModifierFlags, NSUInteger, backend.NSEventMessages.modifierFlags(runtime_support.objectId(NSEvent, self)));
+    }
+
+    pub fn window(self: Self) ?NSWindow {
+        return runtime_support.wrapObject(?NSWindow, backend.NSEventMessages.window(runtime_support.objectId(NSEvent, self)));
+    }
+
+    pub fn clickCount(self: Self) NSInteger {
+        return backend.NSEventMessages.clickCount(runtime_support.objectId(NSEvent, self));
+    }
+
+    pub fn locationInWindow(self: Self) NSPoint {
+        return backend.NSEventMessages.locationInWindow(runtime_support.objectId(NSEvent, self));
     }
 
     pub fn modifierFlagsCurrent() NSEventModifierFlags {
@@ -240,82 +253,25 @@ pub const NSPressureBehavior = struct {
     };
 };
 
+pub const NSEventGestureAxis = struct {
+    _value: NSInteger,
+
+    pub const None: NSEventGestureAxis = .{
+        ._value = 0,
+    };
+    pub const Horizontal: NSEventGestureAxis = .{
+        ._value = 0x1,
+    };
+    pub const Vertical: NSEventGestureAxis = .{
+        ._value = 0x2,
+    };
+};
+
+const NSWindow = appKit.NSWindow;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
+const NSPoint = foundation.NSPoint;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;
 const NSUInteger = runtime.NSUInteger;
-
-pub const NSUpArrowFunctionKey: c_uint = 0xF700;
-pub const NSDownArrowFunctionKey: c_uint = 0xF701;
-pub const NSLeftArrowFunctionKey: c_uint = 0xF702;
-pub const NSRightArrowFunctionKey: c_uint = 0xF703;
-pub const NSF1FunctionKey: c_uint = 0xF704;
-pub const NSF2FunctionKey: c_uint = 0xF705;
-pub const NSF3FunctionKey: c_uint = 0xF706;
-pub const NSF4FunctionKey: c_uint = 0xF707;
-pub const NSF5FunctionKey: c_uint = 0xF708;
-pub const NSF6FunctionKey: c_uint = 0xF709;
-pub const NSF7FunctionKey: c_uint = 0xF70A;
-pub const NSF8FunctionKey: c_uint = 0xF70B;
-pub const NSF9FunctionKey: c_uint = 0xF70C;
-pub const NSF10FunctionKey: c_uint = 0xF70D;
-pub const NSF11FunctionKey: c_uint = 0xF70E;
-pub const NSF12FunctionKey: c_uint = 0xF70F;
-pub const NSF13FunctionKey: c_uint = 0xF710;
-pub const NSF14FunctionKey: c_uint = 0xF711;
-pub const NSF15FunctionKey: c_uint = 0xF712;
-pub const NSF16FunctionKey: c_uint = 0xF713;
-pub const NSF17FunctionKey: c_uint = 0xF714;
-pub const NSF18FunctionKey: c_uint = 0xF715;
-pub const NSF19FunctionKey: c_uint = 0xF716;
-pub const NSF20FunctionKey: c_uint = 0xF717;
-pub const NSF21FunctionKey: c_uint = 0xF718;
-pub const NSF22FunctionKey: c_uint = 0xF719;
-pub const NSF23FunctionKey: c_uint = 0xF71A;
-pub const NSF24FunctionKey: c_uint = 0xF71B;
-pub const NSF25FunctionKey: c_uint = 0xF71C;
-pub const NSF26FunctionKey: c_uint = 0xF71D;
-pub const NSF27FunctionKey: c_uint = 0xF71E;
-pub const NSF28FunctionKey: c_uint = 0xF71F;
-pub const NSF29FunctionKey: c_uint = 0xF720;
-pub const NSF30FunctionKey: c_uint = 0xF721;
-pub const NSF31FunctionKey: c_uint = 0xF722;
-pub const NSF32FunctionKey: c_uint = 0xF723;
-pub const NSF33FunctionKey: c_uint = 0xF724;
-pub const NSF34FunctionKey: c_uint = 0xF725;
-pub const NSF35FunctionKey: c_uint = 0xF726;
-pub const NSInsertFunctionKey: c_uint = 0xF727;
-pub const NSDeleteFunctionKey: c_uint = 0xF728;
-pub const NSHomeFunctionKey: c_uint = 0xF729;
-pub const NSBeginFunctionKey: c_uint = 0xF72A;
-pub const NSEndFunctionKey: c_uint = 0xF72B;
-pub const NSPageUpFunctionKey: c_uint = 0xF72C;
-pub const NSPageDownFunctionKey: c_uint = 0xF72D;
-pub const NSPrintScreenFunctionKey: c_uint = 0xF72E;
-pub const NSScrollLockFunctionKey: c_uint = 0xF72F;
-pub const NSPauseFunctionKey: c_uint = 0xF730;
-pub const NSSysReqFunctionKey: c_uint = 0xF731;
-pub const NSBreakFunctionKey: c_uint = 0xF732;
-pub const NSResetFunctionKey: c_uint = 0xF733;
-pub const NSStopFunctionKey: c_uint = 0xF734;
-pub const NSMenuFunctionKey: c_uint = 0xF735;
-pub const NSUserFunctionKey: c_uint = 0xF736;
-pub const NSSystemFunctionKey: c_uint = 0xF737;
-pub const NSPrintFunctionKey: c_uint = 0xF738;
-pub const NSClearLineFunctionKey: c_uint = 0xF739;
-pub const NSClearDisplayFunctionKey: c_uint = 0xF73A;
-pub const NSInsertLineFunctionKey: c_uint = 0xF73B;
-pub const NSDeleteLineFunctionKey: c_uint = 0xF73C;
-pub const NSInsertCharFunctionKey: c_uint = 0xF73D;
-pub const NSDeleteCharFunctionKey: c_uint = 0xF73E;
-pub const NSPrevFunctionKey: c_uint = 0xF73F;
-pub const NSNextFunctionKey: c_uint = 0xF740;
-pub const NSSelectFunctionKey: c_uint = 0xF741;
-pub const NSExecuteFunctionKey: c_uint = 0xF742;
-pub const NSUndoFunctionKey: c_uint = 0xF743;
-pub const NSRedoFunctionKey: c_uint = 0xF744;
-pub const NSFindFunctionKey: c_uint = 0xF745;
-pub const NSHelpFunctionKey: c_uint = 0xF746;
-pub const NSModeSwitchFunctionKey: c_uint = 0xF747;

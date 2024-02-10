@@ -3,6 +3,13 @@ const objc = @import("objc");
 const runtime_support = @import("Runtime-Support");
 
 pub const NSScrollViewSelectors = struct {
+    pub fn documentVisibleRect() objc.Sel {
+        if (_sel_documentVisibleRect == null) {
+            _sel_documentVisibleRect = objc.Sel.registerName("documentVisibleRect");
+        }
+        return _sel_documentVisibleRect.?;
+    }
+
     pub fn documentView() objc.Sel {
         if (_sel_documentView == null) {
             _sel_documentView = objc.Sel.registerName("documentView");
@@ -101,6 +108,42 @@ pub const NSScrollViewSelectors = struct {
         return _sel_setAutohidesScrollers.?;
     }
 
+    pub fn addFloatingSubviewForAxis() objc.Sel {
+        if (_sel_addFloatingSubviewForAxis == null) {
+            _sel_addFloatingSubviewForAxis = objc.Sel.registerName("addFloatingSubview:forAxis:");
+        }
+        return _sel_addFloatingSubviewForAxis.?;
+    }
+
+    pub fn automaticallyAdjustsContentInsets() objc.Sel {
+        if (_sel_automaticallyAdjustsContentInsets == null) {
+            _sel_automaticallyAdjustsContentInsets = objc.Sel.registerName("automaticallyAdjustsContentInsets");
+        }
+        return _sel_automaticallyAdjustsContentInsets.?;
+    }
+
+    pub fn setAutomaticallyAdjustsContentInsets() objc.Sel {
+        if (_sel_setAutomaticallyAdjustsContentInsets == null) {
+            _sel_setAutomaticallyAdjustsContentInsets = objc.Sel.registerName("setAutomaticallyAdjustsContentInsets:");
+        }
+        return _sel_setAutomaticallyAdjustsContentInsets.?;
+    }
+
+    pub fn contentInsets() objc.Sel {
+        if (_sel_contentInsets == null) {
+            _sel_contentInsets = objc.Sel.registerName("contentInsets");
+        }
+        return _sel_contentInsets.?;
+    }
+
+    pub fn setContentInsets() objc.Sel {
+        if (_sel_setContentInsets == null) {
+            _sel_setContentInsets = objc.Sel.registerName("setContentInsets:");
+        }
+        return _sel_setContentInsets.?;
+    }
+
+    var _sel_documentVisibleRect: ?objc.Sel = null;
     var _sel_documentView: ?objc.Sel = null;
     var _sel_setDocumentView: ?objc.Sel = null;
     var _sel_contentView: ?objc.Sel = null;
@@ -115,4 +158,9 @@ pub const NSScrollViewSelectors = struct {
     var _sel_setHasHorizontalScroller: ?objc.Sel = null;
     var _sel_autohidesScrollers: ?objc.Sel = null;
     var _sel_setAutohidesScrollers: ?objc.Sel = null;
+    var _sel_addFloatingSubviewForAxis: ?objc.Sel = null;
+    var _sel_automaticallyAdjustsContentInsets: ?objc.Sel = null;
+    var _sel_setAutomaticallyAdjustsContentInsets: ?objc.Sel = null;
+    var _sel_contentInsets: ?objc.Sel = null;
+    var _sel_setContentInsets: ?objc.Sel = null;
 };

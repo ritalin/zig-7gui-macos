@@ -19,6 +19,16 @@ pub const NSTextFieldMessages = struct {
         });
     }
 
+    pub fn textColor(self: objc.Object) ?objc.Object {
+        return runtime_support.wrapOptionalObjectId(self.msgSend(objc.c.id, selector.NSTextFieldSelectors.textColor(), .{}));
+    }
+
+    pub fn setTextColor(self: objc.Object, _textColor: ?objc.Object) void {
+        return self.msgSend(void, selector.NSTextFieldSelectors.setTextColor(), .{
+            runtime_support.unwrapOptionalObject(_textColor),
+        });
+    }
+
     pub fn isEditable(self: objc.Object) objc.c.BOOL {
         return self.msgSend(objc.c.BOOL, selector.NSTextFieldSelectors.isEditable(), .{});
     }

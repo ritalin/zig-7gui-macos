@@ -63,11 +63,11 @@ pub const NSRectEdge = struct {
     };
 };
 
-pub const NSPoint = CGPoint;
-pub const NSPointPointer = *NSPoint;
-pub const NSPointArray = *NSPoint;
-pub const NSSize = CGSize;
-pub const NSRect = CGRect;
+pub const NSPoint = *const CGPoint;
+pub const NSPointPointer = *const *NSPoint;
+pub const NSPointArray = *const *NSPoint;
+pub const NSSize = *const CGSize;
+pub const NSRect = *const CGRect;
 const CGFloat = coreGraphics.CGFloat;
 const CGPoint = coreGraphics.CGPoint;
 const CGRect = coreGraphics.CGRect;

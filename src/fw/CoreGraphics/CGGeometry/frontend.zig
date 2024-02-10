@@ -45,10 +45,6 @@ pub const CGRectEdge = struct {
 const CFDictionaryRef = coreFoundation.CFDictionaryRef;
 const CGFloat = coreGraphics.CGFloat;
 
-pub extern fn CGPointMake(x: CGFloat, y: CGFloat) callconv(.C) CGPoint;
-pub extern fn CGSizeMake(width: CGFloat, height: CGFloat) callconv(.C) CGSize;
-pub extern fn CGVectorMake(dx: CGFloat, dy: CGFloat) callconv(.C) CGVector;
-pub extern fn CGRectMake(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) callconv(.C) CGRect;
 pub extern fn CGRectGetMinX(rect: CGRect) callconv(.C) CGFloat;
 pub extern fn CGRectGetMidX(rect: CGRect) callconv(.C) CGFloat;
 pub extern fn CGRectGetMaxX(rect: CGRect) callconv(.C) CGFloat;

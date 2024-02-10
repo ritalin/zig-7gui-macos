@@ -287,7 +287,6 @@ const NSUserInterfaceValidations = appKit.NSUserInterfaceValidations;
 const NSView = appKit.NSView;
 const NSCoding = foundation.NSCoding;
 const NSNotification = foundation.NSNotification;
-const NSNotificationName = foundation.NSNotificationName;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;

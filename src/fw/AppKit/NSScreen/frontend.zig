@@ -74,7 +74,6 @@ const ExtensionsForNSScreen = struct {
     pub const Self = NSScreen;
 };
 
-const NSNotificationName = foundation.NSNotificationName;
 const NSRect = foundation.NSRect;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

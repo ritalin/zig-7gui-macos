@@ -28,6 +28,13 @@ pub const NSIndexSetSelectors = struct {
         return _sel_indexSetWithIndex.?;
     }
 
+    pub fn indexSetWithIndexesInRange() objc.Sel {
+        if (_sel_indexSetWithIndexesInRange == null) {
+            _sel_indexSetWithIndexesInRange = objc.Sel.registerName("indexSetWithIndexesInRange:");
+        }
+        return _sel_indexSetWithIndexesInRange.?;
+    }
+
     pub fn count() objc.Sel {
         if (_sel_count == null) {
             _sel_count = objc.Sel.registerName("count");
@@ -44,6 +51,7 @@ pub const NSIndexSetSelectors = struct {
 
     var _sel_indexSet: ?objc.Sel = null;
     var _sel_indexSetWithIndex: ?objc.Sel = null;
+    var _sel_indexSetWithIndexesInRange: ?objc.Sel = null;
     var _sel_count: ?objc.Sel = null;
     var _sel_containsIndex: ?objc.Sel = null;
 };

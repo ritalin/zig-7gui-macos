@@ -29,6 +29,14 @@ pub const NSTextField = struct {
         return backend.NSTextFieldMessages.setBackgroundColor(runtime_support.objectId(NSTextField, self), runtime_support.objectId(?NSColor, _backgroundColor));
     }
 
+    pub fn textColor(self: Self) ?NSColor {
+        return runtime_support.wrapObject(?NSColor, backend.NSTextFieldMessages.textColor(runtime_support.objectId(NSTextField, self)));
+    }
+
+    pub fn setTextColor(self: Self, _textColor: ?NSColor) void {
+        return backend.NSTextFieldMessages.setTextColor(runtime_support.objectId(NSTextField, self), runtime_support.objectId(?NSColor, _textColor));
+    }
+
     pub fn isEditable(self: Self) bool {
         return runtime_support.fromBOOL(backend.NSTextFieldMessages.isEditable(runtime_support.objectId(NSTextField, self)));
     }
