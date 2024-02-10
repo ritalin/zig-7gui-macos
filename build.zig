@@ -109,6 +109,7 @@ pub fn build(b: *std.Build) !void {
         .{ "timer", "src/examples/04_timer/main.zig" },
         .{ "crud", "src/examples/05_crud/main.zig" },
         .{ "circle_drawer", "src/examples/06_circle_drawer/main.zig" },
+        .{ "cells", "src/examples/07_cells/main.zig" },
     };
 
     // create example step
