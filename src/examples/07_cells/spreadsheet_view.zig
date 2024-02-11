@@ -80,6 +80,8 @@ pub const SpreadSheet = struct {
         try self.buildSpreadsheetView(.{.width = width, .height = height}, config.frame_size);
         try self.buildColumnHeadersView(config.frame_size);
 
+        self.activateAt(0, 0);
+        
         return self;
     }
 
