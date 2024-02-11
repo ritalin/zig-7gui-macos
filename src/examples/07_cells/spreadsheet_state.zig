@@ -332,15 +332,12 @@ const CellState = struct {
 
     pub fn cellTextChanged(self: *CellState, text: []const u8) bool {
         const new_text = if (text[0] == '=') text[1..] else text; 
-        const old_text = text: {
-            switch (self.parse_result) {
-                .empty => return new_text.len > 0,
-                .text => |obj| break :text obj.value,
-                .ast => |obj| break :text obj.tree.source,
-            }
-        };
 
-        return ! std.mem.eql(u8, std.mem.sliceTo(old_text, 0), new_text);
+        return switch (self.parse_result) {
+            .empty => new_text.len > 0,
+            .text => |obj| (! std.mem.eql(u8, std.mem.sliceTo(obj.value, 0), text)),
+            .ast => |obj| (text[0] != '=') or (! std.mem.eql(u8, std.mem.sliceTo(obj.tree.source, 0), new_text)),
+        };
     }
 
     pub fn linkReferences(self: *CellState, cell_name: []const u8, new_references: std.BufSet, callback: LinkReferenceRequest) !void {
