@@ -259,9 +259,9 @@ const ExternVarsForNSView = struct {
     }
 };
 
-pub const NSViewFullScreenModeOptionKey = *const NSString;
-pub const NSDefinitionOptionKey = *const NSString;
-pub const NSDefinitionPresentationType = *const NSString;
+pub const NSViewFullScreenModeOptionKey = NSString;
+pub const NSDefinitionOptionKey = NSString;
+pub const NSDefinitionPresentationType = NSString;
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;

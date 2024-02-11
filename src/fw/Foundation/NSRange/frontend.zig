@@ -9,7 +9,7 @@ pub const _NSRange = extern struct {
     length: NSUInteger,
 };
 
-pub const NSRange = *const _NSRange;
+pub const NSRange = _NSRange;
 const NSUInteger = runtime.NSUInteger;
 
 pub extern fn NSMakeRange(loc: NSUInteger, len: NSUInteger) callconv(.C) NSRange;

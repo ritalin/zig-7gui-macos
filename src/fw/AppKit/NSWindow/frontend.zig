@@ -448,10 +448,10 @@ pub const NSWindowDelegate = struct {
     pub const Self = @This();
 };
 
-pub const NSWindowLevel = *const NSInteger;
-pub const NSWindowFrameAutosaveName = *const NSString;
-pub const NSWindowPersistableFrameDescriptor = *const NSString;
-pub const NSWindowTabbingIdentifier = *const NSString;
+pub const NSWindowLevel = NSInteger;
+pub const NSWindowFrameAutosaveName = NSString;
+pub const NSWindowPersistableFrameDescriptor = NSString;
+pub const NSWindowTabbingIdentifier = NSString;
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSAnimatablePropertyContainer = appKit.NSAnimatablePropertyContainer;

@@ -200,7 +200,7 @@ pub const NSFocusRingType = struct {
     };
 };
 
-pub const NSColorSpaceName = *const NSString;
+pub const NSColorSpaceName = NSString;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSUInteger = runtime.NSUInteger;

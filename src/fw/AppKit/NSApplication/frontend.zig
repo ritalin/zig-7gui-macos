@@ -272,11 +272,11 @@ const ExternVarsForNSApplication = struct {
     }
 };
 
-pub const NSAppKitVersion = *const f64;
-pub const NSModalResponse = *const NSInteger;
-pub const NSModalSession = *const *anyopaque;
-pub const NSAboutPanelOptionKey = *const NSString;
-pub const NSServiceProviderName = *const NSString;
+pub const NSAppKitVersion = f64;
+pub const NSModalResponse = NSInteger;
+pub const NSModalSession = *anyopaque;
+pub const NSAboutPanelOptionKey = NSString;
+pub const NSServiceProviderName = NSString;
 const NSAccessibility = appKit.NSAccessibility;
 const NSAccessibilityElement = appKit.NSAccessibilityElement;
 const NSApplicationActivationPolicy = appKit.NSApplicationActivationPolicy;

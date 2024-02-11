@@ -57,7 +57,7 @@ pub const NSAppearanceCustomization = struct {
     pub const Self = @This();
 };
 
-pub const NSAppearanceName = *const NSString;
+pub const NSAppearanceName = NSString;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

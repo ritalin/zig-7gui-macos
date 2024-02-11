@@ -378,7 +378,7 @@ pub const NSStringEncoding = struct {
     };
 };
 
-pub const unichar = *const c_ushort;
+pub const unichar = c_ushort;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
 const NSMutableCopying = foundation.NSMutableCopying;

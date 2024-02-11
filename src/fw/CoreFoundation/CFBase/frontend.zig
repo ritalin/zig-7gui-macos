@@ -34,9 +34,9 @@ pub const CFComparisonResult = struct {
     };
 };
 
-pub const CFOptionFlags = *const c_ulong;
-pub const CFIndex = *const c_long;
-pub const CFStringRef = *const *__CFString;
+pub const CFOptionFlags = c_ulong;
+pub const CFIndex = c_long;
+pub const CFStringRef = *__CFString;
 pub const CFAllocatorRetainCallBack = *const fn (_: *const void) *const void;
 pub const CFAllocatorReleaseCallBack = *const fn (_: *const void) void;
 pub const CFAllocatorCopyDescriptionCallBack = *const fn (_: *const void) CFStringRef;

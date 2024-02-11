@@ -55,6 +55,6 @@ pub const NSTextContent = struct {
     pub const Self = @This();
 };
 
-pub const NSTextContentType = *const NSString;
+pub const NSTextContentType = NSString;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;

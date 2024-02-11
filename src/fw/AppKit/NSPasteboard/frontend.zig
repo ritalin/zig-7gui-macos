@@ -71,7 +71,7 @@ pub const NSPasteboardWriting = struct {
     pub const Self = @This();
 };
 
-pub const NSPasteboardType = *const NSString;
+pub const NSPasteboardType = NSString;
 const NSString = foundation.NSString;
 const NSObject = runtime.NSObject;
 const NSObjectProtocol = runtime.NSObjectProtocol;

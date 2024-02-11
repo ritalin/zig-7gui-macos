@@ -57,8 +57,8 @@ pub const CGLineCap = struct {
     };
 };
 
-pub const CGMutablePathRef = *const *CGPath;
-pub const CGPathRef = *const *CGPath;
+pub const CGMutablePathRef = *CGPath;
+pub const CGPathRef = *CGPath;
 const CGAffineTransform = coreGraphics.CGAffineTransform;
 const CGFloat = coreGraphics.CGFloat;
 const CGPoint = coreGraphics.CGPoint;

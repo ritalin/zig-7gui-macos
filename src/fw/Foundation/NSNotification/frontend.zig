@@ -113,7 +113,7 @@ const NSNotificationCreationForNSNotification = struct {
     pub const Self = NSNotification;
 };
 
-pub const NSNotificationName = *const NSString;
+pub const NSNotificationName = NSString;
 const NSCoding = foundation.NSCoding;
 const NSCopying = foundation.NSCopying;
 const NSString = foundation.NSString;

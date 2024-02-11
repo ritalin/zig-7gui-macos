@@ -49,8 +49,8 @@ pub const NSComparisonResult = struct {
     };
 };
 
-pub const NSExceptionName = *const NSString;
-pub const NSRunLoopMode = *const NSString;
+pub const NSExceptionName = NSString;
+pub const NSRunLoopMode = NSString;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSUInteger = runtime.NSUInteger;

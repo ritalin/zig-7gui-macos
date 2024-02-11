@@ -118,7 +118,7 @@ pub const NSTextFinderBarContainer = struct {
     pub const Self = @This();
 };
 
-pub const NSPasteboardTypeTextFinderOptionKey = *const NSString;
+pub const NSPasteboardTypeTextFinderOptionKey = NSString;
 const NSString = foundation.NSString;
 const NSInteger = runtime.NSInteger;
 const NSObject = runtime.NSObject;
